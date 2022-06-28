@@ -30,7 +30,7 @@ class _LoginInformationState extends State<LoginInformation> {
       "lottePath": "assets/lottie/meditation.json",
       "text": "With sanity you can have a clear insights of your thoughts",
       "bottom_text": "Almost done...",
-      "repeat": false,
+      "repeat": true,
     },
     {
       "screen": 3,
@@ -146,7 +146,8 @@ class _LoginInformationState extends State<LoginInformation> {
                   index++;
                 });
               } else {
-                Navigator.pushNamed(context, 'login');
+                Navigator.of(context)
+    .pushNamedAndRemoveUntil('login', (Route<dynamic> route) => false);
               }
             },
             backgroundColor: Colors.amber,
