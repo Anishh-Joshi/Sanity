@@ -3,10 +3,10 @@ import 'package:lottie/lottie.dart';
 
 class LoginInformation extends StatefulWidget {
   static const String routeName = 'loginInfo';
-  LoginInformation({Key? key}) : super(key: key);
+  const LoginInformation({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => LoginInformation(),
+        builder: (_) => const LoginInformation(),
         settings: const RouteSettings(name: routeName));
   }
 
@@ -21,15 +21,16 @@ class _LoginInformationState extends State<LoginInformation> {
     {
       "screen": 1,
       "lottePath": "assets/lottie/doctor.json",
-      "text": "With sanity you can have a clear insights of your thoughts",
+      "text": "Welcome to Sanity!",
       "bottom_text": "Let's Get Started",
       "repeat": false
     },
     {
       "screen": 2,
       "lottePath": "assets/lottie/meditation.json",
-      "text": "With sanity you can have a clear insights of your thoughts",
-      "bottom_text": "Almost done...",
+      "text":
+          "With sanity, you can write about how you feel and you can instantly get more insights about your thoughts",
+      "bottom_text": "We Are Almost done",
       "repeat": true,
     },
     {
@@ -64,21 +65,23 @@ class _LoginInformationState extends State<LoginInformation> {
               ),
       ),
       backgroundColor: const Color.fromARGB(255, 243, 242, 242),
-      body: SafeArea(
+      body: Padding(
+        padding: const EdgeInsets.only(top: 10.0, bottom: 10),
         child: Column(
           children: [
             Stack(children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 70.0),
                 child: Lottie.asset(infoData[index]['lottePath'],
-                    width: double.infinity, repeat: infoData[index]['repeat']),
+                    width: MediaQuery.of(context).size.height / 2.5,
+                    repeat: infoData[index]['repeat']),
               ),
               Positioned(
-                bottom: 0,
-                left: MediaQuery.of(context).size.width / 3.2,
+                bottom: 50,
+                left: MediaQuery.of(context).size.width / 3.5,
                 child: Container(
-                  height: 150,
-                  width: 150,
+                  height: 100,
+                  width: 100,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100),
                     color: Colors.amber,
@@ -105,10 +108,13 @@ class _LoginInformationState extends State<LoginInformation> {
                   child: Text(
                     infoData[index]['text'],
                     textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(fontSize: 18),
+                    style: index == 0
+                        ? Theme.of(context).textTheme.headline4!.copyWith(
+                            fontSize: 25,
+                            color: Color.fromARGB(255, 160, 158, 158))
+                        : Theme.of(context).textTheme.headline6!.copyWith(
+                            fontSize: 23,
+                            color: Color.fromARGB(255, 160, 158, 158)),
                   ),
                 ),
               ),
@@ -127,17 +133,15 @@ class _LoginInformationState extends State<LoginInformation> {
                 "L",
                 style: Theme.of(context)
                     .textTheme
-                    .headline2!
+                    .headline1!
                     .copyWith(color: const Color.fromARGB(255, 201, 201, 201)),
               ),
             ),
           ),
           Text(
             infoData[index]['bottom_text'],
-            style: Theme.of(context)
-                .textTheme
-                .headline2!
-                .copyWith(color: const Color.fromARGB(255, 201, 201, 201)),
+            style: Theme.of(context).textTheme.headline6!.copyWith(
+                fontSize: 20, color: const Color.fromARGB(255, 160, 158, 158)),
           ),
           FloatingActionButton(
             onPressed: () {
@@ -146,8 +150,8 @@ class _LoginInformationState extends State<LoginInformation> {
                   index++;
                 });
               } else {
-                Navigator.of(context)
-    .pushNamedAndRemoveUntil('login', (Route<dynamic> route) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    'login', (Route<dynamic> route) => false);
               }
             },
             backgroundColor: Colors.amber,
