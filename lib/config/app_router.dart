@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sanity/screens/login/app_information.dart.dart';
+import 'package:sanity/repository/auth_repo.dart';
+import 'package:sanity/screens/introduction/app_information.dart.dart';
 import 'package:sanity/screens/login/login.dart';
 
 class AppRouter {
+  final AuthRepository repo;
+
+  AppRouter(this.repo);
   static Route? onGenerateRoute(RouteSettings setting) {
     print("Route chosen ${setting.name}");
 
@@ -11,6 +15,8 @@ class AppRouter {
         return LoginInformation.route();
       case LoginScreen.routeName:
         return LoginScreen.route();
+      // case Home.routeName:
+      //   return Home.route(repo: );
 
       default:
         _errorRoute();

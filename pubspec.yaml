@@ -42,6 +42,9 @@ dependencies:
   http: ^0.13.4
   shared_preferences: ^2.0.15
   bloc_provider: ^0.8.0
+  rxdart: ^0.27.4
+  dio: ^4.0.6
+  provider: ^6.0.3
 
 dev_dependencies:
   flutter_test:
@@ -81,17 +84,23 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  # starts from 200
+  fonts:
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-ExtraLight.ttf #200
+        - asset: assets/fonts/Nunito-Light.ttf #300
+        - asset: assets/fonts/Nunito-Regular.ttf #400
+        - asset: assets/fonts/Nunito-Medium.ttf #500
+        - asset: assets/fonts/Nunito-SemiBold.ttf #600
+        - asset: assets/fonts/Nunito-Bold.ttf #700
+        - asset: assets/fonts/Nunito-ExtraBold.ttf #800
+        - asset: assets/fonts/Nunito-Black.ttf #900
+    # - family: Trajan Pro
+    #   fonts:
+    #     - asset: fonts/TrajanPro.ttf
+    #     - asset: fonts/TrajanPro_Bold.ttf
+    #       weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

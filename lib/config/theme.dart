@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ThemeData theme() {
   return ThemeData(
       scaffoldBackgroundColor: Colors.white,
-      fontFamily: 'Avenir',
+      fontFamily: 'Nunito',
       textTheme: textTheme());
 }
 
@@ -12,42 +12,42 @@ TextTheme textTheme() {
       headline1: TextStyle(
         color: Colors.black,
         fontSize: 32,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w900,
       ),
       headline2: TextStyle(
         color: Colors.black,
         fontSize: 24,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w800,
       ),
       headline3: TextStyle(
         color: Colors.black,
         fontSize: 18,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w700,
       ),
       headline4: TextStyle(
         color: Colors.black,
         fontSize: 16,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w600,
       ),
       headline5: TextStyle(
         color: Colors.black,
         fontSize: 14,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w500,
       ),
       headline6: TextStyle(
         color: Colors.black,
         fontSize: 10,
-        fontWeight: FontWeight.normal,
+        fontWeight: FontWeight.w400,
       ),
       bodyText1: TextStyle(
         color: Colors.black,
         fontSize: 12,
-        fontWeight: FontWeight.normal,
+        fontWeight: FontWeight.w300,
       ),
       bodyText2: TextStyle(
         color: Colors.black,
         fontSize: 10,
-        fontWeight: FontWeight.normal,
+        fontWeight: FontWeight.w200,
       ));
 }
 
