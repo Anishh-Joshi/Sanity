@@ -47,137 +47,118 @@ class _LoginInformationState extends State<LoginInformation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          title: index == 2
-              ? null
-              : GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      index = 2;
-                    });
-                  },
-                  child: Text(
-                    "Skip ",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline3!
-                        .copyWith(color: Color.fromARGB(255, 216, 218, 216)),
-                  ),
-                ),
-          actions: index == 2
-              ? null
-              : [
-                  GestureDetector(
-                    onTap: () {
-                      if (index < 2) {
-                        setState(() {
-                          index++;
-                        });
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        Text(
-                          "Next",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline3!
-                              .copyWith(color: AppColors.textColor()),
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              if (index < 2) {
-                                setState(() {
-                                  index++;
-                                });
-                              } else {
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                    'login', (Route<dynamic> route) => false);
-                              }
-                            },
-                            icon: Icon(
-                              Icons.arrow_forward,
-                              color: AppColors.textColor(),
-                            )),
-                      ],
-                    ),
-                  )
-                ],
-        ),
-        backgroundColor: Colors.white,
-        body: index == 2
-            ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Lottie.asset(infoData[index]['lottePath']),
-                    Text(
-                      infoData[index]['text'],
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline2!
-                          .copyWith(color: AppColors.textColor()),
-                      textAlign: TextAlign.center,
-                    ),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: AppColors.textColor(),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12))),
-                        onPressed: () {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, 'login', (route) => false);
-                        },
-                        child: SizedBox(
-                            width: double.infinity,
-                            child: Center(
-                              child: Text("Login/Register",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline4!
-                                      .copyWith(color: Colors.white)),
-                            ))),
+      backgroundColor: Colors.white,
+      body: Stack(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+          ),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 500),
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [
+                    Colors.teal,
+                    Color.fromARGB(255, 1, 65, 59),
                   ],
                 ),
-              )
-            : Column(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(0),
+                    bottomRight: Radius.circular(500))),
+            height: MediaQuery.of(context).size.height / 1.5,
+            width: MediaQuery.of(context).size.width / 1,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 80.0, left: 15),
+              child: Text(
+                "Welcome!",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline2!
+                    .copyWith(color: Colors.white, fontSize: 40),
+              ),
+            ),
+          ),
+          Positioned(
+              bottom: MediaQuery.of(context).size.height / 6,
+              left: MediaQuery.of(context).size.width / 15,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height / 2.2,
-                      child: Row(children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 1.5,
-                          child: Text(infoData[index]['text'],
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline1!
-                                  .copyWith(
-                                      fontSize: index == 0 ? 40 : 28,
-                                      color: AppColors.textColor())),
+                  Text(
+                    "Find Your",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline2!
+                        .copyWith(color: Color.fromARGB(255, 144, 142, 142)),
+                  ),
+                  Text(
+                    "Sanity!",
+                    style: Theme.of(context).textTheme.headline1!.copyWith(
+                        color: Colors.teal,
+                        fontSize: MediaQuery.of(context).size.height / 12),
+                  ),
+                ],
+              )),
+          Positioned(
+              bottom: 0,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: const [
+                            Icon(
+                              Icons.circle,
+                              color: Colors.teal,
+                              size: 15,
+                            ),
+                            Icon(
+                              Icons.circle,
+                              color: Color.fromARGB(255, 239, 238, 238),
+                              size: 15,
+                            ),
+                            Icon(
+                              Icons.circle,
+                              color: Color.fromARGB(255, 239, 238, 238),
+                              size: 15,
+                            )
+                          ],
                         ),
-                        const Expanded(
-                          child: Center(
-                            child: Image(
-                              image:
-                                  AssetImage('assets/logos/sanity_intro.png'),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: (){},
+                            child: Container(
+                              height: MediaQuery.of(context).size.height / 12,
+                              width: MediaQuery.of(context).size.width / 4,
+                              decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topRight,
+                                    end: Alignment.bottomLeft,
+                                    colors: [
+                                      Colors.teal,
+                                      Color.fromARGB(255, 1, 65, 59),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(100)),
+                              child: const Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         )
                       ]),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: Lottie.asset(infoData[index]['lottePath'],
-                          width: double.infinity, fit: BoxFit.cover),
-                    ),
-                  )
-                ],
-              ));
+                ),
+              ))
+        ],
+      ),
+    );
   }
 }
