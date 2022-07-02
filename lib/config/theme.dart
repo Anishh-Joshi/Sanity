@@ -4,6 +4,10 @@ ThemeData theme() {
   return ThemeData(
       scaffoldBackgroundColor: Colors.white,
       fontFamily: 'Nunito',
+      pageTransitionsTheme: PageTransitionsTheme(builders: {
+        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+      }),
       textTheme: textTheme());
 }
 
