@@ -3,6 +3,7 @@ import 'package:sanity/repository/auth_repo.dart';
 import 'package:sanity/screens/introduction/app_information.dart.dart';
 import 'package:sanity/screens/login/login.dart';
 import 'package:sanity/screens/login/login_landing.dart';
+import 'package:sanity/screens/login/sign_up.dart';
 
 class AppRouter {
   final AuthRepository repo;
@@ -18,6 +19,8 @@ class AppRouter {
         return LoginScreen.route();
       case LoginLanding.routeName:
         return LoginLanding.route();
+      case Signup.routeName:
+        return Signup.route();
 
       default:
         _errorRoute();

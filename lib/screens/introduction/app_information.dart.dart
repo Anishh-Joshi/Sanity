@@ -51,13 +51,17 @@ class _LoginInformationState extends State<LoginInformation> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            SizedBox(
               height: MediaQuery.of(context).size.height / 1.3,
               child: Column(
                 children: [
-                  Container(
-                    child: Lottie.asset(infoData[index]['lottePath']),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      child: Lottie.asset(infoData[index]['lottePath']),
+                    ),
                   ),
                   Text(
                     infoData[index]['text'],
@@ -114,7 +118,7 @@ class _LoginInformationState extends State<LoginInformation> {
             TextButton(
               onPressed: () {
                 Navigator.pushNamedAndRemoveUntil(
-                    context, 'login', (route) => false);
+                    context, 'login_landing', (route) => false);
               },
               child: Text(
                 "Skip",
@@ -132,7 +136,7 @@ class _LoginInformationState extends State<LoginInformation> {
                   });
                 } else {
                   Navigator.pushNamedAndRemoveUntil(
-                      context, 'login', (route) => false);
+                      context, 'login_landing', (route) => false);
                 }
               },
               child: Container(

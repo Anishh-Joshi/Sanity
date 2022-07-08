@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:lottie/lottie.dart';
 
-class LoginScreen extends StatelessWidget {
-  static const String routeName = 'login';
-  LoginScreen({Key? key}) : super(key: key);
+
+class Signup extends StatelessWidget {
+  static const String routeName = 'signup';
+  Signup({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => LoginScreen(),
+        builder: (_) => Signup(),
         settings: const RouteSettings(name: routeName));
   }
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+    final TextEditingController _confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -37,26 +38,26 @@ class LoginScreen extends StatelessWidget {
                 height: MediaQuery.of(context).size.height / 10,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                
                 children: [
                   Container(
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Hey,",
+                          Text("Sign up",
                               style: Theme.of(context)
                                   .textTheme
                                   .headline3!
                                   .copyWith(fontSize: 40)),
-                          Text("Welcome Back!,",
+                          Text("Let’s setup you profile!",
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline4!
+                                  .headline5!
                                   .copyWith(fontSize: 20)),
                         ]),
                   ),
                   Lottie.asset('assets/lottie/swing.json',
-                      height: MediaQuery.of(context).size.height / 5.5),
+                      height: MediaQuery.of(context).size.height / 8),
                 ],
               ),
               SizedBox(
@@ -77,26 +78,13 @@ class LoginScreen extends StatelessWidget {
                             const SizedBox(
                               height: 4,
                             ),
-                            _buildPasswordForm(context),
+                            _buildPasswordForm(context,_passwordController,"Password"),
+                             const SizedBox(
+                              height: 4,
+                            ),
+                            _buildPasswordForm(context,_confirmPasswordController,"Confirm Password"),
                           ]),
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Opacity(opacity: 1, child: Text("")),
-                          TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "Forgot your password ?",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(
-                                        color: const Color(0xff787878),
-                                        fontSize: 13),
-                              )),
-                        ],
                       ),
                     ],
                   )),
@@ -151,7 +139,7 @@ _buildEmailForm(BuildContext context) {
   );
 }
 
-_buildPasswordForm(BuildContext context) {
+_buildPasswordForm(BuildContext context,TextEditingController controller,String customText) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
@@ -164,6 +152,7 @@ _buildPasswordForm(BuildContext context) {
     child: Padding(
       padding: const EdgeInsets.only(left: 0.0, right: 8, top: 5, bottom: 5),
       child: TextFormField(
+        controller: controller,
         style: Theme.of(context)
             .textTheme
             .bodyText2!
@@ -172,7 +161,7 @@ _buildPasswordForm(BuildContext context) {
         obscureText: true,
         decoration: const InputDecoration(
           enabled: true,
-          hintText: "Passsword",
+          hintText: "customText",
           hintStyle: TextStyle(color: Colors.black),
           border: InputBorder.none,
           prefixIcon: Icon(
