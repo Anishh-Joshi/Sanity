@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sanity/widgets/FloatingButton.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String routeName = 'login';
@@ -18,14 +19,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Colors.amber,
-        child: Icon(
-          Icons.arrow_forward,
-          color: Colors.white,
-        ),
-      ),
+      floatingActionButton: FloatingButon(callback: () {}),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -70,8 +64,7 @@ class LoginScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10)),
                         child: Padding(
-                          padding:
-                              const EdgeInsets.only(top: 10.0, bottom: 0),
+                          padding: const EdgeInsets.only(top: 10.0, bottom: 0),
                           child: Column(children: [
                             _buildEmailForm(context),
                             const SizedBox(
@@ -86,7 +79,9 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           const Opacity(opacity: 1, child: Text("")),
                           TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushNamed(context, 'forgot_password');
+                              },
                               child: Text(
                                 "Forgot your password ?",
                                 style: Theme.of(context)

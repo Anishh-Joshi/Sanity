@@ -29,7 +29,7 @@ class _LoginInformationState extends State<LoginInformation> {
     },
     {
       "screen": 2,
-      "lottePath": "assets/lottie/girl_stydy.json",
+      "lottePath": "assets/lottie/study-boy.json",
       "text": "Did you know ?",
       "bottom_text":
           "You can join many other people like you here in sanity? You can text them any time,and have a meaningful conversation.",
@@ -37,7 +37,7 @@ class _LoginInformationState extends State<LoginInformation> {
     },
     {
       "screen": 3,
-      "lottePath": "assets/lottie/girl_stydy.json",
+      "lottePath": "assets/lottie/study-boy.json",
       "text": "Did you know ?",
       "bottom_text":
           "Sanity process your feelings with Machine learning and gives a detailed insights about your feelings. Also,in severe cases it  automatically suggests nearby therapisyt/doctors",
@@ -86,30 +86,25 @@ class _LoginInformationState extends State<LoginInformation> {
                 ],
               ),
             ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.circle,
-                      size: 20,
-                      color:
-                          index == 0 ? Colors.amber : const Color(0xffD9D9D9)),
-                  Icon(Icons.circle,
-                      size: 20,
-                      color:
-                          index == 1 ? Colors.amber : const Color(0xffD9D9D9)),
-                  Icon(Icons.circle,
-                      size: 20,
-                      color:
-                          index == 2 ? Colors.amber : const Color(0xffD9D9D9)),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.circle,
+                    size: 20,
+                    color: index == 0 ? Colors.amber : const Color(0xffD9D9D9)),
+                Icon(Icons.circle,
+                    size: 20,
+                    color: index == 1 ? Colors.amber : const Color(0xffD9D9D9)),
+                Icon(Icons.circle,
+                    size: 20,
+                    color: index == 2 ? Colors.amber : const Color(0xffD9D9D9)),
+              ],
             )
           ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(
+      floatingActionButton: SizedBox(
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.all(8.0),

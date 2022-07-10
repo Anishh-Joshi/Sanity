@@ -23,9 +23,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   void _onLoginPressed(
       LoginButtonPressed event, Emitter<LoginState> emit) async {
-    emit(LoginLoading());
     try {
       final authData = await repo.login(event.email, event.password);
+      emit(LoginLoading());
       if (authData["token"] != null) {
         emit(LoginAuthenticated());
         repo.persistToken((authData["token"]['refresh']));
