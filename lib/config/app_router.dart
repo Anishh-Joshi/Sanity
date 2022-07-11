@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sanity/landingpage.dart';
 import 'package:sanity/repository/auth_repo.dart';
 import 'package:sanity/screens/introduction/app_information.dart.dart';
 import 'package:sanity/screens/login/email_verification.dart';
@@ -30,6 +31,8 @@ class AppRouter {
         return ForgotPassword.route();
       case UserInfo.routeName:
         return UserInfo.route();
+      case LandingPage.routeName:
+        return LandingPage.route();
 
       default:
         _errorRoute();

@@ -4,6 +4,7 @@ import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/blocs/user_info_bloc/user_info_bloc.dart';
 import 'package:sanity/config/app_router.dart';
 import 'package:sanity/config/theme.dart';
+import 'package:sanity/landingpage.dart';
 import 'package:sanity/repository/auth_repo.dart';
 import 'model/user_info_model.dart';
 import 'screens/introduction/app_information.dart.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: theme(),
         onGenerateRoute: AppRouter.onGenerateRoute,
-        initialRoute: LoginInformation.routeName,
+        initialRoute: LandingPage.routeName,
       ),
     );
   }

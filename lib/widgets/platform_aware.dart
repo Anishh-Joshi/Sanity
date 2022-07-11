@@ -34,9 +34,13 @@ class PlatformAADialog extends PlatformWidget {
   @override
   Widget buildMaterialWidget(BuildContext context) {
     return AlertDialog(
-      backgroundColor: const Color(0xff202020),
-      content: Text(content, style: const TextStyle(color: Colors.white)),
-      title: Text(title, style: const TextStyle(color: Colors.white)),
+      backgroundColor: Colors.white,
+      content: Text(content,
+          style: Theme.of(context)
+              .textTheme
+              .headline4!
+              .copyWith(color: Color(0xff787878))),
+      title: Text(title, style: Theme.of(context).textTheme.headline3),
       actions: _buildActions(context),
     );
   }
@@ -49,14 +53,21 @@ class PlatformAADialog extends PlatformWidget {
             Navigator.of(context).pop(false);
           },
           child: Text(cancelActionText!,
-              style: const TextStyle(color: Colors.white))));
+              style: Theme.of(context)
+                  .textTheme
+                  .headline4!
+                  .copyWith(color: Colors.black))));
     }
 
     action.add(PlatformAlertDialogAction(
         onPressed: () {
           Navigator.of(context).pop(true);
         },
-        child: Text("OK", style: TextStyle(color: Colors.pink))));
+        child: Text("OK",
+            style: Theme.of(context)
+                .textTheme
+                .headline4!
+                .copyWith(color: Colors.black))));
     return action;
   }
 }

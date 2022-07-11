@@ -10,6 +10,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({required this.repo}) : super(LoginLoading()) {
     on<LoginCheck>(_onLoginCheck);
     on<LoginButtonPressed>(_onLoginPressed);
+    on<LogoutButtonPressed>(_onLogoutPressed);
   }
 
   void _onLoginCheck(LoginCheck event, Emitter<LoginState> emit) async {
@@ -24,14 +25,40 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void _onLoginPressed(
       LoginButtonPressed event, Emitter<LoginState> emit) async {
     try {
-      final authData = await repo.login(event.email, event.password);
       emit(LoginLoading());
+      final authData = await repo.login(event.email, event.password);
       if (authData["token"] != null) {
-        emit(LoginAuthenticated());
         repo.persistToken((authData["token"]['refresh']));
+        emit(LoginAuthenticated());
       } else {
-        emit(LoginError(msg: authData['errors']['non_field_errors']));
+        emit(LoginError(msg: authData['errors']['non_field_errors'][0]));
       }
+    } catch (e) {
+      emit(LoginError(msg: e.toString()));
+    }
+  }
+
+  void _onSignupPressed(
+      SignupButtonPressed event, Emitter<LoginState> emit) async {
+    try {
+      emit(LoginLoading());
+      final authData = await repo.login(event.email, event.password);
+      if (authData["token"] != null) {
+        repo.persistToken((authData["token"]['refresh']));
+        emit(LoginAuthenticated());
+      } else {
+        emit(LoginError(msg: authData['errors']['non_field_errors'][0]));
+      }
+    } catch (e) {
+      emit(LoginError(msg: e.toString()));
+    }
+  }
+
+  void _onLogoutPressed(
+      LogoutButtonPressed event, Emitter<LoginState> emit) async {
+    try {
+      await repo.deleteToken();
+      emit(LoginUnAuthenticated());
     } catch (e) {
       emit(LoginError(msg: e.toString()));
     }

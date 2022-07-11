@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
-import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/widgets/login_signup_header.dart';
-
 import '../../widgets/floatingbutton.dart';
 import '../../widgets/platform_aware.dart';
 
@@ -24,7 +20,6 @@ class Signup extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
   Future<void> _handleSubmit(BuildContext context) async {
-    print("pressed");
     if (_formKey.currentState!.validate()) {
       try {
         Navigator.pushNamed(context, 'email_verification');
@@ -41,83 +36,76 @@ class Signup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      floatingActionButton: GestureDetector(
-        onTap: () {
-          print('pressed');
-        },
-        child: FloatingButon(
-          callback: () {
-            print("oressed");
-            _handleSubmit(context);
+        backgroundColor: Colors.white,
+        floatingActionButton: GestureDetector(
+          onTap: () {
+            print('pressed');
           },
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: BlocBuilder<LoginBloc, LoginState>(
-              builder: (context, state) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 10,
-                    ),
-                    const LoginSiginUpHeader(
-                      mainHeader: "Sign up",
-                      subheader: "Let’s setup you profile",
-                      lottepath: "assets/lottie/setup.json",
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 20,
-                    ),
-                    Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 10.0, bottom: 0),
-                                child: Column(children: [
-                                  _buildEmailForm(
-                                      context, _emailController, state),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  _buildPasswordForm(
-                                      context, _passwordController, state),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  _buildConfirmPasswordForm(
-                                      context,
-                                      _confirmPasswordController,
-                                      _passwordController,
-                                      state)
-                                ]),
-                              ),
-                            ),
-                          ],
-                        )),
-                  ],
-                );
-              },
-            ),
+          child: FloatingButon(
+            callback: () {
+              print("oressed");
+              _handleSubmit(context);
+            },
           ),
         ),
-      ),
-    );
+        body: SafeArea(
+            child: SingleChildScrollView(
+                child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 10,
+                        ),
+                        const LoginSiginUpHeader(
+                          mainHeader: "Sign up",
+                          subheader: "Let’s setup you profile",
+                          lottepath: "assets/lottie/setup.json",
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 20,
+                        ),
+                        Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 10.0, bottom: 0),
+                                    child: Column(children: [
+                                      _buildEmailForm(
+                                          context, _emailController),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      _buildPasswordForm(
+                                          context, _passwordController),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      _buildConfirmPasswordForm(
+                                          context,
+                                          _confirmPasswordController,
+                                          _passwordController)
+                                    ]),
+                                  ),
+                                ),
+                              ],
+                            )),
+                      ],
+                    )))));
   }
 }
 
-_buildEmailForm(BuildContext context, TextEditingController _emailController,
-    LoginState state) {
+_buildEmailForm(
+  BuildContext context,
+  TextEditingController _emailController,
+) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
@@ -161,8 +149,8 @@ _buildEmailForm(BuildContext context, TextEditingController _emailController,
   );
 }
 
-_buildPasswordForm(BuildContext context,
-    TextEditingController _passwordController, LoginState state) {
+_buildPasswordForm(
+    BuildContext context, TextEditingController _passwordController) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
@@ -207,10 +195,10 @@ _buildPasswordForm(BuildContext context,
 }
 
 _buildConfirmPasswordForm(
-    BuildContext context,
-    TextEditingController _confirmPasswordController,
-    TextEditingController _passswordController,
-    LoginState state) {
+  BuildContext context,
+  TextEditingController _confirmPasswordController,
+  TextEditingController _passswordController,
+) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(

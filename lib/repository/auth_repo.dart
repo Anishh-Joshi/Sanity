@@ -4,7 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class AuthRepository {
-  final String Url = "http://10.0.2.2:8000/api/user/login/";
+  final String loginUrl = "http://10.0.2.2:8000/api/user/login/";
+  final String signInUrl = "http://10.0.2.2:8000/api/user/register/";
 
   Future<bool> hasToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -27,14 +28,31 @@ class AuthRepository {
 
   Future<Map> login(String email, password) async {
     final client = http.Client();
-    final http.Response response = await client.post(Uri.parse(Url),
+    final http.Response response = await client.post(Uri.parse(loginUrl),
         body: jsonEncode({"email": email, "password": password}),
         headers: {
           "Content-type": 'application/json',
           "Accept": "application/json",
-          "Access-Control-Aloow_origin": "*"
+          "Access-Control-Allow_origin": "*"
         });
     final loginResponse = json.decode(response.body);
     return loginResponse;
+  }
+
+  Future<Map> signIn(String email, password, confirm_password) async {
+    final client = http.Client();
+    final http.Response response = await client.post(Uri.parse(signInUrl),
+        body: jsonEncode({
+          "email": email,
+          "password": password,
+          "confirm_password": confirm_password
+        }),
+        headers: {
+          "Content-type": 'application/json',
+          "Accept": "application/json",
+          "Access-Control-Allow_origin": "*"
+        });
+    final signInResponse = json.decode(response.body);
+    return signInResponse;
   }
 }
