@@ -30,8 +30,9 @@ class LoginScreen extends StatelessWidget {
           return FloatingButon(callback: () {
             if (_formKey.currentState!.validate()) {
               context.read<LoginBloc>().add(LoginButtonPressed(
-                  email: _emailController.value.text.trim(),
-                  password: _passwordController.value.text.trim()));
+                  email: _emailController.value.text.toLowerCase().trim(),
+                  password:
+                      _passwordController.value.text.toLowerCase().trim()));
             }
           });
         }

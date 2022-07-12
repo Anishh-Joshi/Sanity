@@ -45,26 +45,34 @@ class _EmailVerificationState extends State<EmailVerification> {
       oneSec,
       (Timer timer) {
         if (_start == 0) {
-          setState(() {
-            timer.cancel();
-          });
+          if (mounted) {
+            setState(() {
+              timer.cancel();
+            });
+          }
         } else {
-          setState(() {
-            _start--;
-          });
+          if (mounted) {
+            setState(() {
+              _start--;
+            });
+          }
         }
       },
     );
   }
 
   void getAnimationTime() {
-    setState(() {
-      isAnimated = true;
-    });
-    Future.delayed(const Duration(milliseconds: 3000), () {
+    if (mounted) {
       setState(() {
-        isAnimated = false;
+        isAnimated = true;
       });
+    }
+    Future.delayed(const Duration(milliseconds: 3000), () {
+      if (mounted) {
+        setState(() {
+          isAnimated = false;
+        });
+      }
     });
   }
 

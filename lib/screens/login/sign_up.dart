@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/widgets/login_signup_header.dart';
 import '../../widgets/floatingbutton.dart';
 import '../../widgets/platform_aware.dart';
 
-class Signup extends StatelessWidget {
+class Signup extends StatefulWidget {
   static const String routeName = 'signup';
   Signup({Key? key}) : super(key: key);
   static Route route() {
@@ -12,26 +14,19 @@ class Signup extends StatelessWidget {
         settings: const RouteSettings(name: routeName));
   }
 
+  @override
+  State<Signup> createState() => _SignupState();
+}
+
+class _SignupState extends State<Signup> {
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
+
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-
-  Future<void> _handleSubmit(BuildContext context) async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        Navigator.pushNamed(context, 'email_verification');
-      } catch (e) {
-        PlatformAADialog(
-          title: 'Sign In Failed',
-          content: e.toString(),
-          defaultActionText: "Ok",
-        ).show(context);
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,71 +36,112 @@ class Signup extends StatelessWidget {
           onTap: () {
             print('pressed');
           },
-          child: FloatingButon(
-            callback: () {
-              print("oressed");
-              _handleSubmit(context);
+          child: BlocBuilder<LoginBloc, LoginState>(
+            builder: (context, state) {
+              if (state is LoginLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return FloatingButon(
+                callback: () {
+                  if (_formKey.currentState!.validate()) {
+                    try {
+                      context.read<LoginBloc>().add(SignupButtonPressed(
+                          email:
+                              _emailController.value.text.toLowerCase().trim(),
+                          password: _passwordController.value.text
+                              .toLowerCase()
+                              .trim(),
+                          confirmPassword: _confirmPasswordController.value.text
+                              .toLowerCase()
+                              .trim()));
+                    } catch (e) {
+                      PlatformAADialog(
+                        title: 'Sign up Failed',
+                        content: e.toString(),
+                        defaultActionText: "Ok",
+                      ).show(context);
+                    }
+                  }
+                },
+              );
             },
           ),
         ),
-        body: SafeArea(
-            child: SingleChildScrollView(
-                child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height / 10,
-                        ),
-                        const LoginSiginUpHeader(
-                          mainHeader: "Sign up",
-                          subheader: "Let’s setup you profile",
-                          lottepath: "assets/lottie/setup.json",
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height / 20,
-                        ),
-                        Form(
-                            key: _formKey,
-                            child: Column(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 10.0, bottom: 0),
-                                    child: Column(children: [
-                                      _buildEmailForm(
-                                          context, _emailController),
-                                      const SizedBox(
-                                        height: 8,
+        body: BlocListener<LoginBloc, LoginState>(
+          listener: (context, state) {
+            if (state is LoginError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Something went wrong")));
+            } else if (state is LoginEmailNotVerified) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, 'landing_page', (route) => false);
+            }
+          },
+          child: SafeArea(
+              child: SingleChildScrollView(
+                  child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 10,
+                          ),
+                          const LoginSiginUpHeader(
+                            mainHeader: "Sign up",
+                            subheader: "Let’s setup you profile",
+                            lottepath: "assets/lottie/setup.json",
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 20,
+                          ),
+                          BlocBuilder<LoginBloc, LoginState>(
+                            builder: (context, state) {
+                              return Form(
+                                  key: _formKey,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 10.0, bottom: 0),
+                                          child: Column(children: [
+                                            _buildEmailForm(context,
+                                                _emailController, state),
+                                            const SizedBox(
+                                              height: 8,
+                                            ),
+                                            _buildPasswordForm(context,
+                                                _passwordController, state),
+                                            const SizedBox(
+                                              height: 8,
+                                            ),
+                                            _buildConfirmPasswordForm(
+                                                context,
+                                                _confirmPasswordController,
+                                                _passwordController,
+                                                state)
+                                          ]),
+                                        ),
                                       ),
-                                      _buildPasswordForm(
-                                          context, _passwordController),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      _buildConfirmPasswordForm(
-                                          context,
-                                          _confirmPasswordController,
-                                          _passwordController)
-                                    ]),
-                                  ),
-                                ),
-                              ],
-                            )),
-                      ],
-                    )))));
+                                    ],
+                                  ));
+                            },
+                          ),
+                        ],
+                      )))),
+        ));
   }
 }
 
-_buildEmailForm(
-  BuildContext context,
-  TextEditingController _emailController,
-) {
+_buildEmailForm(BuildContext context, TextEditingController _emailController,
+    LoginState state) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
@@ -149,8 +185,8 @@ _buildEmailForm(
   );
 }
 
-_buildPasswordForm(
-    BuildContext context, TextEditingController _passwordController) {
+_buildPasswordForm(BuildContext context,
+    TextEditingController _passwordController, LoginState state) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
@@ -195,10 +231,10 @@ _buildPasswordForm(
 }
 
 _buildConfirmPasswordForm(
-  BuildContext context,
-  TextEditingController _confirmPasswordController,
-  TextEditingController _passswordController,
-) {
+    BuildContext context,
+    TextEditingController _confirmPasswordController,
+    TextEditingController _passswordController,
+    LoginState state) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(

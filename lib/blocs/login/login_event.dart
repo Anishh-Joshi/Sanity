@@ -34,3 +34,7 @@ class SignupButtonPressed extends LoginEvent {
 }
 
 class LogoutButtonPressed extends LoginEvent {}
+
+class LoginCheckEmailVerification extends LoginEvent {}
+
+class AppInformationSkipedPressed extends LoginEvent {}

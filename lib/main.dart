@@ -7,7 +7,6 @@ import 'package:sanity/config/theme.dart';
 import 'package:sanity/landingpage.dart';
 import 'package:sanity/repository/auth_repo.dart';
 import 'model/user_info_model.dart';
-import 'screens/introduction/app_information.dart.dart';
 
 void main() async {
   runApp(MyApp());
