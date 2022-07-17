@@ -1,13 +1,14 @@
 import 'package:equatable/equatable.dart';
+import 'package:image_picker/image_picker.dart';
 
-class UserInfoModel {
+class UserInfoModel extends Equatable {
   final String? fullName;
   final String? address;
   final int? age;
   final String? gender;
   final bool? isDoctor;
   final int? nmcId;
-  final bool? personalHelper;
+  final XFile? profileImage;
 
   const UserInfoModel(
       {this.fullName,
@@ -16,7 +17,7 @@ class UserInfoModel {
       this.age,
       this.gender,
       this.isDoctor,
-      this.personalHelper});
+      this.profileImage});
 
   String get getName {
     return fullName!;
@@ -42,7 +43,6 @@ class UserInfoModel {
     return nmcId!;
   }
 
-  bool get getPersonalHelper {
-    return personalHelper!;
-  }
+  @override
+  List<Object?> get props => [fullName, age, address, isDoctor, nmcId, gender];
 }

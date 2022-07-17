@@ -6,6 +6,7 @@ import 'package:sanity/config/app_router.dart';
 import 'package:sanity/config/theme.dart';
 import 'package:sanity/landingpage.dart';
 import 'package:sanity/repository/auth_repo.dart';
+import 'package:sanity/repository/signup/signup_repo.dart';
 import 'model/user_info_model.dart';
 
 void main() async {
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(
             create: (context) => LoginBloc(repo: repo)..add(LoginCheck())),
         BlocProvider(
-          create: (context) => UserInfoBloc(info: info)..add(SignUpLoading()),
+          create: (context) => UserInfoBloc(signUpRepo: SignUpRepository())
+            ..add(SignUpLoading()),
         ),
       ],
       child: MaterialApp(

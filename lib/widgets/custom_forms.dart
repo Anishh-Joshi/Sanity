@@ -3,14 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/user_info_bloc/user_info_bloc.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({
-    Key? key,
-    required this.hintText,
-    this.onChanged,
-  }) : super(key: key);
+  const CustomTextFormField(
+      {Key? key, required this.hintText, this.onChanged, this.controller})
+      : super(key: key);
 
   final String? hintText;
   final Function(String)? onChanged;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +40,7 @@ class CustomTextFormField extends StatelessWidget {
                 hintStyle: const TextStyle(color: Colors.black),
                 border: InputBorder.none,
               ),
+              controller: controller,
               validator: (value) {
                 if (value == null) {
                   return 'Please enter some text';
@@ -57,14 +57,13 @@ class CustomTextFormField extends StatelessWidget {
 }
 
 class CustomTextFormFieldInteger extends StatelessWidget {
-  const CustomTextFormFieldInteger({
-    Key? key,
-    required this.hintText,
-    this.onChanged,
-  }) : super(key: key);
+  const CustomTextFormFieldInteger(
+      {Key? key, required this.hintText, this.onChanged, this.controller})
+      : super(key: key);
 
   final String? hintText;
   final Function(String)? onChanged;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +95,7 @@ class CustomTextFormFieldInteger extends StatelessWidget {
                 hintStyle: const TextStyle(color: Colors.black),
                 border: InputBorder.none,
               ),
+              controller: controller,
               validator: (value) {
                 if (value == null) {
                   return 'Please enter some text';

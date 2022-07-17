@@ -15,8 +15,8 @@ class UpdateUserInfo extends UserInfoEvent {
   final int? age;
   final String? gender;
   final bool? isDoctor;
-  final bool? personalHelper;
   final int? nmcId;
+  final XFile? profileImage;
 
   const UpdateUserInfo(
       {this.fullName,
@@ -25,11 +25,18 @@ class UpdateUserInfo extends UserInfoEvent {
       this.gender,
       this.isDoctor,
       this.nmcId,
-      this.personalHelper});
+      this.profileImage});
 
   @override
   List<Object?> get props =>
-      [fullName, address, gender, age, isDoctor, personalHelper];
+      [fullName, address, gender, age, isDoctor, profileImage];
 }
 
-class SignUpPressed extends UserInfoEvent {}
+class SignUpPressed extends UserInfoEvent {
+  final UserInfoModel userInfo;
+
+  const SignUpPressed({required this.userInfo});
+
+  @override
+  List<Object?> get props => [userInfo];
+}
