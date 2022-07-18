@@ -43,9 +43,19 @@ class _LandingPageState extends State<LandingPage> {
         return const EmailVerification();
       }
       if (state is LoginTokenError) {
-        return const Scaffold(
-          backgroundColor: Colors.red,
-          body: Text("TOKEN EXPIRED"),
+        return Scaffold(
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text("TOKEN EXPIRED or your Account is deleted"),
+              TextButton(
+                  onPressed: () {
+                    context.read<LoginBloc>()..add(BackToLoginPage());
+                  },
+                  child: Text("Get back to Login Page"))
+            ],
+          ),
         );
       }
       if (state is LoginAuthenticated) {

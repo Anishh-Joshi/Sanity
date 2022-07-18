@@ -49,10 +49,9 @@ class UserInfoBloc extends Bloc<UserInfoEvent, UserInfoState> {
     Emitter<UserInfoState> emit,
   ) async {
     _signupSubscription?.cancel();
-    print(event);
     if (state is UserInfoLoaded) {
       try {
-        await _signUpRepo.addUserInfo(event.userInfo);
+        await _signUpRepo.addUserInfo(event.userInfo, id: event.id);
       } catch (_) {}
     }
   }

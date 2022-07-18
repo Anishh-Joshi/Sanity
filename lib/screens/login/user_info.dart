@@ -1,16 +1,13 @@
 import 'dart:typed_data';
-
-import 'package:cross_file_image/cross_file_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/blocs/user_info_bloc/user_info_bloc.dart';
 import 'package:sanity/widgets/Login_signup_header.dart';
-import 'package:sanity/widgets/custom_checkbox.dart';
 import 'package:sanity/widgets/custom_forms.dart';
 import 'package:sanity/widgets/popup_image_picker.dart';
 import '../../widgets/FloatingButton.dart';
-import 'dart:io';
 
 class UserInfo extends StatefulWidget {
   static const String routeName = 'user_info';
@@ -38,11 +35,6 @@ class _UserInfoState extends State<UserInfo> {
     return Colors.amber;
   }
 
-  // final TextEditingController _nameController = TextEditingController();
-  // final TextEditingController _ageController = TextEditingController();
-  // final TextEditingController _addressController = TextEditingController();
-  // final TextEditingController _genderController = TextEditingController();
-  // final TextEditingController _nmcIdController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   bool isPopUpOpen = false;
 
@@ -75,10 +67,15 @@ class _UserInfoState extends State<UserInfo> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 if (state is UserInfoLoaded) {
-                  return FloatingButon(callback: () {
-                    context
-                        .read<UserInfoBloc>()
-                        .add(SignUpPressed(userInfo: state.userInfoModel));
+                  return BlocBuilder<LoginBloc, LoginState>(builder: (ctx, st) {
+                    if (st is LoginEmailNotVerified) {
+                      int id = st.id;
+                      return FloatingButon(callback: () {
+                        context.read<UserInfoBloc>().add(SignUpPressed(
+                            userInfo: state.userInfoModel, id: id));
+                      });
+                    }
+                    return FloatingButon(callback: () {});
                   });
                 } else {
                   return const Center(

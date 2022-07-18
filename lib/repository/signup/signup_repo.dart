@@ -6,10 +6,10 @@ import 'package:sanity/repository/signup/abstract.dart';
 
 class SignUpRepository extends BaseSignupRepository {
   @override
-  Future<dynamic> addUserInfo(UserInfoModel checkout) async {
+  Future<dynamic> addUserInfo(UserInfoModel checkout, {required int id}) async {
     try {
       FormData formData = FormData.fromMap({
-        'user': 3,
+        'user': id,
         "dob": '2000-10-19',
         'gender': checkout.gender,
         'isDoctor': checkout.isDoctor,

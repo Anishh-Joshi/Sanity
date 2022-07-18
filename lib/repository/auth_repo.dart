@@ -6,6 +6,7 @@ class AuthRepository {
   final String loginUrl = "http://10.0.2.2:8000/api/user/login/";
   final String signInUrl = "http://10.0.2.2:8000/api/user/register/";
   final String user = "http://10.0.2.2:8000/api/user/profile/";
+  final String userProfile = "http://10.0.2.2:8000/api/user/profile/";
 
   Future<bool> hasToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -70,7 +71,7 @@ class AuthRepository {
     return signInResponse;
   }
 
-  Future<String> checkEmailVerification() async {
+  Future<Map> getProfileData() async {
     final prefs = await SharedPreferences.getInstance();
     final client = http.Client();
     final String? token = prefs.getString('token');
@@ -82,15 +83,27 @@ class AuthRepository {
         'Authorization': 'Bearer $token',
       });
       Map signInResponse = json.decode(response.body);
-      if (signInResponse.containsKey('errors')) {
-        return 'token_error';
-      } else {
-        return signInResponse['is_email_verified']
-            ? "verified"
-            : "not_verified";
-      }
+      return signInResponse;
     } else {
-      return "unUnthenticated";
+      return {};
+    }
+  }
+
+  Future<Map> registeredProfileData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final client = http.Client();
+    final String? token = prefs.getString('token');
+    if (token != null) {
+      final http.Response response =
+          await client.get(Uri.parse(user), headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      Map signInResponse = json.decode(response.body);
+      return signInResponse;
+    } else {
+      return {};
     }
   }
 }

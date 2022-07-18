@@ -33,14 +33,12 @@ class _SignupState extends State<Signup> {
     return Scaffold(
         backgroundColor: Colors.white,
         floatingActionButton: GestureDetector(
-          onTap: () {
-            print('pressed');
-          },
+          onTap: () {},
           child: BlocBuilder<LoginBloc, LoginState>(
             builder: (context, state) {
               if (state is LoginLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return CircularProgressIndicator(
+                  color: Colors.amber,
                 );
               }
               return FloatingButon(
@@ -72,8 +70,8 @@ class _SignupState extends State<Signup> {
         body: BlocListener<LoginBloc, LoginState>(
           listener: (context, state) {
             if (state is LoginError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Something went wrong")));
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text(state.msg)));
             } else if (state is LoginEmailNotVerified) {
               Navigator.pushNamedAndRemoveUntil(
                   context, 'landing_page', (route) => false);
@@ -98,41 +96,32 @@ class _SignupState extends State<Signup> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height / 20,
                           ),
-                          BlocBuilder<LoginBloc, LoginState>(
-                            builder: (context, state) {
-                              return Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 10.0, bottom: 0),
-                                          child: Column(children: [
-                                            _buildEmailForm(context,
-                                                _emailController, state),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            _buildPasswordForm(context,
-                                                _passwordController, state),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            _buildConfirmPasswordForm(
-                                                context,
-                                                _confirmPasswordController,
-                                                _passwordController,
-                                                state)
-                                          ]),
-                                        ),
-                                      ),
-                                    ],
-                                  ));
-                            },
+                          Form(
+                            key: _formKey,
+                            child: BlocBuilder<LoginBloc, LoginState>(
+                                builder: (context, state) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 10.0, bottom: 0),
+                                child: Column(children: [
+                                  _buildEmailForm(
+                                      context, _emailController, state),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  _buildPasswordForm(
+                                      context, _passwordController, state),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  _buildConfirmPasswordForm(
+                                      context,
+                                      _confirmPasswordController,
+                                      _passwordController,
+                                      state)
+                                ]),
+                              );
+                            }),
                           ),
                         ],
                       )))),

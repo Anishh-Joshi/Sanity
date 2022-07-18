@@ -48,6 +48,9 @@ class LoginScreen extends StatelessWidget {
           } else if (state is LoginAuthenticated) {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'landing_page', (route) => false);
+          } else if (state is LoginEmailNotVerified) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'landing_page', (route) => false);
           }
         },
         child: SafeArea(
@@ -64,24 +67,24 @@ class LoginScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Hey,",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline3!
-                                      .copyWith(fontSize: 40)),
-                              Text("Welcome Back!,",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline4!
-                                      .copyWith(fontSize: 20)),
-                            ]),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Hey,",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline3!
+                                    .copyWith(fontSize: 40)),
+                            Text("Welcome Back!,",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(fontSize: 20)),
+                          ]),
+                      Expanded(
+                        child: Lottie.asset('assets/lottie/swing.json',
+                            height: MediaQuery.of(context).size.height / 6),
                       ),
-                      Lottie.asset('assets/lottie/swing.json',
-                          height: MediaQuery.of(context).size.height / 5.5),
                     ],
                   ),
                   SizedBox(
