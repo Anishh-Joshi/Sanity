@@ -40,22 +40,20 @@ class Signup extends StatelessWidget {
               Row(
                 
                 children: [
-                  Container(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Sign up",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline3!
-                                  .copyWith(fontSize: 40)),
-                          Text("Let’s setup you profile!",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5!
-                                  .copyWith(fontSize: 20)),
-                        ]),
-                  ),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Sign up",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline3!
+                                .copyWith(fontSize: 40)),
+                        Text("Let’s setup you profile!",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5!
+                                .copyWith(fontSize: 20)),
+                      ]),
                   Lottie.asset('assets/lottie/swing.json',
                       height: MediaQuery.of(context).size.height / 8),
                 ],
