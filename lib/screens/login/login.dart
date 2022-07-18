@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_font_icons/flutter_font_icons.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sanity/blocs/login/login_bloc.dart';
+import 'package:sanity/widgets/floatingbutton.dart';
+import '../../widgets/platform_aware.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String routeName = 'login';
@@ -14,93 +17,121 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Colors.amber,
-        child: Icon(
-          Icons.arrow_forward,
-          color: Colors.white,
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      floatingActionButton:
+          BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+        if (state is LoginLoading) {
+          return const CircularProgressIndicator();
+        } else {
+          return FloatingButon(callback: () {
+            if (_formKey.currentState!.validate()) {
+              context.read<LoginBloc>().add(LoginButtonPressed(
+                  email: _emailController.value.text.toLowerCase().trim(),
+                  password:
+                      _passwordController.value.text.toLowerCase().trim()));
+            }
+          });
+        }
+      }),
+      body: BlocListener<LoginBloc, LoginState>(
+        listener: (context, state) {
+          if (state is LoginError) {
+            const PlatformAADialog(
+              title: 'Sign In Failed',
+              content: "Incorrect Email or Password",
+              defaultActionText: "Ok",
+            ).show(context);
+          } else if (state is LoginAuthenticated) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'landing_page', (route) => false);
+          }
+        },
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Hey,",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline3!
-                                  .copyWith(fontSize: 40)),
-                          Text("Welcome Back!,",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline4!
-                                  .copyWith(fontSize: 20)),
-                        ]),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 10,
                   ),
-                  Lottie.asset('assets/lottie/swing.json',
-                      height: MediaQuery.of(context).size.height / 5.5),
-                ],
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 20,
-              ),
-              Form(
-                  key: _formKey,
-                  child: Column(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.only(top: 10.0, bottom: 0),
-                          child: Column(children: [
-                            _buildEmailForm(context),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            _buildPasswordForm(context),
-                          ]),
-                        ),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Hey,",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline3!
+                                      .copyWith(fontSize: 40)),
+                              Text("Welcome Back!,",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .copyWith(fontSize: 20)),
+                            ]),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Opacity(opacity: 1, child: Text("")),
-                          TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "Forgot your password ?",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(
-                                        color: const Color(0xff787878),
-                                        fontSize: 13),
-                              )),
-                        ],
-                      ),
+                      Lottie.asset('assets/lottie/swing.json',
+                          height: MediaQuery.of(context).size.height / 5.5),
                     ],
-                  )),
-            ],
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 20,
+                  ),
+                  Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 10.0, bottom: 0),
+                              child: Column(children: [
+                                _buildEmailForm(context, _emailController),
+                                const SizedBox(
+                                  height: 4,
+                                ),
+                                _buildPasswordForm(
+                                    context, _passwordController),
+                              ]),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Opacity(opacity: 1, child: Text("")),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                        context, 'forgot_password');
+                                  },
+                                  child: Text(
+                                    "Forgot your password ?",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(
+                                            color: const Color(0xff787878),
+                                            fontSize: 13),
+                                  )),
+                            ],
+                          ),
+                        ],
+                      )),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -108,7 +139,7 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-_buildEmailForm(BuildContext context) {
+_buildEmailForm(BuildContext context, TextEditingController _controller) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
@@ -119,7 +150,7 @@ _buildEmailForm(BuildContext context) {
       color: Colors.white,
     ),
     child: Padding(
-      padding: const EdgeInsets.only(left: 0.0, right: 8, top: 5, bottom: 5),
+      padding: const EdgeInsets.only(left: 10.0, right: 8, top: 0, bottom: 5),
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
         onChanged: (email) {},
@@ -127,6 +158,7 @@ _buildEmailForm(BuildContext context) {
             .textTheme
             .bodyText2!
             .copyWith(fontSize: 15, color: const Color(0xff787878)),
+        controller: _controller,
         decoration: const InputDecoration(
           enabled: true,
           hintText: "Email",
@@ -138,11 +170,11 @@ _buildEmailForm(BuildContext context) {
           border: InputBorder.none,
         ),
         validator: (value) {
-          if (value == null) {
-            return 'Please enter some text';
+          if (value!.isEmpty) {
+            return 'Email cannot be blank';
           }
-          if (!value.contains("@")) {
-            return 'Email must contain @';
+          if (value.length > 1 && !value.contains("@")) {
+            return 'Email format invalid!';
           }
           return null;
         },
@@ -151,7 +183,7 @@ _buildEmailForm(BuildContext context) {
   );
 }
 
-_buildPasswordForm(BuildContext context) {
+_buildPasswordForm(BuildContext context, TextEditingController _controller) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
@@ -162,7 +194,7 @@ _buildPasswordForm(BuildContext context) {
       color: Colors.white,
     ),
     child: Padding(
-      padding: const EdgeInsets.only(left: 0.0, right: 8, top: 5, bottom: 5),
+      padding: const EdgeInsets.only(left: 10.0, right: 8, top: 0, bottom: 5),
       child: TextFormField(
         style: Theme.of(context)
             .textTheme
@@ -170,6 +202,16 @@ _buildPasswordForm(BuildContext context) {
             .copyWith(fontSize: 15, color: const Color(0xff787878)),
         onChanged: (password) {},
         obscureText: true,
+        controller: _controller,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return 'Password cannot be blank';
+          }
+          if (value.length < 6) {
+            return 'Password too short';
+          }
+          return null;
+        },
         decoration: const InputDecoration(
           enabled: true,
           hintText: "Passsword",

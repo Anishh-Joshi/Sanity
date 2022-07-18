@@ -13,6 +13,14 @@ class LoginAuthenticated extends LoginState {}
 
 class LoginUnAuthenticated extends LoginState {}
 
+class LoginEmailNotVerified extends LoginState {}
+
+class LoginTokenError extends LoginState {}
+
+class SignInAuthenticated extends LoginState {}
+
+class InformationNotSeen extends LoginState {}
+
 class LoginError extends LoginState {
   final String msg;
 
