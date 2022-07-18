@@ -16,7 +16,7 @@ class UserInfoLoaded extends UserInfoState {
   final String? gender;
   final bool? isDoctor;
   final int? nmcId;
-  final XFile? profileImage;
+  final File? profileImage;
   final UserInfoModel userInfoModel;
 
   UserInfoLoaded(
@@ -38,7 +38,7 @@ class UserInfoLoaded extends UserInfoState {
 
   @override
   List<Object?> get props =>
-      [fullName, address, gender, age, isDoctor, profileImage];
+      [fullName, address, gender, age, isDoctor, profileImage, nmcId];
 }
 
 class UserInfoError extends UserInfoState {

@@ -16,7 +16,7 @@ class UpdateUserInfo extends UserInfoEvent {
   final String? gender;
   final bool? isDoctor;
   final int? nmcId;
-  final XFile? profileImage;
+  final File? profileImage;
 
   const UpdateUserInfo(
       {this.fullName,

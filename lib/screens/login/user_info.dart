@@ -136,7 +136,7 @@ class _UserInfoState extends State<UserInfo> {
                                                   .height /
                                               12,
                                           backgroundImage:
-                                              XFileImage(state.profileImage!)),
+                                              FileImage(state.profileImage!)),
                                   Positioned(
                                       bottom: 5,
                                       right: 5,
