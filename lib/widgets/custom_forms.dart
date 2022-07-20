@@ -141,6 +141,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
               return const Center(child: CircularProgressIndicator());
             }
             if (state is UserInfoLoaded) {
+              context.read<UserInfoBloc>().add(UpdateUserInfo(gender: gender));
               return Padding(
                 padding: const EdgeInsets.only(
                     left: 10.0, right: 8, top: 5, bottom: 5),
@@ -156,7 +157,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
                       gender = newValue.toString();
                       context
                           .read<UserInfoBloc>()
-                          .add(UpdateUserInfo(gender: newValue.toString()));
+                          .add(UpdateUserInfo(gender: gender));
                       setState(() {});
                     },
                     items: genderChoice!.map((valueItem) {
@@ -172,7 +173,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
               );
             } else {
               return const Center(
-                child: Text("Something Went Wrong"),
+                child: Text("Something Went Wrong Custom Dropdown"),
               );
             }
           },

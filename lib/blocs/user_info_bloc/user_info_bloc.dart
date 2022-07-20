@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'package:sanity/model/user_info_model.dart';
 import 'package:sanity/repository/signup/signup_repo.dart';
@@ -51,7 +49,14 @@ class UserInfoBloc extends Bloc<UserInfoEvent, UserInfoState> {
     _signupSubscription?.cancel();
     if (state is UserInfoLoaded) {
       try {
-        await _signUpRepo.addUserInfo(event.userInfo, id: event.id);
+        final int resp =
+            await _signUpRepo.addUserInfo(event.userInfo, id: event.id);
+        if (resp == 201) {
+          emit(SignupFormFilled());
+        } else if (resp == 404) {
+          emit(const UserInfoError(
+              msg: "Something Went Wrong! Please Try Again."));
+        }
       } catch (_) {}
     }
   }

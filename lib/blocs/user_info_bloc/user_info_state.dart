@@ -41,6 +41,8 @@ class UserInfoLoaded extends UserInfoState {
       [fullName, address, gender, age, isDoctor, profileImage, nmcId];
 }
 
+class SignupFormFilled extends UserInfoState {}
+
 class UserInfoError extends UserInfoState {
   final String msg;
 

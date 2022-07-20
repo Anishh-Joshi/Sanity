@@ -6,7 +6,6 @@ class AuthRepository {
   final String loginUrl = "http://10.0.2.2:8000/api/user/login/";
   final String signInUrl = "http://10.0.2.2:8000/api/user/register/";
   final String user = "http://10.0.2.2:8000/api/user/profile/";
-  final String userProfile = "http://10.0.2.2:8000/api/user/profile/";
 
   Future<bool> hasToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -85,20 +84,23 @@ class AuthRepository {
       Map signInResponse = json.decode(response.body);
       return signInResponse;
     } else {
-      return {};
+      return {"tokenError": true};
     }
   }
 
-  Future<Map> registeredProfileData() async {
+  Future<Map> registeredProfileData({required int id}) async {
+    final String userProfile =
+        "http://10.0.2.2:8000/api/user/get/profile/?id=$id";
+    print(userProfile);
     final prefs = await SharedPreferences.getInstance();
     final client = http.Client();
     final String? token = prefs.getString('token');
     if (token != null) {
       final http.Response response =
-          await client.get(Uri.parse(user), headers: {
+          await client.get(Uri.parse(userProfile), headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
+        "Access-Control-Allow_origin": "*"
       });
       Map signInResponse = json.decode(response.body);
       return signInResponse;

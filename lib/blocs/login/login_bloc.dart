@@ -22,23 +22,34 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void _onLoginCheck(LoginCheck event, Emitter<LoginState> emit) async {
     emit(LoginLoading());
     bool tokenData = await repo.hasToken();
+    if (!tokenData) {
+      emit(LoginUnAuthenticated());
+    }
     final Map profileData = await repo.getProfileData();
     final bool isAppInfoSeen = await repo.hasAppInformation();
+    final User userModel = User.fromJson(profileData);
 
     if (!isAppInfoSeen) {
       emit(InformationNotSeen());
-    } else if (tokenData && profileData['is_email_verified']) {
-      //check if user is registered or not
-      emit(LoginAuthenticated(
-          email: profileData['email'],
-          id: profileData['id'],
-          isEmailVerified: profileData['is_email_verified']));
-    } else if (tokenData && !profileData['is_email_verified']) {
-      //check if registered user or not
+    } else if (isAppInfoSeen && tokenData && userModel.isEmailVerified!) {
+      final Map userInfoMap =
+          await repo.registeredProfileData(id: userModel.id!);
+      if (userInfoMap['status'] == "success") {
+        emit(LoginAuthenticated(
+            email: userModel.email!,
+            id: userModel.id!,
+            isEmailVerified: userModel.isEmailVerified!));
+      } else {
+        emit(UnRegisteredUser(
+            email: userModel.email!,
+            id: userModel.id!,
+            isEmailVerified: userModel.isEmailVerified!));
+      }
+    } else if (tokenData && !userModel.isEmailVerified!) {
       emit(LoginEmailNotVerified(
-          email: profileData['email'],
-          id: profileData['id'],
-          isEmailVerified: profileData['is_email_verified']));
+          email: userModel.email!,
+          id: userModel.id!,
+          isEmailVerified: userModel.isEmailVerified!));
     } else if (profileData['errors']["details"] != null) {
       emit(LoginTokenError());
     } else if (!tokenData) {
@@ -54,18 +65,28 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final authData = await repo.login(event.email, event.password);
 
       if (authData["token"] != null) {
-        repo.persistToken((authData["token"]['access']));
+        await repo.persistToken((authData["token"]['access']));
         final Map profileData = await repo.getProfileData();
-        if (profileData['is_email_verified']) {
-          emit(LoginAuthenticated(
-              email: profileData['email'],
-              id: profileData['id'],
-              isEmailVerified: profileData['is_email_verified']));
-        } else if (!profileData['is_email_verified']) {
+        final User userModel = User.fromJson(profileData);
+        if (userModel.isEmailVerified!) {
+          final Map userInfoMap =
+              await repo.registeredProfileData(id: userModel.id!);
+          if (userInfoMap['status'] == "success") {
+            emit(LoginAuthenticated(
+                email: userModel.email!,
+                id: userModel.id!,
+                isEmailVerified: userModel.isEmailVerified!));
+          } else {
+            emit(UnRegisteredUser(
+                email: userModel.email!,
+                id: userModel.id!,
+                isEmailVerified: userModel.isEmailVerified!));
+          }
+        } else if (!userModel.isEmailVerified!) {
           emit(LoginEmailNotVerified(
-              email: profileData['email'],
-              id: profileData['id'],
-              isEmailVerified: profileData['is_email_verified']));
+              email: userModel.email!,
+              id: userModel.id!,
+              isEmailVerified: userModel.isEmailVerified!));
         } else if (profileData['errors']["details"] != null) {
           emit(LoginTokenError());
         } else if (!tokenData) {
@@ -89,9 +110,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginLoading());
       final authData =
           await repo.signIn(event.email, event.password, event.confirmPassword);
-      final Map profileData = await repo.getProfileData();
+
       if (authData["token"] != null) {
         repo.persistToken((authData["token"]['access']));
+        final Map profileData = await repo.getProfileData();
         emit(LoginEmailNotVerified(
             email: profileData['email'],
             id: profileData['id'],
@@ -102,7 +124,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } catch (e) {
       final authData =
           await repo.signIn(event.email, event.password, event.confirmPassword);
-      print(authData);
       emit(LoginError(msg: authData['errors']['email'][0]));
     }
   }

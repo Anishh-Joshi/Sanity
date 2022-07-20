@@ -31,94 +31,93 @@ class ForgotPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 10,
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.height / 10,
+                  width: MediaQuery.of(context).size.width / 1.2,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Hey,",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline3!
+                                .copyWith(fontSize: 35)),
+                        Text("Don't worry we got your back!",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5!
+                                .copyWith(fontSize: 20)),
+                      ]),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 1.2,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Hey,",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline3!
-                                    .copyWith(fontSize: 35)),
-                            Text("Don't worry we got your back!",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline5!
-                                    .copyWith(fontSize: 20)),
-                          ]),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 12,
-                ),
-                Form(
-                    key: _formKey,
-                    child: Container(
-                      child: _buildEmailForm(context, _emailController),
-                    )),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 30,
-                ),
-                Center(
-                  child: Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width / 1.5,
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(25.0),
-                        ),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromARGB(255, 197, 195, 195),
-                            spreadRadius: 0,
-                            blurRadius: 6,
-                            offset: Offset(
-                              2,
-                              5,
-                            ),
-                          )
-                        ]),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.amber,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12))),
-                      onPressed: () {
-                        _handleSubmit(context);
-                      },
-                      child: Center(
-                        child: Text(
-                          "Send Reset Link",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline3!
-                              .copyWith(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
               ],
             ),
-          ),
-        ));
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 12,
+            ),
+            Form(
+                key: _formKey,
+                child: Container(
+                  child: _buildEmailForm(context, _emailController),
+                )),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 30,
+            ),
+            Center(
+              child: Container(
+                height: 50,
+                width: MediaQuery.of(context).size.width / 1.5,
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(25.0),
+                    ),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromARGB(255, 39, 39, 39),
+                        spreadRadius: 0,
+                        blurRadius: 6,
+                        offset: Offset(
+                          2,
+                          5,
+                        ),
+                      )
+                    ]),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.amber,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12))),
+                  onPressed: () {
+                    _handleSubmit(context);
+                  },
+                  child: Center(
+                    child: Text(
+                      "Send Reset Link",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3!
+                          .copyWith(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    ));
   }
 }
 
@@ -133,7 +132,6 @@ _buildEmailForm(
         width: 1,
       ),
       borderRadius: BorderRadius.circular(16),
-      color: Colors.white,
     ),
     child: Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 8, top: 0, bottom: 5),

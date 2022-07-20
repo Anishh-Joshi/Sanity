@@ -48,9 +48,15 @@ class SignInAuthenticated extends LoginState {
 
 class InformationNotSeen extends LoginState {}
 
-class RegisteredUser extends LoginState {}
-
-class UnRegisteredUser extends LoginState {}
+class UnRegisteredUser extends LoginState {
+  final String email;
+  final bool isEmailVerified;
+  final int id;
+  const UnRegisteredUser(
+      {required this.email, required this.isEmailVerified, required this.id});
+  @override
+  List<Object> get props => [email, id, isEmailVerified];
+}
 
 class LoginError extends LoginState {
   final String msg;
