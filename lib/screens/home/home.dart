@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
 
 import '../../widgets/platform_aware.dart';
@@ -19,23 +20,31 @@ class Home extends StatelessWidget {
             content: "Something Went Wrong!",
             defaultActionText: "Ok",
           ).show(context);
-        } else if (state is LoginAuthenticated) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, 'landing_page', (route) => false);
         } else if (state is LoginUnAuthenticated) {
           Navigator.pushNamedAndRemoveUntil(
               context, 'landing_page', (route) => false);
         }
       },
-      child: BlocBuilder<LoginBloc, LoginState>(
-        builder: (context, state) {
-          return ElevatedButton(
-              onPressed: () {
-                context.read<LoginBloc>().add(LogoutButtonPressed());
-              },
-              child: Text("LogOut"));
-        },
-      ),
+      child: Column(children: [
+        BlocBuilder<LoginBloc, LoginState>(
+          builder: (context, state) {
+            if (state is LoginAuthenticated) {
+              return ElevatedButton(
+                  onPressed: () {
+                    context.read<LoginBloc>().add(LogoutButtonPressed());
+                  },
+                  child: const Text("LogOut"));
+            }
+            return const Text("THAHA CHAINA K HO YO ");
+          },
+        ),
+        BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+          if (state is HomeLoaded) {
+            return Text("mein Ninja Hattori${state.user!.fullName!}");
+          }
+          return Text("garo cha garoo");
+        })
+      ]),
     )));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/blocs/theme/theme_bloc_bloc.dart';
 import 'package:sanity/blocs/user_info_bloc/user_info_bloc.dart';
@@ -14,43 +15,39 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final repo = AuthRepository();
+  bool? themeData = false;
   MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => ThemeBloc()..add(LoadTheme())),
-        BlocProvider(
-            create: (context) => LoginBloc(
-                  repo: repo,
-                )..add(LoginCheck())),
-        BlocProvider(
-          create: (context) => UserInfoBloc(signUpRepo: SignUpRepository())
-            ..add(SignUpLoading()),
-        ),
-      ],
-      child: BlocBuilder<ThemeBloc, ThemeBlocState>(
-        builder: (context, state) {
-          if (state is ThemeDataBloc) {
-            return MaterialApp(
-              title: 'Sanity',
-              debugShowCheckedModeBanner: false,
-              theme: theme(isDark: state.isDark),
-              onGenerateRoute: AppRouter.onGenerateRoute,
-              initialRoute: LandingPage.routeName,
-            );
-          } else {
-            return MaterialApp(
-              title: 'Sanity',
-              debugShowCheckedModeBanner: false,
-              theme: theme(isDark: false),
-              onGenerateRoute: AppRouter.onGenerateRoute,
-              initialRoute: LandingPage.routeName,
-            );
-          }
-        },
-      ),
-    );
+        providers: [
+          BlocProvider(create: (context) => ThemeBloc()..add(LoadTheme())),
+          BlocProvider(
+              create: (context) => LoginBloc(
+                    repo: AuthRepository(),
+                  )..add(LoginCheck())),
+          BlocProvider(
+            create: (context) => UserInfoBloc(signUpRepo: SignUpRepository())
+              ..add(SignUpLoading()),
+          ),
+          BlocProvider(
+            create: (context) => HomeBloc(loginBloc: context.read<LoginBloc>()),
+          ),
+        ],
+        child: BlocListener<ThemeBloc, ThemeBlocState>(
+          listener: (context, state) {
+            if (state is ThemeDataBloc) {
+              themeData = state.isDark;
+            }
+            themeData = false;
+          },
+          child: MaterialApp(
+            title: 'Sanity',
+            debugShowCheckedModeBanner: false,
+            theme: theme(isDark: themeData!),
+            onGenerateRoute: AppRouter.onGenerateRoute,
+            initialRoute: LandingPage.routeName,
+          ),
+        ));
   }
 }

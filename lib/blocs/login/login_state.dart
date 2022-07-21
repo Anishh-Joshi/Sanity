@@ -10,14 +10,12 @@ abstract class LoginState extends Equatable {
 class LoginLoading extends LoginState {}
 
 class LoginAuthenticated extends LoginState {
-  final String email;
-  final bool isEmailVerified;
-  final int id;
+  final UserInfoModel user;
 
-  const LoginAuthenticated(
-      {required this.email, required this.isEmailVerified, required this.id});
+  const LoginAuthenticated({required this.user});
+
   @override
-  List<Object> get props => [email, id, isEmailVerified];
+  List<Object> get props => [user];
 }
 
 class LoginUnAuthenticated extends LoginState {}

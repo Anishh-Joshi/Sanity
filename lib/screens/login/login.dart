@@ -24,7 +24,9 @@ class LoginScreen extends StatelessWidget {
       floatingActionButton:
           BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
         if (state is LoginLoading) {
-          return const CircularProgressIndicator();
+          return const CircularProgressIndicator(
+            color: Colors.amber,
+          );
         } else {
           return FloatingButon(callback: () {
             if (_formKey.currentState!.validate()) {

@@ -19,7 +19,8 @@ class SignUpRepository extends BaseSignupRepository {
                 checkout.profileImage!.path,
               ),
         'location': checkout.address,
-        'age': checkout.age
+        'age': checkout.age,
+        'full_name': checkout.fullName
       });
       Response response = await Dio().post(
           'http://10.0.2.2:8000/api/user/setprofile/',
