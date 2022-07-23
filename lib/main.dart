@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             title: 'Sanity',
             debugShowCheckedModeBanner: false,
-            theme: theme(isDark: themeData!),
+            theme: theme(isDark: !themeData!),
             onGenerateRoute: AppRouter.onGenerateRoute,
             initialRoute: LandingPage.routeName,
           ),

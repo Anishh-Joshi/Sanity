@@ -4,11 +4,21 @@ ThemeData theme({required bool isDark}) {
   return ThemeData(
       scaffoldBackgroundColor: isDark ? Colors.white : Color(0xff111111),
       fontFamily: 'Nunito',
+      bottomAppBarColor: bottomAppBarColor(isDark),
+      indicatorColor: indicatorColor(isDark),
       pageTransitionsTheme: PageTransitionsTheme(builders: {
         TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         TargetPlatform.android: CupertinoPageTransitionsBuilder(),
       }),
       textTheme: textTheme(isDark: isDark));
+}
+
+Color indicatorColor(bool isDark) {
+  return !isDark ? Colors.white : Colors.black;
+}
+
+Color bottomAppBarColor(bool isDark) {
+  return isDark ? Colors.white : Colors.black;
 }
 
 TextTheme textTheme({required bool isDark}) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/screens/home/home.dart';
+import 'package:sanity/screens/home/homeLandingPage.dart';
 import 'package:sanity/screens/introduction/app_information.dart.dart';
 import 'package:sanity/screens/login/email_verification.dart';
 import 'package:sanity/screens/login/login_landing.dart';
@@ -64,7 +65,7 @@ class _LandingPageState extends State<LandingPage> {
         );
       }
       if (state is LoginAuthenticated) {
-        return const Home();
+        return const HomeLandingPage();
       } else {
         return const Center(child: Text("SOMETHING WENT WRONG"));
       }
