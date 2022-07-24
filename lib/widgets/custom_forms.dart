@@ -100,9 +100,6 @@ class CustomTextFormFieldInteger extends StatelessWidget {
                 if (value == null) {
                   return 'Please enter some text';
                 }
-                if (!value.contains("@")) {
-                  return 'Email must contain @';
-                }
                 return null;
               },
             ),

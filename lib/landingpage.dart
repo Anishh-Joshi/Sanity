@@ -33,7 +33,6 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
       if (state is LoginLoading) {
-        //splashScreen
         return const Center(child: CircularProgressIndicator());
       }
       if (state is LoginUnAuthenticated) {

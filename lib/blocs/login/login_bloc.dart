@@ -21,9 +21,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void _onLoginCheck(LoginCheck event, Emitter<LoginState> emit) async {
     emit(LoginLoading());
     bool tokenData = await repo.hasToken();
-    if (!tokenData) {
-      emit(LoginUnAuthenticated());
-    }
+
     await loginCheck(emit, tokenData);
   }
 
@@ -129,6 +127,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
         emit(LoginAuthenticated(user: user));
       } else {
+        print("Triggred here");
         emit(UnRegisteredUser(
             email: userModel.email!,
             id: userModel.id!,
@@ -142,6 +141,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else if (profileData['errors']["details"] != null) {
       emit(LoginTokenError());
     } else if (!tokenData) {
+      emit(LoginUnAuthenticated());
+    }
+    if (!tokenData) {
       emit(LoginUnAuthenticated());
     }
   }

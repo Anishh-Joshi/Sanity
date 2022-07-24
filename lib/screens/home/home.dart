@@ -82,8 +82,10 @@ class _HomeState extends State<Home> {
                               child: Image.asset('assets/images/default.png'),
                             )
                           : CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(state.user!.profileImgUrl!),
+                              radius: MediaQuery.of(context).size.height / 18,
+                              backgroundImage: NetworkImage(
+                                  "http://10.0.2.2:8000" +
+                                      state.user!.profileImgUrl!),
                             );
                     }
                     return const CircleAvatar();
