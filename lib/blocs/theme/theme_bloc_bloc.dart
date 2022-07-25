@@ -6,7 +6,7 @@ part 'theme_bloc_event.dart';
 part 'theme_bloc_state.dart';
 
 class ThemeBloc extends Bloc<ThemeBlocEvent, ThemeBlocState> {
-  ThemeBloc() : super(ThemeBlocInitial()) {
+  ThemeBloc() : super(ThemeBlocState(isDark: true)) {
     on<ChangeTheme>(_changeAppTheme);
     on<LoadTheme>(_loadTheme);
   }
@@ -16,11 +16,10 @@ class ThemeBloc extends Bloc<ThemeBlocEvent, ThemeBlocState> {
     final themeData = prefs.getBool('isDark');
     await prefs.setBool("isDark", !themeData!);
     final theme = prefs.getBool('isDark');
-
     if (theme!) {
-      emit(const ThemeDataBloc(isDark: true));
+      emit(const ThemeBlocState(isDark: true));
     } else {
-      emit(const ThemeDataBloc(isDark: false));
+      emit(const ThemeBlocState(isDark: false));
     }
   }
 
@@ -32,9 +31,9 @@ class ThemeBloc extends Bloc<ThemeBlocEvent, ThemeBlocState> {
     }
     final theme = prefs.getBool('isDark');
     if (theme!) {
-      emit(const ThemeDataBloc(isDark: false));
+      emit(const ThemeBlocState(isDark: false));
     } else {
-      emit(const ThemeDataBloc(isDark: false));
+      emit(const ThemeBlocState(isDark: false));
     }
   }
 }

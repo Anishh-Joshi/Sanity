@@ -118,6 +118,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     if (!isAppInfoSeen) {
       emit(InformationNotSeen());
+    } else if (!tokenData) {
+      emit(LoginUnAuthenticated());
     } else if (isAppInfoSeen && tokenData && userModel.isEmailVerified!) {
       final Map userInfoMap =
           await repo.registeredProfileData(id: userModel.id!);
@@ -141,9 +143,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else if (profileData['errors']["details"] != null) {
       emit(LoginTokenError());
     } else if (!tokenData) {
-      emit(LoginUnAuthenticated());
-    }
-    if (!tokenData) {
       emit(LoginUnAuthenticated());
     }
   }

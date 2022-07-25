@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
-import 'package:sanity/screens/home/home.dart';
 import 'package:sanity/screens/home/homeLandingPage.dart';
 import 'package:sanity/screens/introduction/app_information.dart.dart';
 import 'package:sanity/screens/login/email_verification.dart';

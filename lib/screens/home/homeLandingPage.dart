@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:sanity/screens/doctor/doctor.dart';
 import 'package:sanity/screens/home/home.dart';
 import 'package:sanity/screens/message/messagePage.dart';
+import 'package:sanity/screens/notifications/notification.dart';
+import 'package:sanity/screens/write/write.dart';
 
 class HomeLandingPage extends StatefulWidget {
   const HomeLandingPage({Key? key}) : super(key: key);
@@ -17,26 +20,44 @@ class _HomeLandingPageState extends State<HomeLandingPage> {
       PersistentTabController(initialIndex: 0);
 
   List<Widget> _buildScreens() {
-    return const [Home(), DoctorsPage(), MessagePage()];
+    return const [
+      Home(),
+      NotificationPage(),
+      WritePage(),
+      DoctorsPage(),
+      MessagePage(),
+    ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.home),
+        icon: const Icon(Icons.home),
         title: ("Home"),
         activeColorPrimary: Colors.amber,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.chat_bubble),
-        title: ("Messages"),
+        icon: const Icon(MaterialIcons.notifications),
+        title: ("Notification"),
         activeColorPrimary: Colors.amber,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.medical_services_rounded),
-        title: ("Med Assist"),
+        icon: const Icon(MaterialCommunityIcons.pentagon),
+        title: ("Sanity"),
+        activeColorPrimary: Colors.amber,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.medical_services_rounded),
+        title: ("Assist"),
+        activeColorPrimary: Colors.amber,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(MaterialCommunityIcons.message),
+        title: ("Messages"),
         activeColorPrimary: Colors.amber,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
@@ -75,7 +96,7 @@ class _HomeLandingPageState extends State<HomeLandingPage> {
         duration: Duration(milliseconds: 200),
       ),
       navBarStyle:
-          NavBarStyle.style1, // Choose the nav bar style with this property.
+          NavBarStyle.style12, // Choose the nav bar style with this property.
     );
   }
 }
