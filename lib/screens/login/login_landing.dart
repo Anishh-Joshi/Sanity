@@ -21,13 +21,16 @@ class LoginLanding extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Expanded(
-                child: Image(
-                  image: AssetImage('assets/logos/sanity_full.png'),
+                child: Opacity(
+                  opacity: 0,
+                  child: Image(
+                    image: AssetImage('assets/logos/sanity_full.png'),
+                  ),
                 ),
               ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Colors.amber,
+                      primary: Theme.of(context).primaryColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
                   onPressed: () {

@@ -36,8 +36,8 @@ class _SignupState extends State<Signup> {
           child: BlocBuilder<LoginBloc, LoginState>(
             builder: (context, state) {
               if (state is LoginLoading) {
-                return const CircularProgressIndicator(
-                  color: Colors.amber,
+                return CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor,
                 );
               }
               return FloatingButon(
@@ -147,7 +147,7 @@ _buildEmailForm(BuildContext context, TextEditingController _emailController,
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
-        color: Colors.amber,
+        color: Theme.of(context).primaryColor,
         width: 1,
       ),
       borderRadius: BorderRadius.circular(16),
@@ -166,10 +166,7 @@ _buildEmailForm(BuildContext context, TextEditingController _emailController,
           enabled: true,
           hintText: "Email",
           hintStyle: Theme.of(context).textTheme.headline5,
-          prefixIcon: const Icon(
-            Icons.mail,
-            color: Colors.amber,
-          ),
+          prefixIcon: Icon(Icons.mail, color: Theme.of(context).primaryColor),
           border: InputBorder.none,
         ),
         validator: (value) {
@@ -191,7 +188,7 @@ _buildPasswordForm(BuildContext context,
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
-        color: Colors.amber,
+        color: Theme.of(context).primaryColor,
         width: 1,
       ),
       borderRadius: BorderRadius.circular(16),
@@ -220,9 +217,9 @@ _buildPasswordForm(BuildContext context,
           hintText: "Password",
           hintStyle: Theme.of(context).textTheme.headline5,
           border: InputBorder.none,
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             Icons.lock,
-            color: Colors.amber,
+            color: Theme.of(context).primaryColor,
           ),
         ),
       ),
@@ -238,7 +235,7 @@ _buildConfirmPasswordForm(
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
-        color: Colors.amber,
+        color: Theme.of(context).primaryColor,
         width: 1,
       ),
       borderRadius: BorderRadius.circular(16),
@@ -270,9 +267,9 @@ _buildConfirmPasswordForm(
           hintText: "Confirm password",
           hintStyle: Theme.of(context).textTheme.headline5,
           border: InputBorder.none,
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             Icons.lock,
-            color: Colors.amber,
+            color: Theme.of(context).primaryColor,
           ),
         ),
       ),

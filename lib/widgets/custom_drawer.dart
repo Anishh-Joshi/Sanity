@@ -111,8 +111,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 isSwitched = value;
                               });
                             },
-                            activeTrackColor: Colors.amberAccent,
-                            activeColor: Colors.amber,
+                            activeTrackColor:
+                                Theme.of(context).colorScheme.secondary,
+                            activeColor: Theme.of(context).primaryColor,
                           );
                         }),
                         leading: Icon(

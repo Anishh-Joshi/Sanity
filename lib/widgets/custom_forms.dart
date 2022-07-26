@@ -18,7 +18,7 @@ class CustomTextFormField extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: Colors.amber,
+              color: Theme.of(context).primaryColor,
               width: 1,
             ),
             borderRadius: BorderRadius.circular(16),
@@ -73,7 +73,7 @@ class CustomTextFormFieldInteger extends StatelessWidget {
           width: 100,
           decoration: BoxDecoration(
             border: Border.all(
-              color: Colors.amber,
+              color: Theme.of(context).primaryColor,
               width: 1,
             ),
             borderRadius: BorderRadius.circular(16),
@@ -126,7 +126,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: Colors.amber,
+            color: Theme.of(context).primaryColor,
             width: 1,
           ),
           borderRadius: BorderRadius.circular(16),

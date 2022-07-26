@@ -119,7 +119,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                             fontSize: 20.0, color: Colors.black),
                         keyboardType: TextInputType.number,
                         underlineColor: const Color(0xff787878),
-                        underlineUnfocusedColor: Colors.amber,
+                        underlineUnfocusedColor: Theme.of(context).primaryColor,
                         length: 5,
                         clearAll: Padding(
                           padding: const EdgeInsets.all(8.0),

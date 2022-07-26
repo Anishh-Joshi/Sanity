@@ -34,31 +34,31 @@ class _HomeLandingPageState extends State<HomeLandingPage> {
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.home),
         title: ("Home"),
-        activeColorPrimary: Colors.amber,
+        activeColorPrimary: Theme.of(context).primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(MaterialIcons.notifications),
         title: ("Notification"),
-        activeColorPrimary: Colors.amber,
+        activeColorPrimary: Theme.of(context).primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(MaterialCommunityIcons.pentagon),
         title: ("Sanity"),
-        activeColorPrimary: Colors.amber,
+        activeColorPrimary: Theme.of(context).primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.medical_services_rounded),
         title: ("Assist"),
-        activeColorPrimary: Colors.amber,
+        activeColorPrimary: Theme.of(context).primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(MaterialCommunityIcons.message),
         title: ("Messages"),
-        activeColorPrimary: Colors.amber,
+        activeColorPrimary: Theme.of(context).primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
     ];

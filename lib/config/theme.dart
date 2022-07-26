@@ -2,28 +2,36 @@ import 'package:flutter/material.dart';
 
 ThemeData theme({required bool isDark}) {
   return ThemeData(
-      scaffoldBackgroundColor: isDark ? Colors.white : Color(0xff111111),
+      primaryColor: primaryColor(isDark),
+      colorScheme: ColorScheme.fromSwatch().copyWith(
+        secondary: Color(0xffe6e6fa),
+      ),
+      scaffoldBackgroundColor: isDark ? Colors.white : Color(0xff000000),
       fontFamily: 'Nunito',
       canvasColor: canvasColor(isDark),
       cardColor: !isDark
-          ? Color.fromARGB(255, 20, 20, 20)
-          : Color.fromARGB(255, 250, 250, 250),
+          ? const Color.fromARGB(255, 8, 8, 8)
+          : const Color.fromARGB(255, 250, 250, 250),
       bottomAppBarColor: bottomAppBarColor(isDark),
       indicatorColor: indicatorColor(isDark),
       pageTransitionsTheme: const PageTransitionsTheme(builders: {
-        TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
-        TargetPlatform.android: const CupertinoPageTransitionsBuilder(),
+        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        TargetPlatform.android: CupertinoPageTransitionsBuilder(),
       }),
       iconTheme: iconTheme(isDark),
       textTheme: textTheme(isDark: isDark));
 }
 
 Color indicatorColor(bool isDark) {
-  return !isDark ? Colors.white : Colors.black;
+  return !isDark ? Colors.white : const Color(0xff000000);
+}
+
+Color primaryColor(bool isDark) {
+  return const Color(0xffc0c0f2);
 }
 
 Color canvasColor(bool isDark) {
-  return isDark ? Colors.white : Color(0xff111111);
+  return isDark ? Colors.white : const Color(0xff000000);
 }
 
 IconThemeData iconTheme(bool isDark) {
@@ -31,7 +39,7 @@ IconThemeData iconTheme(bool isDark) {
 }
 
 Color bottomAppBarColor(bool isDark) {
-  return isDark ? Colors.white : Color.fromARGB(255, 14, 13, 13);
+  return isDark ? Colors.white : const Color(0xff000000);
 }
 
 TextTheme textTheme({required bool isDark}) {

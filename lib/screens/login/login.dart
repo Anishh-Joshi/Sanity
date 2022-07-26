@@ -24,9 +24,8 @@ class LoginScreen extends StatelessWidget {
       floatingActionButton:
           BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
         if (state is LoginLoading) {
-          return const CircularProgressIndicator(
-            color: Colors.amber,
-          );
+          return CircularProgressIndicator(
+              color: Theme.of(context).primaryColor);
         } else {
           return FloatingButon(callback: () {
             if (_formKey.currentState!.validate()) {
@@ -155,7 +154,7 @@ _buildEmailForm(BuildContext context, TextEditingController _controller) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
-        color: Colors.amber,
+        color: Theme.of(context).primaryColor,
         width: 1,
       ),
       borderRadius: BorderRadius.circular(16),
@@ -174,9 +173,9 @@ _buildEmailForm(BuildContext context, TextEditingController _controller) {
           enabled: true,
           hintText: "Email",
           hintStyle: Theme.of(context).textTheme.headline5,
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             Icons.mail,
-            color: Colors.amber,
+            color: Theme.of(context).primaryColor,
           ),
           border: InputBorder.none,
         ),
@@ -198,7 +197,7 @@ _buildPasswordForm(BuildContext context, TextEditingController _controller) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
-        color: Colors.amber,
+        color: Theme.of(context).primaryColor,
         width: 1,
       ),
       borderRadius: BorderRadius.circular(16),
@@ -227,9 +226,9 @@ _buildPasswordForm(BuildContext context, TextEditingController _controller) {
           hintText: "Passsword",
           hintStyle: Theme.of(context).textTheme.headline5,
           border: InputBorder.none,
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             Icons.lock,
-            color: Colors.amber,
+            color: Theme.of(context).primaryColor,
           ),
         ),
       ),
