@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 ThemeData theme({required bool isDark}) {
   return ThemeData(
       primaryColor: primaryColor(isDark),
+      appBarTheme: AppBarTheme(
+          color: !isDark ? const Color(0xff111111) : const Color(0xffc0c0f2)),
       colorScheme: ColorScheme.fromSwatch().copyWith(
-        secondary: Color(0xffe6e6fa),
+        secondary: const Color(0xffe6e6fa),
       ),
-      scaffoldBackgroundColor: isDark ? Colors.white : Color(0xff000000),
+      scaffoldBackgroundColor: isDark ? Colors.white : const Color(0xff000000),
       fontFamily: 'Nunito',
       canvasColor: canvasColor(isDark),
       cardColor: !isDark
