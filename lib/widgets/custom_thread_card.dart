@@ -14,7 +14,7 @@ class ThreadCard extends StatelessWidget {
       width: double.infinity,
       height: MediaQuery.of(context).size.height / 10,
       child: ListTile(
-        leading: CircleAvatarCustom(
+        leading: const CircleAvatarCustom(
           radius: 20,
           url: "/media/default.jpg",
         ),
@@ -22,7 +22,7 @@ class ThreadCard extends StatelessWidget {
           "Help Me !!",
           style: Theme.of(context).textTheme.headline4,
         ),
-        trailing: Text("14m ago"),
+        trailing: const Text("14m ago"),
         subtitle: Text(
           "So this is the sotru of anish joshi hakuna matatatattatata.so this is the sotru of anish joshi hakuna matatatattatata.so this is the sotru of anish joshi hakuna matatatattatata.so this is the sotru of anish joshi hakuna matatatattatata.so this is the sotru of anish joshi hakuna matatatattatataso this is the sotru of anish joshi hakuna matatatattatata",
           overflow: TextOverflow.ellipsis,
