@@ -14,18 +14,18 @@ class MyCustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
-      title: Text(appBarTitle,
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          )),
+      elevation: 1,
+      iconTheme: Theme.of(context).iconTheme,
+      automaticallyImplyLeading: true,
+      title: Text(
+        appBarTitle,
+        style: Theme.of(context).textTheme.headline3,
+      ),
       actions: [
         IconButton(
             onPressed: onPressed,
             icon: Icon(
               iconData,
-              color: Colors.black,
             ))
       ],
     );

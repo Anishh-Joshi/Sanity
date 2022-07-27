@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/blocs/theme/theme_bloc_bloc.dart';
+import 'package:sanity/screens/profile/profile.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/custom_elevated_button.dart';
 import 'package:sanity/widgets/platform_aware.dart';
 import '../blocs/login/login_bloc.dart';
 
 class CustomDrawer extends StatefulWidget {
-  const CustomDrawer({
-    Key? key,
-  }) : super(key: key);
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  const CustomDrawer({Key? key, required this.scaffoldKey}) : super(key: key);
 
   @override
   State<CustomDrawer> createState() => _CustomDrawerState();
@@ -19,6 +19,7 @@ class CustomDrawer extends StatefulWidget {
 
 class _CustomDrawerState extends State<CustomDrawer> {
   bool isSwitched = false;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -55,11 +56,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               return Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  CircleAvatarCustom(
-                                      radius:
-                                          MediaQuery.of(context).size.height /
-                                              25,
-                                      url: state.user!.profileImgUrl!),
+                                  GestureDetector(
+                                    onTap: () {
+                                      widget.scaffoldKey.currentState
+                                          ?.closeDrawer();
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProfilePage()));
+                                    },
+                                    child: CircleAvatarCustom(
+                                        radius:
+                                            MediaQuery.of(context).size.height /
+                                                25,
+                                        url: state.user!.profileImgUrl!),
+                                  ),
                                   const SizedBox(
                                     width: 10,
                                   ),

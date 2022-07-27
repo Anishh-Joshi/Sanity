@@ -8,6 +8,7 @@ import 'package:sanity/screens/login/login.dart';
 import 'package:sanity/screens/login/login_landing.dart';
 import 'package:sanity/screens/login/sign_up.dart';
 import 'package:sanity/screens/login/user_info.dart';
+import 'package:sanity/screens/profile/profile.dart';
 
 class AppRouter {
   final AuthRepository repo;
@@ -33,6 +34,8 @@ class AppRouter {
         return UserInfo.route();
       case LandingPage.routeName:
         return LandingPage.route();
+      case ProfilePage.routeName:
+        return ProfilePage.route();
 
       default:
         _errorRoute();

@@ -1,253 +1,168 @@
-
-
-import 'dart:js';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sanity/blocs/home/home_bloc.dart';
+import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/custom_appbar.dart';
 
 class ProfilePage extends StatelessWidget {
+  static const String routeName = 'profile';
   const ProfilePage({Key? key}) : super(key: key);
+  static Route route() {
+    return MaterialPageRoute(
+        builder: (_) => const ProfilePage(),
+        settings: const RouteSettings(name: routeName));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyCustomAppBar(
-        appBarTitle: "Heriz Bista",
+        appBarTitle: "Profile",
         iconData: Icons.settings,
         onPressed: () {},
       ),
-      body: myBody(),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 5,
+              child: topHalf(context: context),
+            ),
+            Expanded(flex: 1, child: midHalf(context: context)),
+            Expanded(flex: 6, child: bottomHalf(context: context)),
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            
-          },
+          onPressed: () {},
           backgroundColor: Colors.black,
           child: const Icon(Icons.edit)),
     );
   }
 
-  SizedBox myBody() {
-    return SizedBox(
-      child: Column(
-        children: [
-          Expanded(
-            flex: 5,
-            child: topHalf(),
-          ),
-          Expanded(flex: 1, child: midHalf()),
-          Expanded(flex: 6, child: bottomHalf()),
-        ],
-      ),
-    );
-  }
-
-  SizedBox midHalf(
-    {required BuildContext context}
-  ) {
-    return SizedBox(
-        child: Row(
+  Widget midHalf({required BuildContext context}) {
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        //subMenu(),
         Flexible(
           flex: 1,
-          child: Container(
-            // width: MediaQuery.of(context).size.width * 0.5,
-            height: MediaQuery.of(context).size.height * 0.5,
-            color: Colors.white,
-            child: GestureDetector(
-              onTap: () {
-                
-                })
-              },
-              child: Center(
-                child: RichText(
-                    text: TextSpan(
-                        text: 'Daily Goals',
-                        //recognizer: TapGestureRecognizer()
-                        //..onTap = () {
-                        //print("The button is clicked");
-                        //},
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black.withOpacity(1),
-                        ))),
-              ),
-            ),
-          ),
-        ),
-        Material(
-          color: Colors.transparent,
-          child: InkWell(
-            //splashColor: Colors.,
-            borderRadius: BorderRadius.circular(10),
-            onTap: () {
-              // ScaffoldMessenger.of(context)
-              //     .showSnackBar(const SnackBar(content: Text('Tap')));
-            },
-            child: Flexible(
-              flex: 1,
-              child: Container(
-                // width: MediaQuery.of(context).size.width * 0.5,
-                height: MediaQuery.of(context).size.height * 0.5,
-                color: Colors.transparent,
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        tabIndex = 1;
-                      });
-                    },
-                    child: Center(
-                      child: RichText(
-                          text: TextSpan(
-                              text: 'Timeline View',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black.withOpacity(1),
-                              ))),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          child: Text("Goals",
+              style: Theme.of(context)
+                  .textTheme
+                  .headline4!
+                  .copyWith(fontSize: 18)),
         ),
         Flexible(
-          flex: 1,
-          child: Container(
-            // width: MediaQuery.of(context).size.width * 0.5,
-            height: MediaQuery.of(context).size.height * 0.5,
-            color: Colors.white,
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  tabIndex = 2;
-                });
-              },
-              child: Center(
-                child: RichText(
-                    text: TextSpan(
-                        text: 'Badges',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black.withOpacity(1),
-                        ))),
-              ),
-            ),
-          ),
-        ),
+            flex: 1,
+            child: Text(
+              "Timeline",
+              style:
+                  Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
+            )),
+        Flexible(
+            flex: 1,
+            child: Text("Badges",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline4!
+                    .copyWith(fontSize: 18)))
       ],
-    ));
+    );
   }
 
-  Container bottomHalf() {
+  Container bottomHalf({required BuildContext context}) {
     return Container(
       height: MediaQuery.of(context).size.height,
-      color: Colors.white.withOpacity(0.8),
     );
   }
 
-  Container myContainerDG() {
-    return Container(
-      child: Text("Daily Goals"),
-    );
-  }
-
-  Container myContainerTV() {
-    return Container(
-      child: Text("Timeline View"),
-    );
-  }
-
-  Container myContainerBD() {
-    return Container(
-      child: Text("Badges"),
-    );
-  }
-
-  SizedBox topHalf() {
+  SizedBox topHalf({required BuildContext context}) {
     return SizedBox(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          (Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            const Align(
-              alignment: Alignment(0.75, 0.75),
-              child: CircleAvatar(
-                backgroundImage: AssetImage("assets/nature1.jpg"),
-                radius: 80,
-                // backgroundColor: Colors.white,
+          Row(children: [
+            BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                if (state is HomeLoaded) {
+                  return CircleAvatarCustom(
+                      url: state.user!.profileImgUrl!,
+                      radius: MediaQuery.of(context).size.height / 15);
+                }
+                // yelai chai pacchi shimmer effect le replace handiney
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: BlocBuilder<HomeBloc, HomeState>(
+                builder: (context, state) {
+                  if (state is HomeLoaded) {
+                    return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(state.user!.fullName!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline3!
+                                  .copyWith(fontSize: 20)),
+                          Text(
+                            "${state.user!.age!.toString()} years old",
+                            style: Theme.of(context).textTheme.headline5,
+                          )
+                        ]);
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
               ),
             ),
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                name,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+          ]),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Joined on 1st July",
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline3!
+                        .copyWith(color: const Color(0xff787878))),
+                Text("Active on 20 threads",
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4!
+                        .copyWith(color: const Color(0xff787878))),
+                BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, state) {
+                    if (state is HomeLoaded) {
+                      return Text("Kathmandu University",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4!
+                              .copyWith(color: const Color(0xff787878)));
+                    }
+
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
                 ),
-              ),
-              Text(
-                '$age',
-                style: const TextStyle(
-                  fontSize: 20,
-                ),
-              )
-            ]),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.2,
-              color: Colors.yellow,
-            ),
-          ])),
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Container(
-                  //   width: 20,
-                  //   //color: Colors.white,
-                  // ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Joined on 1st July",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.5),
-                          fontSize: 20,
-                        ),
-                      ),
-                      Text("Active on 20 threads",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.5),
-                            fontSize: 18,
-                          )),
-                      Text("Address",
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.5),
-                            fontSize: 15,
-                          )),
-                      Text("42 Entries",
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.5),
-                            fontSize: 15,
-                          ))
-                    ],
-                  )
-                ]),
-          )
+                Text("42 Entries",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5!
+                        .copyWith(color: const Color(0xff787878))),
+              ],
+            )
+          ])
         ],
       ),
     );
-  }
-}
-
   }
 }

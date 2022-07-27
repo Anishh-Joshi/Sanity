@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 ThemeData theme({required bool isDark}) {
   return ThemeData(
       primaryColor: primaryColor(isDark),
-      appBarTheme: AppBarTheme(
-          color: !isDark ? const Color(0xff111111) : const Color(0xffc0c0f2)),
+      appBarTheme:
+          AppBarTheme(color: !isDark ? const Color(0xff000000) : Colors.white),
       colorScheme: ColorScheme.fromSwatch().copyWith(
         secondary: const Color(0xffe6e6fa),
       ),
@@ -20,7 +20,7 @@ ThemeData theme({required bool isDark}) {
         TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         TargetPlatform.android: CupertinoPageTransitionsBuilder(),
       }),
-      iconTheme: iconTheme(isDark),
+      iconTheme: iconTheme(!isDark),
       textTheme: textTheme(isDark: isDark));
 }
 
