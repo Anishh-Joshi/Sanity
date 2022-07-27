@@ -33,20 +33,16 @@ class MyApp extends StatelessWidget {
             create: (context) => HomeBloc(loginBloc: context.read<LoginBloc>()),
           ),
         ],
-        child: BlocListener<ThemeBloc, ThemeBlocState>(
-          listener: (context, state) {
-            if (state is ThemeDataBloc) {
-              themeData = state.isDark;
-            }
-            themeData = false;
+        child: BlocBuilder<ThemeBloc, ThemeBlocState>(
+          builder: (context, state) {
+            return MaterialApp(
+              title: 'Sanity',
+              debugShowCheckedModeBanner: false,
+              theme: theme(isDark: state.isDark),
+              onGenerateRoute: AppRouter.onGenerateRoute,
+              initialRoute: LandingPage.routeName,
+            );
           },
-          child: MaterialApp(
-            title: 'Sanity',
-            debugShowCheckedModeBanner: false,
-            theme: theme(isDark: !themeData!),
-            onGenerateRoute: AppRouter.onGenerateRoute,
-            initialRoute: LandingPage.routeName,
-          ),
         ));
   }
 }

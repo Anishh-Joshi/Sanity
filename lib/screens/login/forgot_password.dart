@@ -96,7 +96,7 @@ class ForgotPassword extends StatelessWidget {
                     ]),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Colors.amber,
+                      primary: Theme.of(context).primaryColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
                   onPressed: () {
@@ -128,7 +128,7 @@ _buildEmailForm(
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
-        color: Colors.amber,
+        color: Theme.of(context).primaryColor,
         width: 1,
       ),
       borderRadius: BorderRadius.circular(16),
@@ -143,13 +143,13 @@ _buildEmailForm(
             .textTheme
             .bodyText2!
             .copyWith(fontSize: 15, color: const Color(0xff787878)),
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           enabled: true,
           hintText: "Email",
-          hintStyle: TextStyle(color: Colors.black),
+          hintStyle: const TextStyle(color: Colors.black),
           prefixIcon: Icon(
             Icons.mail,
-            color: Colors.amber,
+            color: Theme.of(context).primaryColor,
           ),
           border: InputBorder.none,
         ),
