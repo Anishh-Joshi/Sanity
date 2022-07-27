@@ -19,7 +19,7 @@ class LoginSiginUpHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Container(
+            SizedBox(
               width: MediaQuery.of(context).size.width / 1.1,
               height: MediaQuery.of(context).size.height / 7,
               child: Column(

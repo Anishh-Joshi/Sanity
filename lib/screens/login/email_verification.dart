@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
-import '../../widgets/FloatingButton.dart';
+
 import '../../widgets/login_signup_header.dart';
 
 class EmailVerification extends StatefulWidget {

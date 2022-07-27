@@ -55,9 +55,9 @@ class _LandingPageState extends State<LandingPage> {
               const Text("TOKEN EXPIRED or your Account is deleted"),
               TextButton(
                   onPressed: () {
-                    context.read<LoginBloc>()..add(BackToLoginPage());
+                    context.read<LoginBloc>().add(BackToLoginPage());
                   },
-                  child: Text("Get back to Login Page"))
+                  child: const Text("Get back to Login Page"))
             ],
           ),
         );

@@ -4,6 +4,8 @@ import '../../widgets/platform_aware.dart';
 
 class ForgotPassword extends StatelessWidget {
   static const String routeName = 'forgot_password';
+
+  ForgotPassword({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
         builder: (_) => ForgotPassword(),
@@ -123,7 +125,7 @@ class ForgotPassword extends StatelessWidget {
 
 _buildEmailForm(
   BuildContext context,
-  TextEditingController _emailController,
+  TextEditingController emailController,
 ) {
   return Container(
     decoration: BoxDecoration(
@@ -137,7 +139,7 @@ _buildEmailForm(
       padding: const EdgeInsets.only(left: 10.0, right: 8, top: 0, bottom: 5),
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
-        controller: _emailController,
+        controller: emailController,
         onChanged: (email) {},
         style: Theme.of(context)
             .textTheme

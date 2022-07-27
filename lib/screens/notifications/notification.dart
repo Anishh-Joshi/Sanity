@@ -5,6 +5,6 @@ class NotificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("THIs IS NOTIFICTION PAGE");
+    return const Text("THIs IS NOTIFICTION PAGE");
   }
 }

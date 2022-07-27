@@ -80,7 +80,7 @@ class _ImagePickPopUpState extends State<ImagePickPopUp> {
                         borderRadius: BorderRadius.circular(18.0),
                       ))),
                   onPressed: () => getImageFromGallery(context),
-                  child: Container(
+                  child: SizedBox(
                       width: MediaQuery.of(context).size.width / 1.8,
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

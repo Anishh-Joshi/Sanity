@@ -129,7 +129,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
         emit(LoginAuthenticated(user: user));
       } else {
-        print("Triggred here");
+        
         emit(UnRegisteredUser(
             email: userModel.email!,
             id: userModel.id!,

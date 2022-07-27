@@ -11,11 +11,11 @@ import 'package:sanity/repository/auth_repo.dart';
 import 'package:sanity/repository/signup/signup_repo.dart';
 
 void main() async {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(

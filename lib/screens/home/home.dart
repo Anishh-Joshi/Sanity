@@ -17,7 +17,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,7 +96,6 @@ class _MyHomeGreetHeader extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final percent = shrinkOffset / _maxHeaderExtent;
-    final size = MediaQuery.of(context).size;
     final currentImageSize =
         (_maxImageSize * (1 - percent)).clamp(_minImageSize, _maxImageSize);
     final currentTextSize =

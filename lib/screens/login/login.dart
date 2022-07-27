@@ -150,7 +150,7 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-_buildEmailForm(BuildContext context, TextEditingController _controller) {
+_buildEmailForm(BuildContext context, TextEditingController controller) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
@@ -168,7 +168,7 @@ _buildEmailForm(BuildContext context, TextEditingController _controller) {
             .textTheme
             .bodyText2!
             .copyWith(fontSize: 15, color: const Color(0xff787878)),
-        controller: _controller,
+        controller: controller,
         decoration: InputDecoration(
           enabled: true,
           hintText: "Email",
@@ -193,7 +193,7 @@ _buildEmailForm(BuildContext context, TextEditingController _controller) {
   );
 }
 
-_buildPasswordForm(BuildContext context, TextEditingController _controller) {
+_buildPasswordForm(BuildContext context, TextEditingController controller) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
@@ -211,7 +211,7 @@ _buildPasswordForm(BuildContext context, TextEditingController _controller) {
             .copyWith(fontSize: 15, color: const Color(0xff787878)),
         onChanged: (password) {},
         obscureText: true,
-        controller: _controller,
+        controller: controller,
         validator: (value) {
           if (value!.isEmpty) {
             return 'Password cannot be blank';

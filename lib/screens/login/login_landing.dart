@@ -87,7 +87,7 @@ class LoginLanding extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .bodyText1!
-                        .copyWith(color: Color(0xff787878), fontSize: 14),
+                        .copyWith(color: const Color(0xff787878), fontSize: 14),
                   )),
               TextButton(
                   onPressed: () {},
@@ -96,7 +96,7 @@ class LoginLanding extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .headline6!
-                        .copyWith(color: Color(0xff787878)),
+                        .copyWith(color: const Color(0xff787878)),
                   )),
             ],
           ),

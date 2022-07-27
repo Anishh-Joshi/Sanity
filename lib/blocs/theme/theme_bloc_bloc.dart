@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -6,7 +6,7 @@ part 'theme_bloc_event.dart';
 part 'theme_bloc_state.dart';
 
 class ThemeBloc extends Bloc<ThemeBlocEvent, ThemeBlocState> {
-  ThemeBloc() : super(ThemeBlocState(isDark: true)) {
+  ThemeBloc() : super(const ThemeBlocState(isDark: true)) {
     on<ChangeTheme>(_changeAppTheme);
     on<LoadTheme>(_loadTheme);
   }

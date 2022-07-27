@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
-import 'package:sanity/screens/login/login_landing.dart';
 
-import '../../widgets/platform_aware.dart';
 
 class LoginInformation extends StatefulWidget {
   static const String routeName = 'loginInfo';
