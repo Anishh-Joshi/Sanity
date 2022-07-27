@@ -15,7 +15,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  bool? themeData = false;
   MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
