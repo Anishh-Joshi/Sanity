@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../blocs/user_info_bloc/user_info_bloc.dart';
+import 'dart:io';
 
 class ImagePickPopUp extends StatefulWidget {
   const ImagePickPopUp({Key? key}) : super(key: key);
@@ -16,14 +16,16 @@ class _ImagePickPopUpState extends State<ImagePickPopUp> {
 
   Future<void> getImageFromCamera(BuildContext context) async {
     final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+    File file = File(photo!.path);
     if (!mounted) return;
-    context.read<UserInfoBloc>().add(UpdateUserInfo(profileImage: photo));
+    context.read<UserInfoBloc>().add(UpdateUserInfo(profileImage: file));
   }
 
   Future<void> getImageFromGallery(BuildContext context) async {
     final XFile? photo = await _picker.pickImage(source: ImageSource.gallery);
+    File file = File(photo!.path);
     if (!mounted) return;
-    context.read<UserInfoBloc>().add(UpdateUserInfo(profileImage: photo));
+    context.read<UserInfoBloc>().add(UpdateUserInfo(profileImage: file));
   }
 
   @override

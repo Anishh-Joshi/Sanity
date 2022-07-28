@@ -7,10 +7,10 @@ import '../../widgets/platform_aware.dart';
 
 class Signup extends StatefulWidget {
   static const String routeName = 'signup';
-  Signup({Key? key}) : super(key: key);
+  const Signup({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => Signup(),
+        builder: (_) => const Signup(),
         settings: const RouteSettings(name: routeName));
   }
 
@@ -31,16 +31,13 @@ class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
         floatingActionButton: GestureDetector(
-          onTap: () {
-            print('pressed');
-          },
+          onTap: () {},
           child: BlocBuilder<LoginBloc, LoginState>(
             builder: (context, state) {
               if (state is LoginLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return const CircularProgressIndicator(
+                  color: Colors.amber,
                 );
               }
               return FloatingButon(
@@ -72,70 +69,75 @@ class _SignupState extends State<Signup> {
         body: BlocListener<LoginBloc, LoginState>(
           listener: (context, state) {
             if (state is LoginError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Something went wrong")));
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text(state.msg)));
             } else if (state is LoginEmailNotVerified) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, 'landing_page', (route) => false);
+            } else if (state is LoginAuthenticated) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, 'landing_page', (route) => false);
+            } else if (state is UnRegisteredUser) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, 'landing_page', (route) => false);
+            } else if (state is LoginEmailNotVerified) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, 'landing_page', (route) => false);
+            } else if (state is LoginUnAuthenticated) {
               Navigator.pushNamedAndRemoveUntil(
                   context, 'landing_page', (route) => false);
             }
           },
-          child: SafeArea(
-              child: SingleChildScrollView(
-                  child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height / 10,
-                          ),
-                          const LoginSiginUpHeader(
-                            mainHeader: "Sign up",
-                            subheader: "Let’s setup you profile",
-                            lottepath: "assets/lottie/setup.json",
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height / 20,
-                          ),
-                          BlocBuilder<LoginBloc, LoginState>(
-                            builder: (context, state) {
-                              return Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 10.0, bottom: 0),
-                                          child: Column(children: [
-                                            _buildEmailForm(context,
-                                                _emailController, state),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            _buildPasswordForm(context,
-                                                _passwordController, state),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            _buildConfirmPasswordForm(
-                                                context,
-                                                _confirmPasswordController,
-                                                _passwordController,
-                                                state)
-                                          ]),
-                                        ),
-                                      ),
-                                    ],
-                                  ));
-                            },
-                          ),
-                        ],
-                      )))),
+          child: Scaffold(
+            body: SafeArea(
+                child: SingleChildScrollView(
+                    child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height / 10,
+                            ),
+                            const LoginSiginUpHeader(
+                              mainHeader: "Sign up",
+                              subheader: "Let’s setup you profile",
+                              lottepath: "assets/lottie/setup.json",
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height / 20,
+                            ),
+                            Form(
+                              key: _formKey,
+                              child: BlocBuilder<LoginBloc, LoginState>(
+                                  builder: (context, state) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 10.0, bottom: 0),
+                                  child: Column(children: [
+                                    _buildEmailForm(
+                                        context, _emailController, state),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    _buildPasswordForm(
+                                        context, _passwordController, state),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    _buildConfirmPasswordForm(
+                                        context,
+                                        _confirmPasswordController,
+                                        _passwordController,
+                                        state)
+                                  ]),
+                                );
+                              }),
+                            ),
+                          ],
+                        )))),
+          ),
         ));
   }
 }
@@ -149,7 +151,6 @@ _buildEmailForm(BuildContext context, TextEditingController _emailController,
         width: 1,
       ),
       borderRadius: BorderRadius.circular(16),
-      color: Colors.white,
     ),
     child: Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 8, top: 2, bottom: 5),
@@ -161,11 +162,11 @@ _buildEmailForm(BuildContext context, TextEditingController _emailController,
             .textTheme
             .bodyText2!
             .copyWith(fontSize: 15, color: const Color(0xff787878)),
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           enabled: true,
           hintText: "Email",
-          hintStyle: TextStyle(color: Colors.black),
-          prefixIcon: Icon(
+          hintStyle: Theme.of(context).textTheme.headline5,
+          prefixIcon: const Icon(
             Icons.mail,
             color: Colors.amber,
           ),
@@ -194,7 +195,6 @@ _buildPasswordForm(BuildContext context,
         width: 1,
       ),
       borderRadius: BorderRadius.circular(16),
-      color: Colors.white,
     ),
     child: Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 8, top: 2, bottom: 5),
@@ -215,12 +215,12 @@ _buildPasswordForm(BuildContext context,
           }
           return null;
         },
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           enabled: true,
           hintText: "Password",
-          hintStyle: TextStyle(color: Colors.black),
+          hintStyle: Theme.of(context).textTheme.headline5,
           border: InputBorder.none,
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
             Icons.lock,
             color: Colors.amber,
           ),
@@ -242,7 +242,6 @@ _buildConfirmPasswordForm(
         width: 1,
       ),
       borderRadius: BorderRadius.circular(16),
-      color: Colors.white,
     ),
     child: Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 8, top: 2, bottom: 5),
@@ -266,12 +265,12 @@ _buildConfirmPasswordForm(
           }
           return null;
         },
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           enabled: true,
-          hintText: "Confirm your password",
-          hintStyle: TextStyle(color: Colors.black),
+          hintText: "Confirm password",
+          hintStyle: Theme.of(context).textTheme.headline5,
           border: InputBorder.none,
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
             Icons.lock,
             color: Colors.amber,
           ),

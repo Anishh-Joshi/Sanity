@@ -1,5 +1,5 @@
+import 'dart:io';
 import 'package:equatable/equatable.dart';
-import 'package:image_picker/image_picker.dart';
 
 class UserInfoModel extends Equatable {
   final String? fullName;
@@ -8,39 +8,29 @@ class UserInfoModel extends Equatable {
   final String? gender;
   final bool? isDoctor;
   final int? nmcId;
-  final XFile? profileImage;
+  final File? profileImage;
+  final String? profileImgUrl;
 
   const UserInfoModel(
       {this.fullName,
       this.address,
+      this.profileImgUrl,
       this.nmcId,
       this.age,
       this.gender,
       this.isDoctor,
       this.profileImage});
 
-  String get getName {
-    return fullName!;
-  }
-
-  int get getAge {
-    return age!;
-  }
-
-  String get getAddress {
-    return address!;
-  }
-
-  String get getGender {
-    return gender!;
-  }
-
-  bool get getIsDoctor {
-    return isDoctor!;
-  }
-
-  int get getNmcId {
-    return nmcId!;
+  factory UserInfoModel.fromJson(Map response) {
+    return UserInfoModel(
+      fullName: response['full_name'],
+      address: response['location'],
+      age: response['age'],
+      gender: response['gender'],
+      isDoctor: response['isDoctor'],
+      nmcId: response['nmcId'],
+      profileImgUrl: response['profileImage'],
+    );
   }
 
   @override

@@ -70,7 +70,7 @@ class AuthRepository {
     return signInResponse;
   }
 
-  Future<String> checkEmailVerification() async {
+  Future<Map> getProfileData() async {
     final prefs = await SharedPreferences.getInstance();
     final client = http.Client();
     final String? token = prefs.getString('token');
@@ -82,15 +82,30 @@ class AuthRepository {
         'Authorization': 'Bearer $token',
       });
       Map signInResponse = json.decode(response.body);
-      if (signInResponse.containsKey('errors')) {
-        return 'token_error';
-      } else {
-        return signInResponse['is_email_verified']
-            ? "verified"
-            : "not_verified";
-      }
+      return signInResponse;
     } else {
-      return "unUnthenticated";
+      return {"tokenError": true};
+    }
+  }
+
+  Future<Map> registeredProfileData({required int id}) async {
+    final String userProfile =
+        "http://10.0.2.2:8000/api/user/get/profile/?id=$id";
+    print(userProfile);
+    final prefs = await SharedPreferences.getInstance();
+    final client = http.Client();
+    final String? token = prefs.getString('token');
+    if (token != null) {
+      final http.Response response =
+          await client.get(Uri.parse(userProfile), headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        "Access-Control-Allow_origin": "*"
+      });
+      Map signInResponse = json.decode(response.body);
+      return signInResponse;
+    } else {
+      return {};
     }
   }
 }

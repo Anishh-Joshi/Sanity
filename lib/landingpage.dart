@@ -5,6 +5,7 @@ import 'package:sanity/screens/home/home.dart';
 import 'package:sanity/screens/introduction/app_information.dart.dart';
 import 'package:sanity/screens/login/email_verification.dart';
 import 'package:sanity/screens/login/login_landing.dart';
+import 'package:sanity/screens/login/user_info.dart';
 
 class LandingPage extends StatefulWidget {
   static const String routeName = 'landing_page';
@@ -31,6 +32,7 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
       if (state is LoginLoading) {
+        //splashScreen
         return const Center(child: CircularProgressIndicator());
       }
       if (state is LoginUnAuthenticated) {
@@ -42,10 +44,23 @@ class _LandingPageState extends State<LandingPage> {
       if (state is LoginEmailNotVerified) {
         return const EmailVerification();
       }
+      if (state is UnRegisteredUser) {
+        return const UserInfo();
+      }
       if (state is LoginTokenError) {
-        return const Scaffold(
-          backgroundColor: Colors.red,
-          body: Text("TOKEN EXPIRED"),
+        return Scaffold(
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text("TOKEN EXPIRED or your Account is deleted"),
+              TextButton(
+                  onPressed: () {
+                    context.read<LoginBloc>().add(BackToLoginPage());
+                  },
+                  child: const Text("Get back to Login Page"))
+            ],
+          ),
         );
       }
       if (state is LoginAuthenticated) {
