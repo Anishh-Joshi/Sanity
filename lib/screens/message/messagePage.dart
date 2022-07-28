@@ -6,7 +6,7 @@ class MessagePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Text("HELLO FROM MessagePage "),
+      body: Center(child: Text("HELLO FROM MessagePage ")),
     );
   }
 }

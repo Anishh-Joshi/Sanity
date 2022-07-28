@@ -27,10 +27,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   void _onLoginPressed(
       LoginButtonPressed event, Emitter<LoginState> emit) async {
+        bool tokenData = await repo.hasToken();
+      final authData = await repo.login(event.email, event.password);
     try {
       emit(LoginLoading());
-      bool tokenData = await repo.hasToken();
-      final authData = await repo.login(event.email, event.password);
+     
 
       if (authData["token"] != null) {
         await repo.persistToken((authData["token"]['access']));

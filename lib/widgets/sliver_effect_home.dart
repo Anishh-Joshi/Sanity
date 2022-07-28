@@ -39,7 +39,7 @@ class MyHomeGreetHeader extends SliverPersistentHeaderDelegate {
     final currentTextSizeName = (_maxTextSizeName * (1 - percent))
         .clamp(_minTextSizeName, _maxTextSizeName);
     return Container(
-      color: Theme.of(context).canvasColor,
+      color: Theme.of(context).appBarTheme.backgroundColor,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

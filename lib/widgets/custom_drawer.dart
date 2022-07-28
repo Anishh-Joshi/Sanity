@@ -33,8 +33,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   defaultActionText: "Ok",
                 ).show(context);
               } else if (state is LoginUnAuthenticated) {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, 'landing_page', (route) => false);
+                Navigator.of(context,rootNavigator:true ).pushNamedAndRemoveUntil('landing_page', (route) => false);
               }
             },
             child: Column(
@@ -112,7 +111,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         trailing: BlocBuilder<ThemeBloc, ThemeBlocState>(
                             builder: (context, state) {
                           return Switch(
-                            value: !state.isDark,
+                            value: state.isDark,
                             onChanged: (value) {
                               context.read<ThemeBloc>().add(ChangeTheme());
                               setState(() {
@@ -162,7 +161,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           builder: (context, state) {
                             if (state is LoginAuthenticated) {
                               return ElevatedButtonCustom(
-                                color: const Color(0xff111111),
+                                color: Color.fromARGB(255, 233, 11, 104),
                                 buttonTitle: "Logout",
                                 action: () {
                                   context

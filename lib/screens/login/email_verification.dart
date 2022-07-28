@@ -78,7 +78,7 @@ class _EmailVerificationState extends State<EmailVerification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+
       body: !isAnimated
           ? SafeArea(
               child: Padding(
@@ -114,8 +114,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                     ),
                     Center(
                       child: VerificationCode(
-                        textStyle: const TextStyle(
-                            fontSize: 20.0, color: Colors.black),
+                        textStyle: Theme.of(context).textTheme.headline6!,
                         keyboardType: TextInputType.number,
                         underlineColor: const Color(0xff787878),
                         underlineUnfocusedColor: Theme.of(context).primaryColor,

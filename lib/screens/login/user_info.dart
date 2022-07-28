@@ -34,7 +34,7 @@ class _UserInfoState extends State<UserInfo> {
     if (states.any(interactiveStates.contains)) {
       return Colors.amberAccent;
     }
-    return Colors.amber;
+    return Theme.of(context).primaryColor;
   }
 
   final ScrollController _scrollController = ScrollController();
@@ -257,15 +257,14 @@ class _UserInfoState extends State<UserInfo> {
                                                       "Are you a doctor?",
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .headline6!
+                                                          .bodyText1!
                                                           .copyWith(
-                                                              color: const Color(
-                                                                  0xff787878),
-                                                              fontSize: 18),
+                                                             
+                                                              fontSize: 16),
                                                     ),
                                                     Checkbox(
                                                         checkColor:
-                                                            Colors.white,
+                                                            Theme.of(context).colorScheme.secondary,
                                                         fillColor:
                                                             MaterialStateProperty
                                                                 .resolveWith(

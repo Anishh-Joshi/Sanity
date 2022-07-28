@@ -6,7 +6,7 @@ class DoctorsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Text("HELLO FROM DOCTORS PAGE"),
+      body: Center(child: Text("HELLO FROM DOCTORS PAGE")),
     );
   }
 }

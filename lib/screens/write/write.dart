@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sanity/widgets/custom_appbar.dart';
 
 class WritePage extends StatelessWidget {
   const WritePage({Key? key}) : super(key: key);
@@ -6,20 +7,7 @@ class WritePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text(
-            "Daily Log",
-            style: Theme.of(context)
-                .textTheme
-                .headline3!
-                .copyWith(color: Theme.of(context).indicatorColor),
-          ),
-          actions: [
-            Icon(
-              Icons.mic,
-              color: Theme.of(context).indicatorColor,
-            )
-          ]),
+      appBar: MyCustomAppBar(appBarTitle: 'Daily Log', iconData: Icons.mic, onPressed: (){}),
       body: TextField(
         decoration: const InputDecoration(
           focusedBorder: OutlineInputBorder(

@@ -19,7 +19,7 @@ class PlatformAADialog extends PlatformWidget {
     return Platform.isIOS
         ? await showCupertinoDialog(
             context: context, builder: (context) => this)
-        : showDialog(context: context, builder: (context) => this);
+        : await showDialog(context: context, builder: (context) => this);
   }
 
   @override
@@ -34,7 +34,7 @@ class PlatformAADialog extends PlatformWidget {
   @override
   Widget buildMaterialWidget(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       content: Text(content,
           style: Theme.of(context)
               .textTheme
@@ -56,7 +56,7 @@ class PlatformAADialog extends PlatformWidget {
               style: Theme.of(context)
                   .textTheme
                   .headline4!
-                  .copyWith(color: Colors.black))));
+                  )));
     }
 
     action.add(PlatformAlertDialogAction(
@@ -67,7 +67,7 @@ class PlatformAADialog extends PlatformWidget {
             style: Theme.of(context)
                 .textTheme
                 .headline4!
-                .copyWith(color: Colors.black))));
+               )));
     return action;
   }
 }

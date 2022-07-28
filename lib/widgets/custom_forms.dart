@@ -22,7 +22,7 @@ class CustomTextFormField extends StatelessWidget {
               width: 1,
             ),
             borderRadius: BorderRadius.circular(16),
-            color: Colors.white,
+
           ),
           child: Padding(
             padding:
@@ -33,11 +33,14 @@ class CustomTextFormField extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .bodyText2!
-                  .copyWith(fontSize: 15, color: const Color(0xff787878)),
+                  .copyWith(fontSize: 15,),
               decoration: InputDecoration(
                 enabled: true,
                 hintText: hintText,
-                hintStyle: const TextStyle(color: Colors.black),
+                hintStyle: Theme.of(context)
+                  .textTheme
+                  .bodyText2!
+                  .copyWith(fontSize: 15,),
                 border: InputBorder.none,
               ),
               controller: controller,
@@ -77,7 +80,6 @@ class CustomTextFormFieldInteger extends StatelessWidget {
               width: 1,
             ),
             borderRadius: BorderRadius.circular(16),
-            color: Colors.white,
           ),
           child: Padding(
             padding:
@@ -88,11 +90,14 @@ class CustomTextFormFieldInteger extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .bodyText2!
-                  .copyWith(fontSize: 15, color: const Color(0xff787878)),
+                  .copyWith(fontSize: 15,),
               decoration: InputDecoration(
                 enabled: true,
                 hintText: hintText,
-                hintStyle: const TextStyle(color: Colors.black),
+                hintStyle: Theme.of(context)
+                  .textTheme
+                  .bodyText2!
+                  .copyWith(fontSize: 15,),
                 border: InputBorder.none,
               ),
               controller: controller,
@@ -130,7 +135,6 @@ class _CustomDropDownState extends State<CustomDropDown> {
             width: 1,
           ),
           borderRadius: BorderRadius.circular(16),
-          color: Colors.white,
         ),
         child: BlocBuilder<UserInfoBloc, UserInfoState>(
           builder: (context, state) {
@@ -144,11 +148,14 @@ class _CustomDropDownState extends State<CustomDropDown> {
                     left: 10.0, right: 8, top: 5, bottom: 5),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton(
-                    hint: const Text(
+                    hint:  Text(
                       "Your Gender",
-                      style: TextStyle(color: Colors.black),
+                      style: Theme.of(context)
+                  .textTheme
+                  .bodyText2!
+                  .copyWith(fontSize: 15,)
                     ),
-                    dropdownColor: Colors.white,
+                    dropdownColor: Theme.of(context).cardColor,
                     value: gender,
                     onChanged: (newValue) {
                       gender = newValue.toString();
@@ -162,7 +169,10 @@ class _CustomDropDownState extends State<CustomDropDown> {
                           value: valueItem,
                           child: Text(
                             valueItem,
-                            style: const TextStyle(color: Color(0xff787878)),
+                            style: Theme.of(context)
+                  .textTheme
+                  .bodyText2!
+                  .copyWith(fontSize: 15,)
                           ));
                     }).toList(),
                   ),
