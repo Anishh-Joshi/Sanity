@@ -21,9 +21,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void _onLoginCheck(LoginCheck event, Emitter<LoginState> emit) async {
     emit(LoginLoading());
     bool tokenData = await repo.hasToken();
-    if (!tokenData) {
-      emit(LoginUnAuthenticated());
-    }
+
     await loginCheck(emit, tokenData);
   }
 
@@ -120,6 +118,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     if (!isAppInfoSeen) {
       emit(InformationNotSeen());
+    } else if (!tokenData) {
+      emit(LoginUnAuthenticated());
     } else if (isAppInfoSeen && tokenData && userModel.isEmailVerified!) {
       final Map userInfoMap =
           await repo.registeredProfileData(id: userModel.id!);
@@ -129,6 +129,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
         emit(LoginAuthenticated(user: user));
       } else {
+        
         emit(UnRegisteredUser(
             email: userModel.email!,
             id: userModel.id!,

@@ -4,6 +4,8 @@ import '../../widgets/platform_aware.dart';
 
 class ForgotPassword extends StatelessWidget {
   static const String routeName = 'forgot_password';
+
+  ForgotPassword({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
         builder: (_) => ForgotPassword(),
@@ -96,7 +98,7 @@ class ForgotPassword extends StatelessWidget {
                     ]),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Colors.amber,
+                      primary: Theme.of(context).primaryColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
                   onPressed: () {
@@ -123,12 +125,12 @@ class ForgotPassword extends StatelessWidget {
 
 _buildEmailForm(
   BuildContext context,
-  TextEditingController _emailController,
+  TextEditingController emailController,
 ) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
-        color: Colors.amber,
+        color: Theme.of(context).primaryColor,
         width: 1,
       ),
       borderRadius: BorderRadius.circular(16),
@@ -137,19 +139,19 @@ _buildEmailForm(
       padding: const EdgeInsets.only(left: 10.0, right: 8, top: 0, bottom: 5),
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
-        controller: _emailController,
+        controller: emailController,
         onChanged: (email) {},
         style: Theme.of(context)
             .textTheme
             .bodyText2!
             .copyWith(fontSize: 15, color: const Color(0xff787878)),
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           enabled: true,
           hintText: "Email",
-          hintStyle: TextStyle(color: Colors.black),
+          hintStyle: const TextStyle(color: Colors.black),
           prefixIcon: Icon(
             Icons.mail,
-            color: Colors.amber,
+            color: Theme.of(context).primaryColor,
           ),
           border: InputBorder.none,
         ),

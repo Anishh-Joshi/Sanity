@@ -53,13 +53,13 @@ class AuthRepository {
     return loginResponse;
   }
 
-  Future<Map> signIn(String email, password, confirm_password) async {
+  Future<Map> signIn(String email, password, confirmPassword) async {
     final client = http.Client();
     final http.Response response = await client.post(Uri.parse(signInUrl),
         body: jsonEncode({
           "email": email,
           "password": password,
-          "confirm_password": confirm_password
+          "confirm_password": confirmPassword
         }),
         headers: {
           "Content-type": 'application/json',
@@ -91,7 +91,7 @@ class AuthRepository {
   Future<Map> registeredProfileData({required int id}) async {
     final String userProfile =
         "http://10.0.2.2:8000/api/user/get/profile/?id=$id";
-    print(userProfile);
+
     final prefs = await SharedPreferences.getInstance();
     final client = http.Client();
     final String? token = prefs.getString('token');

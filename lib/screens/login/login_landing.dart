@@ -21,13 +21,16 @@ class LoginLanding extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Expanded(
-                child: Image(
-                  image: AssetImage('assets/logos/sanity_full.png'),
+                child: Opacity(
+                  opacity: 0,
+                  child: Image(
+                    image: AssetImage('assets/logos/sanity_full.png'),
+                  ),
                 ),
               ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Colors.amber,
+                      primary: Theme.of(context).primaryColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
                   onPressed: () {
@@ -84,7 +87,7 @@ class LoginLanding extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .bodyText1!
-                        .copyWith(color: Color(0xff787878), fontSize: 14),
+                        .copyWith(color: const Color(0xff787878), fontSize: 14),
                   )),
               TextButton(
                   onPressed: () {},
@@ -93,7 +96,7 @@ class LoginLanding extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .headline6!
-                        .copyWith(color: Color(0xff787878)),
+                        .copyWith(color: const Color(0xff787878)),
                   )),
             ],
           ),

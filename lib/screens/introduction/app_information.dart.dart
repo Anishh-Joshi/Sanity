@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
-import 'package:sanity/screens/login/login_landing.dart';
 
-import '../../widgets/platform_aware.dart';
 
 class LoginInformation extends StatefulWidget {
   static const String routeName = 'loginInfo';
@@ -52,76 +50,58 @@ class _LoginInformationState extends State<LoginInformation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
-        child: BlocListener<LoginBloc, LoginState>(
-          listener: (context, state) {
-            if (state is LoginError) {
-              const PlatformAADialog(
-                title: 'Sign up Failed',
-                content: "Something went wrong!",
-                defaultActionText: "Ok",
-              ).show(context);
-            } else if (state is LoginUnAuthenticated) {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, 'landing_page', (route) => false);
-            }
-          },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 1.3,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        child: Lottie.asset(infoData[index]['lottePath']),
-                      ),
-                    ),
-                    Text(
-                      infoData[index]['text'],
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline2!
-                          .copyWith(fontSize: 24),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: 10,
-                          left: MediaQuery.of(context).size.width / 7,
-                          right: MediaQuery.of(context).size.width / 7),
-                      child: Text(
-                        infoData[index]['bottom_text'],
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline5!.copyWith(
-                            color: const Color(0xff787878), fontSize: 15),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 1.3,
+              child: Column(
                 children: [
-                  Icon(Icons.circle,
-                      size: 20,
-                      color:
-                          index == 0 ? Colors.amber : const Color(0xffD9D9D9)),
-                  Icon(Icons.circle,
-                      size: 20,
-                      color:
-                          index == 1 ? Colors.amber : const Color(0xffD9D9D9)),
-                  Icon(Icons.circle,
-                      size: 20,
-                      color:
-                          index == 2 ? Colors.amber : const Color(0xffD9D9D9)),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      child: Lottie.asset(infoData[index]['lottePath']),
+                    ),
+                  ),
+                  Text(
+                    infoData[index]['text'],
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline2!
+                        .copyWith(fontSize: 24),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: 10,
+                        left: MediaQuery.of(context).size.width / 7,
+                        right: MediaQuery.of(context).size.width / 7),
+                    child: Text(
+                      infoData[index]['bottom_text'],
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headline5!.copyWith(
+                          color: const Color(0xff787878), fontSize: 15),
+                    ),
+                  ),
                 ],
-              )
-            ],
-          ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.circle,
+                    size: 20,
+                    color: index == 0 ? Colors.amber : const Color(0xffD9D9D9)),
+                Icon(Icons.circle,
+                    size: 20,
+                    color: index == 1 ? Colors.amber : const Color(0xffD9D9D9)),
+                Icon(Icons.circle,
+                    size: 20,
+                    color: index == 2 ? Colors.amber : const Color(0xffD9D9D9)),
+              ],
+            )
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

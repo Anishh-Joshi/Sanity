@@ -39,7 +39,7 @@ class PlatformAADialog extends PlatformWidget {
           style: Theme.of(context)
               .textTheme
               .headline4!
-              .copyWith(color: Color(0xff787878))),
+              .copyWith(color: const Color(0xff787878))),
       title: Text(title, style: Theme.of(context).textTheme.headline3),
       actions: _buildActions(context),
     );

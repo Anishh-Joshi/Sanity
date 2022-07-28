@@ -51,8 +51,8 @@ class _ImagePickPopUpState extends State<ImagePickPopUp> {
             children: [
               ElevatedButton(
                   style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.amber),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Theme.of(context).primaryColor),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
@@ -80,7 +80,7 @@ class _ImagePickPopUpState extends State<ImagePickPopUp> {
                         borderRadius: BorderRadius.circular(18.0),
                       ))),
                   onPressed: () => getImageFromGallery(context),
-                  child: Container(
+                  child: SizedBox(
                       width: MediaQuery.of(context).size.width / 1.8,
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

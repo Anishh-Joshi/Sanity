@@ -18,7 +18,7 @@ class CustomTextFormField extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: Colors.amber,
+              color: Theme.of(context).primaryColor,
               width: 1,
             ),
             borderRadius: BorderRadius.circular(16),
@@ -73,7 +73,7 @@ class CustomTextFormFieldInteger extends StatelessWidget {
           width: 100,
           decoration: BoxDecoration(
             border: Border.all(
-              color: Colors.amber,
+              color: Theme.of(context).primaryColor,
               width: 1,
             ),
             borderRadius: BorderRadius.circular(16),
@@ -99,9 +99,6 @@ class CustomTextFormFieldInteger extends StatelessWidget {
               validator: (value) {
                 if (value == null) {
                   return 'Please enter some text';
-                }
-                if (!value.contains("@")) {
-                  return 'Email must contain @';
                 }
                 return null;
               },
@@ -129,7 +126,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: Colors.amber,
+            color: Theme.of(context).primaryColor,
             width: 1,
           ),
           borderRadius: BorderRadius.circular(16),

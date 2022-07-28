@@ -36,8 +36,8 @@ class _SignupState extends State<Signup> {
           child: BlocBuilder<LoginBloc, LoginState>(
             builder: (context, state) {
               if (state is LoginLoading) {
-                return const CircularProgressIndicator(
-                  color: Colors.amber,
+                return CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor,
                 );
               }
               return FloatingButon(
@@ -142,12 +142,12 @@ class _SignupState extends State<Signup> {
   }
 }
 
-_buildEmailForm(BuildContext context, TextEditingController _emailController,
+_buildEmailForm(BuildContext context, TextEditingController emailController,
     LoginState state) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
-        color: Colors.amber,
+        color: Theme.of(context).primaryColor,
         width: 1,
       ),
       borderRadius: BorderRadius.circular(16),
@@ -156,7 +156,7 @@ _buildEmailForm(BuildContext context, TextEditingController _emailController,
       padding: const EdgeInsets.only(left: 10.0, right: 8, top: 2, bottom: 5),
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
-        controller: _emailController,
+        controller: emailController,
         onChanged: (email) {},
         style: Theme.of(context)
             .textTheme
@@ -166,10 +166,7 @@ _buildEmailForm(BuildContext context, TextEditingController _emailController,
           enabled: true,
           hintText: "Email",
           hintStyle: Theme.of(context).textTheme.headline5,
-          prefixIcon: const Icon(
-            Icons.mail,
-            color: Colors.amber,
-          ),
+          prefixIcon: Icon(Icons.mail, color: Theme.of(context).primaryColor),
           border: InputBorder.none,
         ),
         validator: (value) {
@@ -187,11 +184,11 @@ _buildEmailForm(BuildContext context, TextEditingController _emailController,
 }
 
 _buildPasswordForm(BuildContext context,
-    TextEditingController _passwordController, LoginState state) {
+    TextEditingController passwordController, LoginState state) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
-        color: Colors.amber,
+        color: Theme.of(context).primaryColor,
         width: 1,
       ),
       borderRadius: BorderRadius.circular(16),
@@ -199,7 +196,7 @@ _buildPasswordForm(BuildContext context,
     child: Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 8, top: 2, bottom: 5),
       child: TextFormField(
-        controller: _passwordController,
+        controller: passwordController,
         style: Theme.of(context)
             .textTheme
             .bodyText2!
@@ -220,9 +217,9 @@ _buildPasswordForm(BuildContext context,
           hintText: "Password",
           hintStyle: Theme.of(context).textTheme.headline5,
           border: InputBorder.none,
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             Icons.lock,
-            color: Colors.amber,
+            color: Theme.of(context).primaryColor,
           ),
         ),
       ),
@@ -232,13 +229,13 @@ _buildPasswordForm(BuildContext context,
 
 _buildConfirmPasswordForm(
     BuildContext context,
-    TextEditingController _confirmPasswordController,
-    TextEditingController _passswordController,
+    TextEditingController confirmPasswordController,
+    TextEditingController passswordController,
     LoginState state) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(
-        color: Colors.amber,
+        color: Theme.of(context).primaryColor,
         width: 1,
       ),
       borderRadius: BorderRadius.circular(16),
@@ -246,7 +243,7 @@ _buildConfirmPasswordForm(
     child: Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 8, top: 2, bottom: 5),
       child: TextFormField(
-        controller: _confirmPasswordController,
+        controller: confirmPasswordController,
         style: Theme.of(context)
             .textTheme
             .bodyText2!
@@ -260,7 +257,7 @@ _buildConfirmPasswordForm(
           if (value.length < 6) {
             return 'Password too short.';
           }
-          if (value != _passswordController.text) {
+          if (value != passswordController.text) {
             return 'Password and confirm password did not match.';
           }
           return null;
@@ -270,9 +267,9 @@ _buildConfirmPasswordForm(
           hintText: "Confirm password",
           hintStyle: Theme.of(context).textTheme.headline5,
           border: InputBorder.none,
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             Icons.lock,
-            color: Colors.amber,
+            color: Theme.of(context).primaryColor,
           ),
         ),
       ),
