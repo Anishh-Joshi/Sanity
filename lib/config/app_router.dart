@@ -40,6 +40,7 @@ class AppRouter {
       default:
         _errorRoute();
     }
+    return null;
   }
 
   static Route _errorRoute() {
