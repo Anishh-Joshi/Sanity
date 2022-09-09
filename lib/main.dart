@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
+import 'package:sanity/blocs/log_bloc/log_bloc_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/blocs/theme/theme_bloc_bloc.dart';
 import 'package:sanity/blocs/user_info_bloc/user_info_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:sanity/config/app_router.dart';
 import 'package:sanity/config/theme.dart';
 import 'package:sanity/landingpage.dart';
 import 'package:sanity/repository/auth_repo.dart';
+import 'package:sanity/repository/log_repository/log_repo.dart';
 import 'package:sanity/repository/signup/signup_repo.dart';
 
 void main() async {
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => ThemeBloc()..add(LoadTheme())),
+          BlocProvider(create: (context)=>LogBlocBloc(repo: LogRepository())..add(LogLoading())),
           BlocProvider(
               create: (context) => LoginBloc(
                     repo: AuthRepository(),
@@ -38,7 +41,7 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               title: 'Sanity',
               debugShowCheckedModeBanner: false,
-              theme: theme(isDark: state.isDark),
+              theme: theme(isDark: false),
               onGenerateRoute: AppRouter.onGenerateRoute,
               initialRoute: LandingPage.routeName,
             );
