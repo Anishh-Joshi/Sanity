@@ -9,6 +9,7 @@ import 'package:sanity/screens/login/login_landing.dart';
 import 'package:sanity/screens/login/sign_up.dart';
 import 'package:sanity/screens/login/user_info.dart';
 import 'package:sanity/screens/profile/profile.dart';
+import 'package:sanity/screens/write/write_textfield.dart';
 
 class AppRouter {
   final AuthRepository repo;
@@ -36,6 +37,8 @@ class AppRouter {
         return LandingPage.route();
       case ProfilePage.routeName:
         return ProfilePage.route();
+      case WriteField.routeName:
+        return WriteField.route();
 
       default:
         _errorRoute();

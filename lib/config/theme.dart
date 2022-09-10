@@ -13,7 +13,7 @@ ThemeData theme({required bool isDark}) {
       canvasColor: canvasColor(isDark),
       cardColor: isDark
           ? const Color.fromARGB(255, 8, 8, 8)
-          : const Color.fromARGB(255, 250, 250, 250),
+          : const Color(0xffF2F1F1),
       bottomAppBarColor: bottomAppBarColor(isDark),
       indicatorColor: indicatorColor(isDark),
       pageTransitionsTheme: const PageTransitionsTheme(builders: {

@@ -7,6 +7,13 @@ abstract class LogBlocState extends Equatable {
   List<Object> get props => [];
 }
 
-class LogBlocInitial extends LogBlocState {}
+class LogRetrieved extends LogBlocState {
+  final List log;
+
+  const LogRetrieved({required this.log});
+  @override
+  List<Object> get props => [log];
+}
+class LogBlocLoading extends LogBlocState {}
 class LogSending extends LogBlocState{}
 class LogSent extends LogBlocState{}

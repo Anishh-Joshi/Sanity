@@ -1,17 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:sanity/blocs/login/login_bloc.dart';
+import 'package:sanity/model/log_model.dart';
 import 'package:sanity/repository/log_repository/log_repo.dart';
-import 'package:intl/intl.dart';
 part 'log_bloc_event.dart';
 part 'log_bloc_state.dart';
 
 class LogBlocBloc extends Bloc<LogBlocEvent, LogBlocState> {
   final LogRepository repo;
 
-  LogBlocBloc({required this.repo}) : super(LogBlocInitial()) {
+  LogBlocBloc({required this.repo}) : super(LogBlocLoading()) {
     on<LogSendButtonPressed>(_sendLog);
-    on<LogLoading>(_logLoading);
-    on<CheckLogToday>(_checkLog);
+    on<RetrieveLog>(_retrieveLog);
   }
 
   void _sendLog(LogSendButtonPressed event, Emitter<LogBlocState> emit) async {
@@ -25,13 +25,16 @@ class LogBlocBloc extends Bloc<LogBlocEvent, LogBlocState> {
     emit(LogSent());
   }
 
-  void _logLoading(LogLoading event, Emitter<LogBlocState> emit) async {
-    emit(LogSent());
-  }
 
-  void _checkLog(CheckLogToday event, Emitter<LogBlocState> emit) async {
+  void _retrieveLog(RetrieveLog event, Emitter<LogBlocState> emit) async {
+    emit(LogBlocLoading());
+    print("here1");
     final Map receivedMap = await repo.retrieveLog(1);
-    emit(LogSent());
+    print("here2");
+    print(receivedMap['candidates']);
+    emit(LogRetrieved(log: receivedMap['candidates']));
+    print("here3");
+
   }
 
 }

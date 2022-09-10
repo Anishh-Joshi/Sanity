@@ -7,10 +7,8 @@ abstract class LogBlocEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LogLoading extends LogBlocEvent {}
+class RetrieveLog extends LogBlocEvent{
 
-class CheckLogToday extends LogBlocEvent {
-  
 }
 
 class LogSendButtonPressed extends LogBlocEvent{

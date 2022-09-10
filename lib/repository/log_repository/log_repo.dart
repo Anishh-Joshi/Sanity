@@ -22,12 +22,9 @@ class LogRepository {
 
   Future<Map> retrieveLog(int userId) async {
     final client = http.Client();
-
     final http.Response response = await client.get(Uri.parse("http://10.0.2.2:8000/api/assistant/get/dailylog/?id=1"));
-
     final Map logResponse = json.decode(response.body);
     return logResponse;
   }
 
- 
 }

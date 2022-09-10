@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => ThemeBloc()..add(LoadTheme())),
-          BlocProvider(create: (context)=>LogBlocBloc(repo: LogRepository())..add(LogLoading())),
+          BlocProvider(create: (context)=>LogBlocBloc(repo: LogRepository())..add(RetrieveLog())),
           BlocProvider(
               create: (context) => LoginBloc(
                     repo: AuthRepository(),
