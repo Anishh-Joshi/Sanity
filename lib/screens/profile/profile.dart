@@ -20,14 +20,16 @@ class ProfilePage extends StatelessWidget {
         preferredSize: const Size.fromHeight(60),
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
-           if(state is HomeLoaded){
-             return MyCustomAppBar(
-              appBarTitle: state.user!.fullName!,
-              onPressed: () {},
-              iconData: Icons.settings,
+            if (state is HomeLoaded) {
+              return MyCustomAppBar(
+                appBarTitle: state.user!.fullName!,
+                onPressed: () {},
+                iconData: Icons.settings,
+              );
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-            
-           }return const Center(child: CircularProgressIndicator(),);
           },
         ),
       ),
@@ -57,26 +59,43 @@ class ProfilePage extends StatelessWidget {
       children: [
         Flexible(
           flex: 1,
-          child: Text("Goals",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline4!
-                  .copyWith(fontSize: 18)),
-        ),
-        Flexible(
-            flex: 1,
-            child: Text(
-              "Timeline",
-              style:
-                  Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
-            )),
-        Flexible(
-            flex: 1,
-            child: Text("Badges",
+          child: GestureDetector(
+            onTap: () {
+              print("Tapped");
+            },
+            child: Text("Goals",
                 style: Theme.of(context)
                     .textTheme
                     .headline4!
-                    .copyWith(fontSize: 18)))
+                    .copyWith(fontSize: 18)),
+          ),
+        ),
+        Flexible(
+            flex: 1,
+            child: GestureDetector(
+              onTap: () {
+                print("tapped again");
+              },
+              child: Text(
+                "Timeline",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline4!
+                    .copyWith(fontSize: 18),
+              ),
+            )),
+        Flexible(
+            flex: 1,
+            child: GestureDetector(
+              onTap: () {
+                print("tapped again and again");
+              },
+              child: Text("Badges",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4!
+                      .copyWith(fontSize: 18)),
+            ))
       ],
     );
   }
@@ -131,7 +150,7 @@ class ProfilePage extends StatelessWidget {
           ),
         ]),
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Column(
