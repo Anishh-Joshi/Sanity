@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class MyCustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final String appBarTitle;
   final IconData? iconData;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   const MyCustomAppBar({
     Key? key,
     required this.appBarTitle,
      this.iconData,
-    required this.onPressed,
+     this.onPressed,
   }) : super(key: key);
 
   @override

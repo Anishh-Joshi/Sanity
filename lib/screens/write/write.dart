@@ -20,8 +20,7 @@ class WritePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
             
               onPressed: () {
-                print("pressed");
-                Navigator.pushNamed(context,"/writelog");
+                Navigator.pushNamed(context,"write-log");
               },   
               child: const Icon(Icons.edit),
               backgroundColor: Theme.of(context).primaryColor,

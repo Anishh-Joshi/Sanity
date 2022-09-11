@@ -5,10 +5,9 @@ class LogModel extends Equatable{
   final String createdAt;
   final double depressionScore;
 
-  LogModel({required this.text, required this.createdAt, required this.depressionScore});
+  const LogModel({required this.text, required this.createdAt, required this.depressionScore});
 
   factory LogModel.fromJson(Map response){
-    print("here");
     return LogModel(
       text: response['log'], 
       createdAt: response['created_at'], 

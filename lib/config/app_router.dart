@@ -12,9 +12,6 @@ import 'package:sanity/screens/profile/profile.dart';
 import 'package:sanity/screens/write/write_textfield.dart';
 
 class AppRouter {
-  final AuthRepository repo;
-
-  AppRouter(this.repo);
   static Route? onGenerateRoute(RouteSettings setting) {
     print("Route chosen ${setting.name}");
 
@@ -39,7 +36,6 @@ class AppRouter {
         return ProfilePage.route();
       case WriteField.routeName:
         return WriteField.route();
-
       default:
         _errorRoute();
     }

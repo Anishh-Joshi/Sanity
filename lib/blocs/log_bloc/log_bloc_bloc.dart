@@ -28,12 +28,8 @@ class LogBlocBloc extends Bloc<LogBlocEvent, LogBlocState> {
 
   void _retrieveLog(RetrieveLog event, Emitter<LogBlocState> emit) async {
     emit(LogBlocLoading());
-    print("here1");
     final Map receivedMap = await repo.retrieveLog(1);
-    print("here2");
-    print(receivedMap['candidates']);
     emit(LogRetrieved(log: receivedMap['candidates']));
-    print("here3");
 
   }
 

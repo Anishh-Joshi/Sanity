@@ -29,7 +29,7 @@ Color indicatorColor(bool isDark) {
 }
 
 Color primaryColor(bool isDark) {
-  return const Color(0xffc0c0f2);
+  return const Color(0xff9A9EF3);
 }
 
 Color canvasColor(bool isDark) {
