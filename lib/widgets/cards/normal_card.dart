@@ -26,7 +26,7 @@ class NormalCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          Text(heading,style: Theme.of(context).textTheme.headline4!.copyWith(fontSize:18)),
+          Text(heading,style: Theme.of(context).textTheme.headline3!.copyWith(fontSize:18)),
           Text( text,style: Theme.of(context).textTheme.headline5!.copyWith(fontSize:14)),
 
         ],),

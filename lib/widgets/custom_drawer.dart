@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/blocs/theme/theme_bloc_bloc.dart';
+import 'package:sanity/screens/settings/settings.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/custom_elevated_button.dart';
 import 'package:sanity/widgets/platform_aware.dart';
@@ -84,6 +85,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                     const Divider(),
                     ListTile(
+                      onTap: (){},
                       leading: Icon(
                         Entypo.line_graph,
                         color: Theme.of(context).indicatorColor,
@@ -94,6 +96,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                     ),
                     ListTile(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>const Settings()));
+                      },
                       leading: Icon(
                         Ionicons.settings_outline,
                         color: Theme.of(context).indicatorColor,

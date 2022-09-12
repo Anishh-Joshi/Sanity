@@ -10,6 +10,7 @@ ThemeData theme({required bool isDark}) {
       ),
       scaffoldBackgroundColor: !isDark ? Colors.white : const Color(0xff000000),
       fontFamily: 'Nunito',
+      shadowColor: shadowColor(isDark),
       canvasColor: canvasColor(isDark),
       cardColor: isDark
           ? const Color.fromARGB(255, 8, 8, 8)
@@ -26,6 +27,9 @@ ThemeData theme({required bool isDark}) {
 
 Color indicatorColor(bool isDark) {
   return isDark ? Colors.white : const Color(0xff000000);
+}
+Color shadowColor(bool isDark) {
+  return isDark ? Colors.black : primaryColor(isDark);
 }
 
 Color primaryColor(bool isDark) {
