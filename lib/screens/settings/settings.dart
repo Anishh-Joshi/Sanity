@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
@@ -15,18 +16,7 @@ class Settings extends StatelessWidget {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon:  Icon(
-            Icons.arrow_back_ios,
-            color: Theme.of(context).iconTheme.color,
-          ),
-        ),
-      ),
+
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -35,6 +25,15 @@ class Settings extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        },
+                      icon:Icon(
+                  Icons.arrow_back_ios,
+                  color: Theme.of(context).iconTheme.color,
+                ),),
+                const Divider(color: Colors.transparent,),
                 Text(
                   "Settings",
                   style: Theme.of(context)
@@ -57,55 +56,66 @@ class Settings extends StatelessWidget {
                 ),
                 BlocBuilder<HomeBloc, HomeState>(
                   builder: (context, state) {
-                    if(state is HomeLoaded){
-                      return  InkWell(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const Account()));
+                    if (state is HomeLoaded) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Account()));
                         },
                         child: Row(
-                        children: [
-                           Expanded(
-                              flex: 1,
-                              child: CircleAvatarCustom(
-                                url: state.user!.profileImgUrl!,
-                                radius: 40,
-                              )),
-                          Expanded(
-                              flex: 3,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      state.user!.fullName!,
-                                      style:
-                                          Theme.of(context).textTheme.headline3,
-                                    ),
-                                    Text(
-                                      state.user!.gender!,
-                                      style:
-                                          Theme.of(context).textTheme.headline5,
-                                    ),
-                                  ],
-                                ),
-                              )),
-                          Container(
-                              height: height * 0.055,
-                              width: height * 0.055,
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context).cardColor,
-                                  borderRadius: BorderRadius.circular(60)),
-                              child: SettingsIcon(
-                                  icon: Icon(Icons.arrow_forward_ios,
-                                      size: 18,
-                                      color: Theme.of(context).iconTheme.color),
-                                  callback: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>const Account()));
-                                  }))
-                        ],
-                                          ),
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: CircleAvatarCustom(
+                                  url: state.user!.profileImgUrl!,
+                                  radius: 40,
+                                )),
+                            Expanded(
+                                flex: 3,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        state.user!.fullName!,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline3,
+                                      ),
+                                      Text(
+                                        state.user!.gender!,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5,
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                            Container(
+                                height: height * 0.055,
+                                width: height * 0.055,
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context).cardColor,
+                                    borderRadius: BorderRadius.circular(60)),
+                                child: SettingsIcon(
+                                    icon: Icon(Icons.arrow_forward_ios,
+                                        size: 18,
+                                        color:
+                                            Theme.of(context).iconTheme.color),
+                                    callback: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const Account()));
+                                    }))
+                          ],
+                        ),
                       );
                     }
                     return const SizedBox();
