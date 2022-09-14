@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:sanity/apis/apis.dart';
 
 class CircleAvatarCustom extends StatelessWidget {
+  final APIs api = APIs();
   final String url;
   final double radius;
 
-  const CircleAvatarCustom({Key? key, required this.url, required this.radius})
+   CircleAvatarCustom({Key? key, required this.url, required this.radius})
       : super(key: key);
 
   @override

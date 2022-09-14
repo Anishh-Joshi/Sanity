@@ -24,7 +24,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void _onLoginCheck(LoginCheck event, Emitter<LoginState> emit) async {
     emit(LoginLoading());
     bool tokenData = await repo.hasToken();
-
     await loginCheck(emit, tokenData);
   }
 

@@ -1,14 +1,14 @@
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sanity/apis/apis.dart';
 import 'dart:convert';
 
 class LogRepository {
-  final String url = "http://10.0.2.2:8000/api/assistant/set/dailylog/";
+  final APIs api = APIs();
 
   Future<Map> sendLog(String log, int userId) async {
     final client = http.Client();
 
-    final http.Response response = await client.post(Uri.parse(url),
+    final http.Response response = await client.post(Uri.parse(api.sendDailyLog),
         body: jsonEncode({"user": userId, "log": log}),
         headers: {
           "Content-type": 'application/json',
@@ -22,7 +22,7 @@ class LogRepository {
 
   Future<Map> retrieveLog(int userId) async {
     final client = http.Client();
-    final http.Response response = await client.get(Uri.parse("http://10.0.2.2:8000/api/assistant/get/dailylog/?id=1"));
+    final http.Response response = await client.get(Uri.parse(api.retrieveLog(id: 1)));
     final Map logResponse = json.decode(response.body);
     return logResponse;
   }

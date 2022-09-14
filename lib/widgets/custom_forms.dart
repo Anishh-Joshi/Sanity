@@ -13,49 +13,47 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Theme.of(context).primaryColor,
-              width: 1,
-            ),
-            borderRadius: BorderRadius.circular(16),
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Theme.of(context).primaryColor,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.circular(16),
 
+      ),
+      child: Padding(
+        padding:
+            const EdgeInsets.only(left: 10.0, right: 8, top: 5, bottom: 5),
+        child: TextFormField(
+          keyboardType: TextInputType.emailAddress,
+          onChanged: onChanged,
+          style: Theme.of(context)
+              .textTheme
+              .bodyText2!
+              .copyWith(fontSize: 15,),
+          decoration: InputDecoration(
+            enabled: true,
+            hintText: hintText,
+            hintStyle: Theme.of(context)
+              .textTheme
+              .bodyText2!
+              .copyWith(fontSize: 15,),
+            border: InputBorder.none,
           ),
-          child: Padding(
-            padding:
-                const EdgeInsets.only(left: 10.0, right: 8, top: 5, bottom: 5),
-            child: TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              onChanged: onChanged,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText2!
-                  .copyWith(fontSize: 15,),
-              decoration: InputDecoration(
-                enabled: true,
-                hintText: hintText,
-                hintStyle: Theme.of(context)
-                  .textTheme
-                  .bodyText2!
-                  .copyWith(fontSize: 15,),
-                border: InputBorder.none,
-              ),
-              controller: controller,
-              validator: (value) {
-                if (value == null) {
-                  return 'Please enter some text';
-                }
-                if (!value.contains("@")) {
-                  return 'Email must contain @';
-                }
-                return null;
-              },
-            ),
-          ),
-        ));
+          controller: controller,
+          validator: (value) {
+            if (value == null) {
+              return 'Please enter some text';
+            }
+            if (!value.contains("@")) {
+              return 'Email must contain @';
+            }
+            return null;
+          },
+        ),
+      ),
+    );
   }
 }
 

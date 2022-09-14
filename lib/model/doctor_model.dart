@@ -1,12 +1,14 @@
 class DoctorModel {
   final String name;
   final String gender;
+  final int doctorId;
   final String location;
   final int nmcId;
   final String profileUrl;
 
   DoctorModel(
       {required this.profileUrl,
+      required this.doctorId,
       required this.name,
       required this.gender,
       required this.location,
@@ -16,6 +18,7 @@ class DoctorModel {
   factory DoctorModel.fromJson(Map response) {
     return DoctorModel(
         name: response['full_name'],
+        doctorId: response['user'],
         gender: response['gender'],
         location: response['location'],
         nmcId: response['nmcId'],

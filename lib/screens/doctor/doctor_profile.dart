@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_font_icons/flutter_font_icons.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sanity/blocs/home/home_bloc.dart';
+import 'package:sanity/screens/doctor/appointment.dart';
 import 'package:sanity/widgets/cards/normal_card.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/custom_elevated_button.dart';
 
 class DoctorProfile extends StatelessWidget {
-
   final String url;
   final String name;
   final String profile;
   final int nmcId;
+  final int doctorId;
   const DoctorProfile(
       {Key? key,
       required this.url,
+      required this.doctorId,
       required this.name,
       required this.profile,
       required this.nmcId})
@@ -150,11 +152,34 @@ class DoctorProfile extends StatelessWidget {
                                   width: width * 0.65,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: ElevatedButtonCustom(
-                                        size: 14,
-                                        action: () {},
-                                        color: Theme.of(context).primaryColor,
-                                        buttonTitle: "Book an Appointment"),
+                                    child: BlocBuilder<HomeBloc, HomeState>(
+                                      builder: (context, state) {
+                                        if (state is HomeLoaded) {
+                                          return ElevatedButtonCustom(
+                                              size: 14,
+                                              action: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Appointment(
+                                                              patientId: state
+                                                                  .user!
+                                                                  .userId!,
+                                                              doctorId:
+                                                                  doctorId,
+                                                            )));
+                                              },
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              buttonTitle:
+                                                  "Book an Appointment");
+                                        }
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               )
@@ -176,7 +201,7 @@ class DoctorProfile extends StatelessWidget {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            icon:  Icon(
+                            icon: Icon(
                               Icons.arrow_back_ios,
                               color: Theme.of(context).iconTheme.color,
                             )),

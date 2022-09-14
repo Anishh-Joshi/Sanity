@@ -16,7 +16,7 @@ class ThreadCard extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            leading: const CircleAvatarCustom(
+            leading: CircleAvatarCustom(
               radius: 20,
               url: "/media/default.jpg",
             ),

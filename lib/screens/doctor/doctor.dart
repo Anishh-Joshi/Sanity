@@ -28,7 +28,7 @@ class DoctorsPage extends StatelessWidget {
                   DoctorModel doc = DoctorModel.fromJson(state.docList[index]);
                   return GestureDetector(
                                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>DoctorProfile(url: doc.profileUrl,nmcId: doc.nmcId, profile: "General Doctor",name: doc.name,)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>DoctorProfile(url: doc.profileUrl,nmcId: doc.nmcId, profile: "General Doctor",name: doc.name,doctorId: doc.doctorId,)));
                 },
                     child: DoctorCard(doctorName:doc.name , gender: doc.gender, location: doc.location, profileUrl: doc.profileUrl, nmcId: doc.nmcId, hospitalName: "KMC"));
               

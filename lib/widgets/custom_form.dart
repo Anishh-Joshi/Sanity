@@ -43,12 +43,12 @@ class CustomForm extends StatelessWidget {
             hintText: hintText,
             border: InputBorder.none,
             hintStyle: Theme.of(context).textTheme.headline5,
-            prefixIcon: Icon(
+            prefixIcon: iconData==null?null:Icon(
               iconData,
               size: 30,
               color: iconColor,
             ),
-            suffixIcon: IconButton(
+              suffixIcon: iconDataSuffix==null?null: IconButton(
               onPressed: suffixIconPressed,
               icon: Icon(
                 iconDataSuffix,

@@ -1,12 +1,10 @@
 import 'package:http/http.dart' as http;
+import 'package:sanity/apis/apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class AuthRepository {
-  final String loginUrl = "http://10.0.2.2:8000/api/user/login/";
-  final String signInUrl = "http://10.0.2.2:8000/api/user/register/";
-  final String user = "http://10.0.2.2:8000/api/user/profile/";
-
+  final APIs  api = APIs();
   Future<bool> hasToken() async {
     final prefs = await SharedPreferences.getInstance();
     final value = prefs.getString('token');
@@ -42,7 +40,7 @@ class AuthRepository {
 
   Future<Map> login(String email, password) async {
     final client = http.Client();
-    final http.Response response = await client.post(Uri.parse(loginUrl),
+    final http.Response response = await client.post(Uri.parse(api.loginUrl),
         body: jsonEncode({"email": email, "password": password}),
         headers: {
           "Content-type": 'application/json',
@@ -55,7 +53,7 @@ class AuthRepository {
 
   Future<Map> signIn(String email, password, confirmPassword) async {
     final client = http.Client();
-    final http.Response response = await client.post(Uri.parse(signInUrl),
+    final http.Response response = await client.post(Uri.parse(api.signInUrl),
         body: jsonEncode({
           "email": email,
           "password": password,
@@ -76,7 +74,7 @@ class AuthRepository {
     final String? token = prefs.getString('token');
     if (token != null) {
       final http.Response response =
-          await client.get(Uri.parse(user), headers: {
+          await client.get(Uri.parse(api.user), headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
@@ -89,15 +87,13 @@ class AuthRepository {
   }
 
   Future<Map> registeredProfileData({required int id}) async {
-    final String userProfile =
-        "http://10.0.2.2:8000/api/user/get/profile/?id=$id";
 
     final prefs = await SharedPreferences.getInstance();
     final client = http.Client();
     final String? token = prefs.getString('token');
     if (token != null) {
       final http.Response response =
-          await client.get(Uri.parse(userProfile), headers: {
+          await client.get(Uri.parse(api.userProfile(id:id)), headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         "Access-Control-Allow_origin": "*"
