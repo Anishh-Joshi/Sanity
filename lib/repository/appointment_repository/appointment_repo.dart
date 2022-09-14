@@ -26,7 +26,7 @@ class AppointmentRepository {
     return appointmentResponse;
   }
 
-  Future<Map> retrieveAppointments(int userId) async {
+  Future<Map> retrieveAppointments({required int userId}) async {
     final client = http.Client();
     final http.Response response =
         await client.get(Uri.parse(api.retrieveAppointment(id: userId)));

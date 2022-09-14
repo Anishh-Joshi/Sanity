@@ -1,11 +1,11 @@
 class AppointmentModel {
-  final int patientName;
-  final int doctorName;
-  final DateTime createdAt;
+  final int? patientName;
+  final int? doctorName;
+  final DateTime? createdAt;
   final DateTime? atTime;
-  final int emergencyContact;
+  final int? emergencyContact;
   final String? previousMedications;
-  final bool pending;
+  final bool? pending;
 
   AppointmentModel(
       {required this.pending,
@@ -18,10 +18,9 @@ class AppointmentModel {
 
   factory AppointmentModel.fromJSON(Map response) {
     return AppointmentModel(
-      patientName: response['user'],
-      doctorName: response['appointed_to'],
+      patientName: response['user_id'],
+      doctorName: response['appointed_to_id'],
       createdAt: DateTime.parse(response['created_at']),
-      atTime: response['at_time'],
       emergencyContact: response['emergency_contact'],
       previousMedications: response['previous_medication'],
       pending: response['pending'],

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:sanity/model/user_info_model.dart';
+import 'package:sanity/screens/doctor/appointment_information.dart';
 import 'package:sanity/screens/doctor/doctor.dart';
 import 'package:sanity/screens/home/home.dart';
 import 'package:sanity/screens/message/messagePage.dart';
@@ -9,7 +11,8 @@ import 'package:sanity/screens/notifications/notification.dart';
 import 'package:sanity/screens/write/write.dart';
 
 class HomeLandingPage extends StatefulWidget {
-  const HomeLandingPage({Key? key}) : super(key: key);
+  final UserInfoModel user;
+  const HomeLandingPage({Key? key, required this.user}) : super(key: key);
 
   @override
   State<HomeLandingPage> createState() => _HomeLandingPageState();
@@ -20,12 +23,12 @@ class _HomeLandingPageState extends State<HomeLandingPage> {
       PersistentTabController(initialIndex: 0);
 
   List<Widget> _buildScreens() {
-    return const [
-      Home(),
-      NotificationPage(),
-      WritePage(),
-      DoctorsPage(),
-      MessagePage(),
+    return  [
+      const Home(),
+      const NotificationPage(),
+      const WritePage(),
+      widget.user.isDoctor!? AppointmentInformation(user: widget.user,): const DoctorsPage(),
+      const MessagePage(),
     ];
   }
 
@@ -49,9 +52,14 @@ class _HomeLandingPageState extends State<HomeLandingPage> {
         activeColorPrimary: Theme.of(context).primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.medical_services_rounded),
-        title: ("Assist"),
+     widget.user.isDoctor!?PersistentBottomNavBarItem(
+        icon: const Icon(MaterialIcons.perm_contact_calendar),
+        title: ("Appointment"),
+        activeColorPrimary: Theme.of(context).primaryColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ): PersistentBottomNavBarItem(
+        icon: const Icon(Fontisto.doctor),
+        title: ("Doctors"),
         activeColorPrimary: Theme.of(context).primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),

@@ -8,8 +8,9 @@ import '../../widgets/platform_aware.dart';
 class Appointment extends StatefulWidget {
   final int doctorId;
   final int patientId;
+  final bool isForDoctor;
 
-  const Appointment({Key? key, required this.doctorId, required this.patientId})
+  const Appointment({Key? key, required this.doctorId, required this.patientId, required this.isForDoctor})
       : super(key: key);
 
   @override

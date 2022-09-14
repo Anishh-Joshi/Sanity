@@ -27,4 +27,11 @@ class RequestAppointment extends AppointmentEvent {
   List<Object> get props => [userId,doctorId,previousMedicine,emergencyContact];
 }
 
-class RetrieveAppointment extends AppointmentEvent {}
+class RetrieveAppointmentDoctor extends AppointmentEvent {
+  final int doctorId;
+
+  const RetrieveAppointmentDoctor({required this.doctorId});
+  @override
+  List<Object> get props => [doctorId];
+
+}

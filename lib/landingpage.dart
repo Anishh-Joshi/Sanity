@@ -63,7 +63,7 @@ class _LandingPageState extends State<LandingPage> {
         );
       }
       if (state is LoginAuthenticated) {
-        return const HomeLandingPage();
+        return  HomeLandingPage(user: state.user);
       } else {
         return const Center(child: Text("SOMETHING WENT WRONG"));
       }

@@ -35,7 +35,6 @@ class WritePage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child:
             BlocBuilder<LogBlocBloc, LogBlocState>(builder: (context, state) {
-              //do something
           if (state is LogRetrieved) {
             return ListView.builder(
               physics: const BouncingScrollPhysics(),
