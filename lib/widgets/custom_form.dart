@@ -10,11 +10,16 @@ class CustomForm extends StatelessWidget {
   final IconData? iconData;
   final VoidCallback? suffixIconPressed;
     final IconData? iconDataSuffix;
+    final bool? enabled;
+    final String? initialValue;
+  
   final double? borderRadius;
   const CustomForm(
       {Key? key,
       this.hintText,
       this.borderRadius,
+      this.initialValue,
+      this.enabled,
       this.iconData,
       this.iconDataSuffix,
       this.suffixIconPressed,
@@ -35,6 +40,8 @@ class CustomForm extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8),
         child: TextFormField(
+          enabled: enabled,
+          initialValue: "HAKKAKAKKA",
           keyboardType: keyboardType,
           onChanged: onChanged,
           style: Theme.of(context).textTheme.headline5,

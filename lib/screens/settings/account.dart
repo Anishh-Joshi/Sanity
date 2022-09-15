@@ -25,7 +25,7 @@ class Account extends StatelessWidget {
                     IconButton(
                       onPressed: () {
                         Navigator.pop(context);
-                        },
+                      },
                       icon: Icon(
                         Icons.arrow_back_ios,
                         color: Theme.of(context).iconTheme.color,
@@ -94,7 +94,16 @@ class Account extends StatelessWidget {
                 SizedBox(
                   height: height * 0.04,
                 ),
-                GenderBox(height: height),
+                BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, state) {
+                    if(state is HomeLoaded){
+                      return GenderBox(
+                        gender: state.user!.gender!,
+                        height: height);
+                    }
+                    return const SizedBox();
+                  },
+                ),
                 SizedBox(
                   height: height * 0.04,
                 ),
@@ -132,9 +141,11 @@ class Account extends StatelessWidget {
 }
 
 class GenderBox extends StatelessWidget {
+  final String gender;
   const GenderBox({
     Key? key,
     required this.height,
+    required this.gender,
   }) : super(key: key);
 
   final double height;
@@ -148,111 +159,93 @@ class GenderBox extends StatelessWidget {
           "Gender",
           style: Theme.of(context).textTheme.headline4,
         ),
-        BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-            if (state is HomeLoaded) {
-              return Row(
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            color: state.user!.gender == "Male"
-                                ? Colors.deepPurpleAccent
-                                : Theme.of(context).cardColor,
-                            borderRadius:
-                                BorderRadius.circular(50)),
-                        child: Icon(
-                          Icons.male,
-                          color: state.user!.gender == "Male"
-                              ? Colors.white
-                              : const Color.fromARGB(
-                                  255, 99, 98, 98),
-                        ),
-                      ),
-                      SizedBox(
-                        height: height * 0.004,
-                      ),
-                      Text(
-                        "Male",
-                        style:
-                            Theme.of(context).textTheme.headline6,
-                      ),
-                    ],
+        Row(
+          children: [
+            Column(
+              children: [
+                Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      color: gender == "Male"
+                          ? Colors.deepPurpleAccent
+                          : Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Icon(
+                    Icons.male,
+                    color: gender == "Male"
+                        ? Colors.white
+                        : const Color.fromARGB(255, 99, 98, 98),
                   ),
-                  const SizedBox(
-                    width: 10,
+                ),
+                SizedBox(
+                  height: height * 0.004,
+                ),
+                Text(
+                  "Male",
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ],
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Column(
+              children: [
+                Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      color: gender == "Female"
+                          ? Colors.deepPurpleAccent
+                          : Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Icon(
+                    Icons.female,
+                    color: gender == "Female"
+                        ? Colors.white
+                        : const Color.fromARGB(255, 99, 98, 98),
                   ),
-                  Column(
-                    children: [
-                      Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            color: state.user!.gender == "Female"
-                                ? Colors.deepPurpleAccent
-                                : Theme.of(context).cardColor,
-                            borderRadius:
-                                BorderRadius.circular(50)),
-                        child: Icon(
-                          Icons.female,
-                          color: state.user!.gender == "Female"
-                              ? Colors.white
-                              : const Color.fromARGB(
-                                  255, 99, 98, 98),
-                        ),
-                      ),
-                      SizedBox(
-                        height: height * 0.004,
-                      ),
-                      Text(
-                        "Female",
-                        style:
-                            Theme.of(context).textTheme.headline6,
-                      ),
-                    ],
+                ),
+                SizedBox(
+                  height: height * 0.004,
+                ),
+                Text(
+                  "Female",
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ],
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Column(
+              children: [
+                Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      color: gender != "Female" && gender != "Male"
+                          ? Colors.deepPurpleAccent
+                          : Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Icon(
+                    AntDesign.meh,
+                    color: gender != "Female" && gender != "Male"
+                        ? Colors.white
+                        : const Color.fromARGB(255, 99, 98, 98),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            color: state.user!.gender != "Female" &&
-                                    state.user!.gender != "Male"
-                                ? Colors.deepPurpleAccent
-                                : Theme.of(context).cardColor,
-                            borderRadius:
-                                BorderRadius.circular(50)),
-                        child: Icon(
-                          AntDesign.meh,
-                          color: state.user!.gender != "Female" &&
-                                  state.user!.gender != "Male"
-                              ? Colors.white
-                              : const Color.fromARGB(
-                                  255, 99, 98, 98),
-                        ),
-                      ),
-                      SizedBox(
-                        height: height * 0.004,
-                      ),
-                      Text(
-                        "Other",
-                        style:
-                            Theme.of(context).textTheme.headline6,
-                      ),
-                    ],
-                  ),
-                ],
-              );
-            }
-            return const SizedBox();
-          },
+                ),
+                SizedBox(
+                  height: height * 0.004,
+                ),
+                Text(
+                  "Other",
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ],
+            ),
+          ],
         ),
         const Opacity(
           opacity: 0,

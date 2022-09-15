@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/appointment/appointment_bloc.dart';
+import 'package:sanity/blocs/home/home_bloc.dart';
+import 'package:sanity/model/user_info_model.dart';
 import 'package:sanity/screens/settings/account.dart';
+import 'package:sanity/widgets/circular_progress.dart';
+import '../../model/appointment_model.dart';
 import '../../widgets/custom_form.dart';
 import '../../widgets/platform_aware.dart';
 
 class Appointment extends StatefulWidget {
-  final int doctorId;
-  final int patientId;
+  final AppointmentModel? appointmentModel;
+  final UserInfoModel? patient;
+  final int? doctorId;
+  final int? patientId;
   final bool isForDoctor;
+  final String? doctorName;
 
-  const Appointment({Key? key, required this.doctorId, required this.patientId, required this.isForDoctor})
+  const Appointment(
+      {Key? key,
+      this.doctorId,
+      this.patient,
+      this.doctorName,
+      this.patientId,
+      required this.isForDoctor,
+      this.appointmentModel})
       : super(key: key);
 
   @override
@@ -47,9 +61,9 @@ class _AppointmentState extends State<Appointment> {
               content: "Something went Wrong",
               defaultActionText: "Ok",
             ).show(context);
-          } 
-          else if(state is AppointmentRequested){
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Appointment Request Made")));
+          } else if (state is AppointmentRequested) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Appointment Request Made")));
             previousMeds.clear();
             emergencyContact.clear();
             Navigator.pop(context);
@@ -75,37 +89,42 @@ class _AppointmentState extends State<Appointment> {
                         color: Theme.of(context).iconTheme.color,
                       ),
                     ),
-                    BlocBuilder<AppointmentBloc, AppointmentState>(
-                      builder: (context, state) {
-                        if (state is AppointmentLoadng) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        return InkWell(
-                          onTap: () {
-                            context.read<AppointmentBloc>().add(
-                                RequestAppointment(
-                                    userId: widget.patientId,
-                                    doctorId: widget.doctorId,
-                                    previousMedicine: previousMeds.text,
-                                    emergencyContact:
-                                        int.tryParse(emergencyContact.text)!));
-                          },
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  color: Colors.deepPurpleAccent),
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.done,
-                                  color: Colors.white,
-                                ),
-                              )),
-                        );
-                      },
-                    ),
+                     BlocBuilder<AppointmentBloc, AppointmentState>(
+                            builder: (context, state) {
+                              if (state is AppointmentLoadng) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              return InkWell(
+                                onTap: () {
+                                  if(widget.isForDoctor){
+                                    //updation wala code here
+                                  }else{
+                                    context.read<AppointmentBloc>().add(
+                                      RequestAppointment(
+                                          userId: widget.patientId!,
+                                          doctorId: widget.doctorId!,
+                                          previousMedicine: previousMeds.text,
+                                          emergencyContact: int.tryParse(
+                                              emergencyContact.text)!));
+                                  }
+                                  
+                                },
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        color: Colors.deepPurpleAccent),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Icon(
+                                        Icons.done,
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                              );
+                            },
+                          ),
                   ],
                 ),
                 const Divider(
@@ -121,27 +140,49 @@ class _AppointmentState extends State<Appointment> {
                 SizedBox(
                   height: height * 0.04,
                 ),
-                const TextSettingWidget(
-                  text: "Full Name",
-                  state: "Anish Joshi",
-                  enable: false,
+                 widget.isForDoctor?TextSettingWidget(
+                      text: "Full Name",
+                      state: widget.patient!.fullName!,
+                      enable: false,
+                    ): BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, state) {
+                    if(state is HomeLoaded){
+                      return TextSettingWidget(
+                      text: "Full Name",
+                      state: state.user!.fullName!,
+                      enable: false,
+                    );
+                    }
+                    return const CircularProgressIndicatorCustom();
+                  },
                 ),
                 const Divider(
                   color: Colors.transparent,
                 ),
-                GenderBox(height: height),
+                GenderBox(gender:widget.patient!.gender!, height: height),
                 const Divider(
                   color: Colors.transparent,
                 ),
-                const TextSettingWidget(
-                  text: "Appointed  To",
-                  state: "Dr. Eldy",
-                  enable: false,
-                ),
+                 widget.isForDoctor?BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, state) {
+                    if(state is HomeLoaded){
+                      return TextSettingWidget(
+                      text: "Appointed to",
+                      state: state.user!.fullName!,
+                      enable: false,
+                    );
+                    }
+                    return const CircularProgressIndicatorCustom();
+                  },
+                ): TextSettingWidget(
+                      text: "Appointed to",
+                      state: widget.doctorName!,
+                      enable: false,
+                    ),
                 const Divider(
                   color: Colors.transparent,
                 ),
-                Row(
+                widget.isForDoctor?const Text("Doctor RimePicker"): Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -162,7 +203,7 @@ class _AppointmentState extends State<Appointment> {
                 const Divider(
                   color: Colors.transparent,
                 ),
-                Row(
+                widget.isForDoctor?SizedBox(): Row(
                   children: [
                     Text(
                       "Have you taken any meds before?",
@@ -180,12 +221,12 @@ class _AppointmentState extends State<Appointment> {
                         }),
                   ],
                 ),
-                isChecked
+                isChecked&&!widget.isForDoctor
                     ? const Divider(
                         color: Colors.transparent,
                       )
                     : const SizedBox(),
-                isChecked
+                widget.appointmentModel!.previousMedications!=null&& (isChecked || widget.isForDoctor)
                     ? Row(
                         children: [
                           Text(
@@ -207,7 +248,9 @@ class _AppointmentState extends State<Appointment> {
                               onChanged: (val) {
                                 previousMeds.text = val;
                               },
-                              hintText: "Eg: Benzodiazepine",
+                              enabled: widget.isForDoctor?false:true,
+                              hintText: widget.isForDoctor?"${widget.appointmentModel!.previousMedications}": "Eg: Benzodiazepine",
+                              initialValue: widget.isForDoctor?widget.appointmentModel!.previousMedications :null ,
                               borderColor: Colors.transparent,
                               borderRadius: 20,
                             ),
@@ -237,11 +280,12 @@ class _AppointmentState extends State<Appointment> {
                           color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(15)),
                       child: CustomForm(
+                                                      enabled: widget.isForDoctor?false:true,
                         onChanged: (val) {
                           emergencyContact.text = val;
                         },
                         keyboardType: TextInputType.number,
-                        hintText: "+977 98xxxxxxxx",
+                        hintText: widget.isForDoctor?"${widget.appointmentModel!.emergencyContact}": "+977 98xxxxxxxx",
                         borderColor: Colors.transparent,
                         borderRadius: 20,
                       ),
@@ -251,10 +295,21 @@ class _AppointmentState extends State<Appointment> {
                 const Divider(
                   color: Colors.transparent,
                 ),
-                const TextSettingWidget(
-                  text: "Location",
-                  state: "Kathmandu University",
-                  enable: false,
+                 widget.isForDoctor?TextSettingWidget(
+                      text: "Location",
+                      state: widget.patient!.address!,
+                      enable: false,
+                    ): BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, state) {
+                    if(state is HomeLoaded){
+                      return TextSettingWidget(
+                      text: "Location",
+                      state: state.user!.address!,
+                      enable: false,
+                    );
+                    }
+                    return const CircularProgressIndicatorCustom();
+                  },
                 ),
               ],
             ),

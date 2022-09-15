@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class AuthRepository {
-  final APIs  api = APIs();
+  final APIs api = APIs();
   Future<bool> hasToken() async {
     final prefs = await SharedPreferences.getInstance();
     final value = prefs.getString('token');
@@ -87,21 +87,15 @@ class AuthRepository {
   }
 
   Future<Map> registeredProfileData({required int id}) async {
-
-    final prefs = await SharedPreferences.getInstance();
     final client = http.Client();
-    final String? token = prefs.getString('token');
-    if (token != null) {
-      final http.Response response =
-          await client.get(Uri.parse(api.userProfile(id:id)), headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        "Access-Control-Allow_origin": "*"
-      });
-      Map signInResponse = json.decode(response.body);
-      return signInResponse;
-    } else {
-      return {};
-    }
+
+    final http.Response response =
+        await client.get(Uri.parse(api.userProfile(id: id)), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      "Access-Control-Allow_origin": "*"
+    });
+    Map signInResponse = json.decode(response.body);
+    return signInResponse;
   }
 }

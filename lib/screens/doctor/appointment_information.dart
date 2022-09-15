@@ -4,6 +4,7 @@ import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:sanity/blocs/appointment/appointment_bloc.dart';
 import 'package:sanity/model/appointment_model.dart';
 import 'package:sanity/model/user_info_model.dart';
+import 'package:sanity/repository/auth_repo.dart';
 import 'package:sanity/screens/doctor/appointment.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/circular_progress.dart';
@@ -53,10 +54,14 @@ class _AppointmentInformationState extends State<AppointmentInformation> {
                       isPendingScreen = false;
                     });
                   },
-                  color: Colors.deepPurpleAccent,
+                  color: isPendingScreen
+                      ? Theme.of(context).cardColor
+                      : Colors.deepOrangeAccent,
                 ),
                 Options(
-                  color: Colors.deepOrangeAccent,
+                  color: !isPendingScreen
+                      ? Theme.of(context).cardColor
+                      : Colors.deepOrangeAccent,
                   title: "Pending",
                   action: () {
                     setState(() {
@@ -105,18 +110,14 @@ class VerifiedAppointments extends StatelessWidget {
                       ? appointModel.pending!
                           ? const SizedBox()
                           : AppointmentCard(
-                              height: height,
-                              patientId: appointModel.patientName!,
-                              docId: appointModel.doctorName!,
-                              isPending: appointModel.pending!,
+                            height: height,
+                            appointmentMOdel: appointModel,
                             )
                       : !appointModel.pending!
                           ? const SizedBox()
                           : AppointmentCard(
-                              patientId: appointModel.patientName!,
-                              docId: appointModel.doctorName!,
-                              height: height,
-                              isPending: appointModel.pending!,
+                            height: height,
+                            appointmentMOdel: appointModel,
                             );
                 }),
           );
@@ -127,29 +128,57 @@ class VerifiedAppointments extends StatelessWidget {
   }
 }
 
-class AppointmentCard extends StatelessWidget {
-  final bool isPending;
-  final int docId;
-  final int patientId;
-  AppointmentCard({
+class AppointmentCard extends StatefulWidget {
+  final AppointmentModel appointmentMOdel;
+  const AppointmentCard({
     Key? key,
-    required this.height,
-    required this.isPending,
-    required this.docId,
-    required this.patientId,
+    required this.height, required this.appointmentMOdel,
   }) : super(key: key);
 
   final double height;
 
   @override
+  State<AppointmentCard> createState() => _AppointmentCardState();
+}
+
+class _AppointmentCardState extends State<AppointmentCard> {
+  bool isLoading = false;
+   UserInfoModel patient =const UserInfoModel();
+  
+
+  Future<UserInfoModel> getProfileDate(int id) async {
+
+    final AuthRepository repo = AuthRepository();
+    setState(() {
+      isLoading = true;
+    });
+
+    final Map profile = await repo.registeredProfileData(id: id);
+    final Map candidates = profile['candidates'];
+    
+    setState(() {
+      patient = UserInfoModel.fromJson(candidates);
+      isLoading = false;
+    });
+    return patient;
+  }
+
+  @override
+  void initState(){
+    getProfileDate(widget.appointmentMOdel.patientName!);
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return isLoading?const SizedBox(): InkWell(
       onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    Appointment(isForDoctor: false, doctorId: docId, patientId: patientId)));
+                builder: (context) => Appointment(
+                  patient: patient,
+                    isForDoctor: true,
+                    appointmentModel: widget.appointmentMOdel)));
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 8),
@@ -161,7 +190,7 @@ class AppointmentCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              CircleAvatarCustom(url: "url", radius: height * 0.05),
+              CircleAvatarCustom(url: patient.profileImgUrl!, radius: widget.height * 0.05),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -169,15 +198,15 @@ class AppointmentCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Anish Joshi",
+                        patient.fullName!,
                         style: Theme.of(context).textTheme.headline5,
                       ),
                       Text(
-                        "Male",
+                        patient.gender!,
                         style: Theme.of(context).textTheme.headline5,
                       ),
                       Text(
-                        "15 years old",
+                        patient.age!.toString(),
                         style: Theme.of(context).textTheme.headline5,
                       ),
                       Row(
@@ -199,7 +228,7 @@ class AppointmentCard extends StatelessWidget {
                   ),
                 ),
               ),
-              isPending
+              widget.appointmentMOdel.pending!
                   ? Column(
                       children: [
                         const Icon(

@@ -163,7 +163,7 @@ class DoctorProfile extends StatelessWidget {
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             Appointment(
-                                                              isForDoctor: true,
+                                                              isForDoctor: false,
                                                               patientId: state
                                                                   .user!
                                                                   .userId!,
