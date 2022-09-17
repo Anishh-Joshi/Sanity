@@ -10,6 +10,7 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
   AppointmentBloc({required this.repo}) : super(AppointmentLoaded()) {
     on<RequestAppointment>(_requestAppointment);
     on<RetrieveAppointmentDoctor>(_retrieveAppointment);
+     on<UpdateAppointmentDoctor>(_updateAppointment);
   }
 
   void _requestAppointment(
@@ -31,13 +32,28 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
     }
   }
 
+    void _updateAppointment(
+      UpdateAppointmentDoctor event, Emitter<AppointmentState> emit) async {
+    emit(AppointmentLoadng());
+    try {
+      final Map response = await repo.updateAppointment(appointmentId: event.appointmentId,time: event.time);
+      if (response['status'] == 'success') {
+        emit(AppointmentLoaded());
+      } else {
+        emit(AppointmentError(err: response['status']));
+      }
+      emit(AppointmentLoaded());
+    } catch (e) {
+      emit(AppointmentError(err: e.toString()));
+    }
+  }
+
   void _retrieveAppointment(
       RetrieveAppointmentDoctor event, Emitter<AppointmentState> emit) async {
     emit(AppointmentLoadng());
     try {
       final Map response =
           await repo.retrieveAppointments(userId: event.doctorId);
-          print(response);
       if (response['status'] == 'success') {
         emit(AppointmentRetrieved(appointmentList: response['appointment_data']));
       } else {

@@ -27,6 +27,8 @@ class AppointmentRequested extends AppointmentState {
   List<Object> get props => [appointmentModel];
 }
 
+class AppointmentUpdated extends AppointmentState {}
+
 class AppointmentError extends AppointmentState {
   final String err;
 

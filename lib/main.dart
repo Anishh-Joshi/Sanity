@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
         ],
         child: BlocBuilder<ThemeBloc, ThemeBlocState>(
           builder: (context, state) {
+            
             return MaterialApp(
               title: 'Sanity',
               debugShowCheckedModeBanner: false,

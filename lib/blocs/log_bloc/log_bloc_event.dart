@@ -8,6 +8,11 @@ abstract class LogBlocEvent extends Equatable {
 }
 
 class RetrieveLog extends LogBlocEvent{
+  final int id;
+
+  const RetrieveLog({required this.id});
+    List<Object> get props => [id];
+
 
 }
 

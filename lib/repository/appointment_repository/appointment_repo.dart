@@ -26,6 +26,22 @@ class AppointmentRepository {
     return appointmentResponse;
   }
 
+  Future<Map> updateAppointment({required int appointmentId,required DateTime time}) async {
+    final client = http.Client();
+    final http.Response response =
+        await http.put(Uri.parse(api.updateAppointment(appointmentId)),
+            body: jsonEncode({
+              "at_time": time.toIso8601String(),
+              'pending':false
+            }),
+               headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },);
+
+    final appointmentResponse = json.decode(response.body);
+    return appointmentResponse;
+  }
+
   Future<Map> retrieveAppointments({required int userId}) async {
     final client = http.Client();
     final http.Response response =

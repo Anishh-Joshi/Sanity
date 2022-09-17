@@ -35,3 +35,14 @@ class RetrieveAppointmentDoctor extends AppointmentEvent {
   List<Object> get props => [doctorId];
 
 }
+
+
+class UpdateAppointmentDoctor extends AppointmentEvent {
+  final int appointmentId;
+  final DateTime time;
+
+  const UpdateAppointmentDoctor({required this.time, required this.appointmentId});
+  @override
+  List<Object> get props => [appointmentId,time];
+
+}

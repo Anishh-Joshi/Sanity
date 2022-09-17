@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
+import 'package:sanity/widgets/bottom_appbar.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/custom_drawer.dart';
 import 'package:sanity/widgets/custom_form.dart';
@@ -11,7 +12,13 @@ import '../../blocs/home/home_bloc.dart';
 import '../../widgets/platform_aware.dart';
 
 class Home extends StatefulWidget {
+  static const String routeName = 'main_home';
   const Home({Key? key}) : super(key: key);
+  static Route route() {
+    return MaterialPageRoute(
+        builder: (_) => const Home(),
+        settings: const RouteSettings(name: routeName));
+  }
 
   @override
   State<Home> createState() => _HomeState();
@@ -31,31 +38,30 @@ class _HomeState extends State<Home> {
     }
   }
 
-
   final List dummyData = [
     {
-      "therapy":"I can't Feel the Air",
-      "enrolled":179,
-      "category":"Depressed",
-      "by":"Eldy"
+      "therapy": "I can't Feel the Air",
+      "enrolled": 179,
+      "category": "Depressed",
+      "by": "Eldy"
     },
     {
-      "therapy":"I feel nervous that my friends hate me!",
-      "enrolled":16,
-      "category":"Suicidal",
-      "by":"Anish"
+      "therapy": "I feel nervous that my friends hate me!",
+      "enrolled": 16,
+      "category": "Suicidal",
+      "by": "Anish"
     },
     {
-      "therapy":"Am am just Sad.",
-      "enrolled":34,
-      "category":"Sad",
-      "by":"Ramesh"
+      "therapy": "Am am just Sad.",
+      "enrolled": 34,
+      "category": "Sad",
+      "by": "Ramesh"
     },
     {
-      "therapy":"I find it extremly difficult around people.",
-      "enrolled":6722,
-      "category":"Insecure",
-      "by":"Khadka"
+      "therapy": "I find it extremly difficult around people.",
+      "enrolled": 6722,
+      "category": "Insecure",
+      "by": "Khadka"
     },
   ];
 
@@ -66,8 +72,16 @@ class _HomeState extends State<Home> {
     ));
     return Scaffold(
         key: _scaffoldKey,
+        bottomNavigationBar: BlocBuilder<LoginBloc, LoginState>(
+          builder: (context, state) {
+            if (state is LoginAuthenticated) {
+              return CustomNavbar(isDoctor: state.user.isDoctor!);
+            }
+            return const SizedBox();
+          },
+        ),
         body: GestureDetector(
-          onTap: (){
+          onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
           child: SafeArea(
@@ -75,38 +89,38 @@ class _HomeState extends State<Home> {
               floatHeaderSlivers: true,
               headerSliverBuilder: (context, innerBoxIsScrolled) => [
                 SliverAppBar(
-                  toolbarHeight: MediaQuery.of(context).size.height * 0.10,
-                  automaticallyImplyLeading: false,
-                  floating: true,
-                  title: BlocBuilder<HomeBloc, HomeState>(
-                    builder: (context, state) {
-                      if (state is HomeLoaded) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${greetingMessage()}",
-                              style: Theme.of(context).textTheme.headline2,
-                            ),
-                            Text(
-                              "${state.user!.fullName}",
-                              style: Theme.of(context).textTheme.headline3,
-                            ),
-                          ],
+                    toolbarHeight: MediaQuery.of(context).size.height * 0.10,
+                    automaticallyImplyLeading: false,
+                    floating: true,
+                    title: BlocBuilder<HomeBloc, HomeState>(
+                      builder: (context, state) {
+                        if (state is HomeLoaded) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${greetingMessage()}",
+                                style: Theme.of(context).textTheme.headline2,
+                              ),
+                              Text(
+                                "${state.user!.fullName}",
+                                style: Theme.of(context).textTheme.headline3,
+                              ),
+                            ],
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
                         );
-                      }
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    },
-                  ),
-                  leading: BlocBuilder<HomeBloc, HomeState>(
+                      },
+                    ),
+                    leading: BlocBuilder<HomeBloc, HomeState>(
                       builder: (context, state) {
                         if (state is HomeLoaded) {
                           return Padding(
-                            padding: const EdgeInsets.only(left:8.0),
+                            padding: const EdgeInsets.only(left: 8.0),
                             child: GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 Scaffold.of(context).openDrawer();
                               },
                               child: CircleAvatarCustom(
@@ -120,8 +134,7 @@ class _HomeState extends State<Home> {
                           child: CircularProgressIndicator(),
                         );
                       },
-                    )
-                )
+                    ))
               ],
               body: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -143,12 +156,12 @@ class _HomeState extends State<Home> {
                         child: SingleChildScrollView(
                           physics: const BouncingScrollPhysics(),
                           child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: CustomForm(
-                                  iconDataSuffix:Icons.clear_rounded ,
+                                  iconDataSuffix: Icons.clear_rounded,
                                   hintText: "Therapies Eg:Anxeity",
                                   containerColor: Theme.of(context).cardColor,
                                   iconColor: Theme.of(context).canvasColor,
@@ -163,11 +176,13 @@ class _HomeState extends State<Home> {
                                 color: Colors.transparent,
                               ),
                               Row(
-                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "Therapies",
-                                    style: Theme.of(context).textTheme.headline2,
+                                    style:
+                                        Theme.of(context).textTheme.headline2,
                                   ),
                                   TextButton(
                                     onPressed: () {},
@@ -190,18 +205,25 @@ class _HomeState extends State<Home> {
                                     scrollDirection: Axis.horizontal,
                                     itemCount: dummyData.length,
                                     itemBuilder: (context, index) {
-                                      return TherapyCard(category: dummyData[index]['category'], by:dummyData[index]['by'] ,enrolled: dummyData[index]['enrolled'],therapy: dummyData[index]['therapy'],);
+                                      return TherapyCard(
+                                        category: dummyData[index]['category'],
+                                        by: dummyData[index]['by'],
+                                        enrolled: dummyData[index]['enrolled'],
+                                        therapy: dummyData[index]['therapy'],
+                                      );
                                     }),
                               ),
                               const Divider(
                                 color: Colors.transparent,
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "Threads",
-                                    style: Theme.of(context).textTheme.headline2,
+                                    style:
+                                        Theme.of(context).textTheme.headline2,
                                   ),
                                   TextButton(
                                     onPressed: () {},

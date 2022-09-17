@@ -9,16 +9,18 @@ class CustomForm extends StatelessWidget {
   final Color? borderColor;
   final IconData? iconData;
   final VoidCallback? suffixIconPressed;
-    final IconData? iconDataSuffix;
-    final bool? enabled;
-    final String? initialValue;
-  
+  final IconData? iconDataSuffix;
+  final bool? enabled;
+  final bool?expands;
+  final int?maxLines;
+
   final double? borderRadius;
   const CustomForm(
       {Key? key,
       this.hintText,
+      this.expands = false,
+      this.maxLines = 1,
       this.borderRadius,
-      this.initialValue,
       this.enabled,
       this.iconData,
       this.iconDataSuffix,
@@ -40,8 +42,9 @@ class CustomForm extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8),
         child: TextFormField(
+          expands: expands!,
+          maxLines: maxLines,
           enabled: enabled,
-          initialValue: "HAKKAKAKKA",
           keyboardType: keyboardType,
           onChanged: onChanged,
           style: Theme.of(context).textTheme.headline5,
@@ -50,19 +53,23 @@ class CustomForm extends StatelessWidget {
             hintText: hintText,
             border: InputBorder.none,
             hintStyle: Theme.of(context).textTheme.headline5,
-            prefixIcon: iconData==null?null:Icon(
-              iconData,
-              size: 30,
-              color: iconColor,
-            ),
-              suffixIcon: iconDataSuffix==null?null: IconButton(
-              onPressed: suffixIconPressed,
-              icon: Icon(
-                iconDataSuffix,
-                color: iconColor,
-                size: 18,
-              ),
-            ),
+            prefixIcon: iconData == null
+                ? null
+                : Icon(
+                    iconData,
+                    size: 30,
+                    color: iconColor,
+                  ),
+            suffixIcon: iconDataSuffix == null
+                ? null
+                : IconButton(
+                    onPressed: suffixIconPressed,
+                    icon: Icon(
+                      iconDataSuffix,
+                      color: iconColor,
+                      size: 18,
+                    ),
+                  ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: borderColor!),
             ),
