@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sanity/widgets/arrow_forward_icon.dart';
-import 'package:timeago/timeago.dart' as timeago;
+
 import 'dart:math';
 
 class NotificationCard extends StatelessWidget {

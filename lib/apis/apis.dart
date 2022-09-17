@@ -27,4 +27,20 @@ class APIs {
   String updateAppointment(int id) {
     return "http://$localhost/api/assistant/update/appointment/?id=$id";
   }
+
+  String getTherapyByDoctor({required int id}) {
+    return "http://$localhost/api/assistant/get/therapy/?id=$id";
+  }
+
+  String getAllTherapy() {
+    return "http://$localhost/api/assistant/get/therapy/";
+  }
+
+  String updateTherapy(int id) {
+    return "http://$localhost/api/assistant/update/therapy/id=$id";
+  }
+
+  String deleteTherapy(int id) {
+    return "http://$localhost/api/assistant/delete/therapy/?id=$id";
+  }
 }

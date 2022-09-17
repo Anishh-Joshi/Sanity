@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
+import 'package:sanity/blocs/therapy/bloc/therapy_bloc.dart';
+import 'package:sanity/model/therapy_model.dart';
 import 'package:sanity/widgets/bottom_appbar.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
+import 'package:sanity/widgets/circular_progress.dart';
 import 'package:sanity/widgets/custom_drawer.dart';
 import 'package:sanity/widgets/custom_form.dart';
 import 'package:sanity/widgets/custom_thread_card.dart';
@@ -199,19 +202,28 @@ class _HomeState extends State<Home> {
                               const Divider(
                                 color: Colors.transparent,
                               ),
-                              SizedBox(
-                                height: MediaQuery.of(context).size.height / 4,
-                                child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: dummyData.length,
-                                    itemBuilder: (context, index) {
-                                      return TherapyCard(
-                                        category: dummyData[index]['category'],
-                                        by: dummyData[index]['by'],
-                                        enrolled: dummyData[index]['enrolled'],
-                                        therapy: dummyData[index]['therapy'],
-                                      );
-                                    }),
+                              BlocBuilder<TherapyBloc, TherapyState>(
+                                builder: (context, state) {
+                                  if(state is TherapyLoaded){
+                                    return SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height / 4,
+                                    child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: state.therapyList.length,
+                                        itemBuilder: (context, index) {
+                                          final TherapyModel therapy = TherapyModel.fromJSON(state.therapyList[index],state.emoteMap);
+                                          return TherapyCard(
+                                            therapy: therapy,
+                                          );
+                                        }),
+                                  );
+                                  }
+                                  else if(state is TherapyLoading){
+                                    return const CircularProgressIndicatorCustom();
+                                  }
+                                  return const SizedBox();
+                                },
                               ),
                               const Divider(
                                 color: Colors.transparent,

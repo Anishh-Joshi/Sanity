@@ -1,41 +1,24 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
+import 'package:sanity/model/therapy_model.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 
 class TherapyCard extends StatelessWidget {
-  final String therapy;
-  final String by;
-  final int enrolled;
-  final String category;
+  final TherapyModel therapy;
   const TherapyCard(
       {Key? key,
       required this.therapy,
-      required this.by,
-      required this.enrolled,
-      required this.category})
+      })
       : super(key: key);
 
-String emojiPicker(String category){
-
-  switch (category) {
-    case "Depressed":
-      return "☹️";
-    case "Anxeity":
-      return "😨";
-    case "Stressed":
-      return "🤕";
-    case "Sad":
-      return "😥";
-    case "Jealous":
-      return "😪";
-    case "Insecure":
-      return "🥺";
-    case "Suicidal":
-      return "😰";
-    default:
-    return "😶";
+String utf8convert(String text) {
+    List<int> bytes = text.toString().codeUnits;
+    return utf8.decode(bytes);
   }
-
-}
+  
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -53,7 +36,7 @@ String emojiPicker(String category){
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                therapy,
+                toBeginningOfSentenceCase(therapy.title!)! ,
                 style: Theme.of(context).textTheme.headline3,
               ),
               Row(
@@ -63,7 +46,7 @@ String emojiPicker(String category){
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   Text(
-                    by,
+                    therapy.doctorId.toString(),
                     style: Theme.of(context).textTheme.headline5,
                   ),
                 ],
@@ -72,7 +55,7 @@ String emojiPicker(String category){
                 children: [
                   Icon(AntDesign.clockcircleo,size: 14,color: Theme.of(context).canvasColor,),
                   SizedBox(width: 4,),
-                  Text("5 days ago",style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).canvasColor)),
+                  Text(timeago.format(therapy.createdAt!),style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).canvasColor)),
                 ],
               ),
               Row(
@@ -88,7 +71,7 @@ String emojiPicker(String category){
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            category,
+                            therapy.category!,
                             style: Theme.of(context)
                                 .textTheme
                                 .headline6!
@@ -97,7 +80,7 @@ String emojiPicker(String category){
                         ),
                       ),
                       Text(
-                        " ${emojiPicker(category)}",
+                        " ${utf8convert(therapy.emoji!)}",
                         style: Theme.of(context)
                             .textTheme
                             .headline3!
@@ -108,7 +91,7 @@ String emojiPicker(String category){
                   Row(
                     children: [
                       Text(
-                        "${enrolled}+",
+                        "${therapy.involved}+",
                         style: Theme.of(context)
                             .textTheme
                             .headline3!
