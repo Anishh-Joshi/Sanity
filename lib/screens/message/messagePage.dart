@@ -10,7 +10,7 @@ class MessagePage extends StatelessWidget {
   const MessagePage({Key? key}) : super(key: key);
     static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const MessagePage(),
+        builder: (context) => const MessagePage(),
         settings: const RouteSettings(name: routeName));
   }
 

@@ -10,7 +10,7 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => LoginScreen(),
+        builder: (context) => LoginScreen(),
         settings: const RouteSettings(name: routeName));
   }
 

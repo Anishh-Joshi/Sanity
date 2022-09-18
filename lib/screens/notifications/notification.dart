@@ -8,7 +8,7 @@ class NotificationPage extends StatelessWidget {
   static const String routeName = 'notification';
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const NotificationPage(),
+        builder: (context) => const NotificationPage(),
         settings: const RouteSettings(name: routeName));
   }
 

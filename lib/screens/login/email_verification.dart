@@ -10,7 +10,7 @@ class EmailVerification extends StatefulWidget {
   const EmailVerification({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const EmailVerification(),
+        builder: (context) => const EmailVerification(),
         settings: const RouteSettings(name: routeName));
   }
 

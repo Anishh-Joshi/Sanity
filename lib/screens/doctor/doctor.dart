@@ -15,7 +15,7 @@ class DoctorsPage extends StatelessWidget {
   const DoctorsPage({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const DoctorsPage(),
+        builder: (context) => const DoctorsPage(),
         settings: const RouteSettings(name: routeName));
   }
 

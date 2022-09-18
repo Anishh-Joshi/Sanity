@@ -10,7 +10,7 @@ class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const Signup(),
+        builder: (context) => const Signup(),
         settings: const RouteSettings(name: routeName));
   }
 

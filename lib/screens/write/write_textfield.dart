@@ -14,7 +14,7 @@ class WriteField extends StatefulWidget {
 
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const WriteField(),
+        builder: (context) => const WriteField(),
         settings: const RouteSettings(name: routeName));
   }
 

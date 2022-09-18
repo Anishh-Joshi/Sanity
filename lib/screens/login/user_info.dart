@@ -15,7 +15,7 @@ class UserInfo extends StatefulWidget {
   const UserInfo({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const UserInfo(),
+        builder: (context) => const UserInfo(),
         settings: const RouteSettings(name: routeName));
   }
 

@@ -39,6 +39,7 @@ class _AppointmentState extends State<Appointment> {
   void initState() {
     _pickedDate = DateTime.now();
     timeOfDay = TimeOfDay.now();
+    super.initState();
   }
 
   final TextEditingController previousMeds = TextEditingController();
@@ -79,7 +80,7 @@ class _AppointmentState extends State<Appointment> {
         bloc: context.read<AppointmentBloc>(),
         listener: (context, state) {
           if (state is AppointmentError) {
-             PlatformAADialog(
+            PlatformAADialog(
               title: 'Appointment Request Failed',
               content: state.err,
               defaultActionText: "Ok",
@@ -90,11 +91,11 @@ class _AppointmentState extends State<Appointment> {
             previousMeds.clear();
             emergencyContact.clear();
             Navigator.pop(context);
-          }
-          else if (state is AppointmentLoaded) {
+          } else if (state is AppointmentLoaded && widget.isForDoctor) {
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Appointment Verified")));
-                context.read<AppointmentBloc>().add(RetrieveAppointmentDoctor(doctorId: widget.appointmentModel!.doctorName!));
+            context.read<AppointmentBloc>().add(RetrieveAppointmentDoctor(
+                doctorId: widget.appointmentModel!.doctorName!));
           }
         },
         child: SafeArea(
@@ -141,7 +142,7 @@ class _AppointmentState extends State<Appointment> {
                                       time: finalDateTime,
                                       appointmentId: widget
                                           .appointmentModel!.appointmentId!));
-                                          Navigator.pop(context);
+                              Navigator.pop(context);
                             } else {
                               context.read<AppointmentBloc>().add(
                                   RequestAppointment(
@@ -202,7 +203,17 @@ class _AppointmentState extends State<Appointment> {
                 const Divider(
                   color: Colors.transparent,
                 ),
-                GenderBox(gender: widget.patient!.gender!, height: height),
+                widget.isForDoctor
+                    ? GenderBox(gender: widget.patient!.gender!, height: height)
+                    : BlocBuilder<HomeBloc, HomeState>(
+                        builder: (context, state) {
+                          if(state is HomeLoaded){
+                            return GenderBox(
+                              gender: state.user!.gender!, height: height);
+                          }
+                          return const SizedBox();
+                        },
+                      ),
                 const Divider(
                   color: Colors.transparent,
                 ),
@@ -344,7 +355,8 @@ class _AppointmentState extends State<Appointment> {
                         color: Colors.transparent,
                       )
                     : const SizedBox(),
-                widget.appointmentModel!.previousMedications != null &&
+                  
+               
                         (isChecked || widget.isForDoctor)
                     ? Row(
                         children: [

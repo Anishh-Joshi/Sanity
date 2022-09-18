@@ -18,7 +18,7 @@ class WritePage extends StatelessWidget {
   const WritePage({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const WritePage(),
+        builder: (context) => const WritePage(),
         settings: const RouteSettings(name: routeName));
   }
 

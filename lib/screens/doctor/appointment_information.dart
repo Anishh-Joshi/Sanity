@@ -18,7 +18,7 @@ class AppointmentInformation extends StatefulWidget {
   const AppointmentInformation({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const AppointmentInformation(),
+        builder: (context) => const AppointmentInformation(),
         settings: const RouteSettings(name: routeName));
   }
 

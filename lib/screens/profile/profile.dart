@@ -9,7 +9,7 @@ class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const ProfilePage(),
+        builder: (context) => const ProfilePage(),
         settings: const RouteSettings(name: routeName));
   }
 

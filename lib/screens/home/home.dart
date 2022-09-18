@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/blocs/therapy/bloc/therapy_bloc.dart';
 import 'package:sanity/model/therapy_model.dart';
+import 'package:sanity/screens/therapy/therapy.dart';
 import 'package:sanity/widgets/bottom_appbar.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/circular_progress.dart';
@@ -19,7 +20,7 @@ class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const Home(),
+        builder: (context) => const Home(),
         settings: const RouteSettings(name: routeName));
   }
 
@@ -41,32 +42,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-  final List dummyData = [
-    {
-      "therapy": "I can't Feel the Air",
-      "enrolled": 179,
-      "category": "Depressed",
-      "by": "Eldy"
-    },
-    {
-      "therapy": "I feel nervous that my friends hate me!",
-      "enrolled": 16,
-      "category": "Suicidal",
-      "by": "Anish"
-    },
-    {
-      "therapy": "Am am just Sad.",
-      "enrolled": 34,
-      "category": "Sad",
-      "by": "Ramesh"
-    },
-    {
-      "therapy": "I find it extremly difficult around people.",
-      "enrolled": 6722,
-      "category": "Insecure",
-      "by": "Khadka"
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -213,8 +188,13 @@ class _HomeState extends State<Home> {
                                         itemCount: state.therapyList.length,
                                         itemBuilder: (context, index) {
                                           final TherapyModel therapy = TherapyModel.fromJSON(state.therapyList[index],state.emoteMap);
-                                          return TherapyCard(
-                                            therapy: therapy,
+                                          return InkWell(
+                                            onTap: (){
+                                              Navigator.pushNamed(context, Therapy.routeName,arguments: therapy);
+                                            },
+                                            child: TherapyCard(
+                                              therapy: therapy,
+                                            ),
                                           );
                                         }),
                                   );

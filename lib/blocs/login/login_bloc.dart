@@ -67,7 +67,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(LoginError(msg: authData['errors']['non_field_errors'][0]));
       }
     } catch (e) {
-      emit(LoginError(msg: e.toString()));
+      // emit(LoginError(msg: e.toString()));
     }
   }
 
@@ -93,9 +93,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(LoginError(msg: authData['errors']['non_field_errors'][0]));
       }
     } catch (e) {
-      final authData =
-          await repo.signIn(event.email, event.password, event.confirmPassword);
-      emit(LoginError(msg: authData['errors']['email'][0]));
+      // final authData =
+      //     await repo.signIn(event.email, event.password, event.confirmPassword);
+      // emit(LoginError(msg: authData['errors']['email'][0]));
     }
   }
 
@@ -105,7 +105,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       await repo.deleteToken();
       emit(LoginUnAuthenticated());
     } catch (e) {
-      emit(LoginError(msg: e.toString()));
+      // emit(LoginError(msg: e.toString()));
     }
   }
 
