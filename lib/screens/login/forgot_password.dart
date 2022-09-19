@@ -8,7 +8,7 @@ class ForgotPassword extends StatelessWidget {
   ForgotPassword({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => ForgotPassword(),
+        builder: (context) => ForgotPassword(),
         settings: const RouteSettings(name: routeName));
   }
 

@@ -6,7 +6,7 @@ class LoginLanding extends StatelessWidget {
   const LoginLanding({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const LoginLanding(),
+        builder: (context) => const LoginLanding(),
         settings: const RouteSettings(name: routeName));
   }
 

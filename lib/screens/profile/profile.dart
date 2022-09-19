@@ -5,21 +5,33 @@ import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/custom_appbar.dart';
 
 class ProfilePage extends StatelessWidget {
-  static const String routeName = 'profile';
+  static const String routeName = 'profile_page';
   const ProfilePage({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const ProfilePage(),
+        builder: (context) => const ProfilePage(),
         settings: const RouteSettings(name: routeName));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyCustomAppBar(
-        appBarTitle: "Profile",
-        iconData: Icons.settings,
-        onPressed: () {},
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            if (state is HomeLoaded) {
+              return MyCustomAppBar(
+                appBarTitle: state.user!.fullName!,
+                onPressed: () {},
+                iconData: Icons.settings,
+              );
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -47,26 +59,43 @@ class ProfilePage extends StatelessWidget {
       children: [
         Flexible(
           flex: 1,
-          child: Text("Goals",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline4!
-                  .copyWith(fontSize: 18)),
-        ),
-        Flexible(
-            flex: 1,
-            child: Text(
-              "Timeline",
-              style:
-                  Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
-            )),
-        Flexible(
-            flex: 1,
-            child: Text("Badges",
+          child: GestureDetector(
+            onTap: () {
+              print("Tapped");
+            },
+            child: Text("Goals",
                 style: Theme.of(context)
                     .textTheme
                     .headline4!
-                    .copyWith(fontSize: 18)))
+                    .copyWith(fontSize: 18)),
+          ),
+        ),
+        Flexible(
+            flex: 1,
+            child: GestureDetector(
+              onTap: () {
+                print("tapped again");
+              },
+              child: Text(
+                "Timeline",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline4!
+                    .copyWith(fontSize: 18),
+              ),
+            )),
+        Flexible(
+            flex: 1,
+            child: GestureDetector(
+              onTap: () {
+                print("tapped again and again");
+              },
+              child: Text("Badges",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4!
+                      .copyWith(fontSize: 18)),
+            ))
       ],
     );
   }
@@ -77,52 +106,53 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  SizedBox topHalf({required BuildContext context}) {
-    return SizedBox(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Row(children: [
-            BlocBuilder<HomeBloc, HomeState>(
+  Column topHalf({required BuildContext context}) {
+    return Column(
+      children: [
+        Row(children: [
+          BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              if (state is HomeLoaded) {
+                return CircleAvatarCustom(
+                    url: state.user!.profileImgUrl!,
+                    radius: MediaQuery.of(context).size.height / 15);
+              }
+              // yelai chai pacchi shimmer effect le replace handiney
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: BlocBuilder<HomeBloc, HomeState>(
               builder: (context, state) {
                 if (state is HomeLoaded) {
-                  return CircleAvatarCustom(
-                      url: state.user!.profileImgUrl!,
-                      radius: MediaQuery.of(context).size.height / 15);
+                  return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(state.user!.fullName!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline3!
+                                .copyWith(fontSize: 20)),
+                        Text(
+                          "${state.user!.age!.toString()} years old",
+                          style: Theme.of(context).textTheme.headline5,
+                        )
+                      ]);
                 }
-                // yelai chai pacchi shimmer effect le replace handiney
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               },
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: BlocBuilder<HomeBloc, HomeState>(
-                builder: (context, state) {
-                  if (state is HomeLoaded) {
-                    return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(state.user!.fullName!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline3!
-                                  .copyWith(fontSize: 20)),
-                          Text(
-                            "${state.user!.age!.toString()} years old",
-                            style: Theme.of(context).textTheme.headline5,
-                          )
-                        ]);
-                  }
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
-            ),
-          ]),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          ),
+        ]),
+        Container(
+          margin: const EdgeInsets.only(top: 10),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -141,7 +171,7 @@ class ProfilePage extends StatelessWidget {
                 BlocBuilder<HomeBloc, HomeState>(
                   builder: (context, state) {
                     if (state is HomeLoaded) {
-                      return Text("Kathmandu University",
+                      return Text(state.user!.address!,
                           style: Theme.of(context)
                               .textTheme
                               .headline4!
@@ -160,9 +190,9 @@ class ProfilePage extends StatelessWidget {
                         .copyWith(color: const Color(0xff787878))),
               ],
             )
-          ])
-        ],
-      ),
+          ]),
+        )
+      ],
     );
   }
 }

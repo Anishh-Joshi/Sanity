@@ -1,10 +1,12 @@
 
 
 import 'package:dio/dio.dart';
+import 'package:sanity/apis/apis.dart';
 import 'package:sanity/model/user_info_model.dart';
 import 'package:sanity/repository/signup/abstract.dart';
 
 class SignUpRepository extends BaseSignupRepository {
+  final APIs api = APIs();
   @override
   Future<int> addUserInfo(UserInfoModel checkout, {required int id}) async {
     try {
@@ -23,7 +25,7 @@ class SignUpRepository extends BaseSignupRepository {
         'full_name': checkout.fullName
       });
       Response response = await Dio().post(
-          'http://10.0.2.2:8000/api/user/setprofile/',
+          api.setProfile,
           data: formData,
           options: Options(headers: {}));
       return response.statusCode!;

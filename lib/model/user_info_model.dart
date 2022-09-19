@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class UserInfoModel extends Equatable {
   final String? fullName;
+  final int? userId;
   final String? address;
   final int? age;
   final String? gender;
@@ -13,6 +14,7 @@ class UserInfoModel extends Equatable {
 
   const UserInfoModel(
       {this.fullName,
+      this.userId,
       this.address,
       this.profileImgUrl,
       this.nmcId,
@@ -30,9 +32,10 @@ class UserInfoModel extends Equatable {
       isDoctor: response['isDoctor'],
       nmcId: response['nmcId'],
       profileImgUrl: response['profileImage'],
+      userId: response['user']
     );
   }
 
   @override
-  List<Object?> get props => [fullName, age, address, isDoctor, nmcId, gender];
+  List<Object?> get props => [fullName, age, address, isDoctor, nmcId, gender,userId];
 }

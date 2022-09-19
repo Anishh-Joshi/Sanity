@@ -4,17 +4,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/blocs/user_info_bloc/user_info_bloc.dart';
-import 'package:sanity/widgets/Login_signup_header.dart';
 import 'package:sanity/widgets/custom_forms.dart';
+import 'package:sanity/widgets/floatingbutton.dart';
+import 'package:sanity/widgets/login_signup_header.dart';
 import 'package:sanity/widgets/popup_image_picker.dart';
-import '../../widgets/FloatingButton.dart';
+
 
 class UserInfo extends StatefulWidget {
   static const String routeName = 'user_info';
   const UserInfo({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const UserInfo(),
+        builder: (context) => const UserInfo(),
         settings: const RouteSettings(name: routeName));
   }
 
@@ -33,7 +34,7 @@ class _UserInfoState extends State<UserInfo> {
     if (states.any(interactiveStates.contains)) {
       return Colors.amberAccent;
     }
-    return Colors.amber;
+    return Theme.of(context).primaryColor;
   }
 
   final ScrollController _scrollController = ScrollController();
@@ -256,15 +257,14 @@ class _UserInfoState extends State<UserInfo> {
                                                       "Are you a doctor?",
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .headline6!
+                                                          .bodyText1!
                                                           .copyWith(
-                                                              color: const Color(
-                                                                  0xff787878),
-                                                              fontSize: 18),
+                                                             
+                                                              fontSize: 16),
                                                     ),
                                                     Checkbox(
                                                         checkColor:
-                                                            Colors.white,
+                                                            Theme.of(context).colorScheme.secondary,
                                                         fillColor:
                                                             MaterialStateProperty
                                                                 .resolveWith(

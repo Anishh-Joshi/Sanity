@@ -6,7 +6,10 @@ import '../../model/user_class.dart';
 part 'login_event.dart';
 part 'login_state.dart';
 
+
+
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
+
   final AuthRepository repo;
 
   LoginBloc({required this.repo}) : super(LoginLoading()) {
@@ -21,16 +24,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void _onLoginCheck(LoginCheck event, Emitter<LoginState> emit) async {
     emit(LoginLoading());
     bool tokenData = await repo.hasToken();
-
     await loginCheck(emit, tokenData);
   }
 
+
   void _onLoginPressed(
       LoginButtonPressed event, Emitter<LoginState> emit) async {
+        bool tokenData = await repo.hasToken();
+      final authData = await repo.login(event.email, event.password);
     try {
       emit(LoginLoading());
-      bool tokenData = await repo.hasToken();
-      final authData = await repo.login(event.email, event.password);
+     
 
       if (authData["token"] != null) {
         await repo.persistToken((authData["token"]['access']));
@@ -63,13 +67,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(LoginError(msg: authData['errors']['non_field_errors'][0]));
       }
     } catch (e) {
-      emit(LoginError(msg: e.toString()));
+      // emit(LoginError(msg: e.toString()));
     }
   }
 
   void _backToLoginPage(BackToLoginPage event, Emitter<LoginState> emit) async {
     emit(LoginUnAuthenticated());
-  }
+  } 
 
   void _onSignupPressed(
       SignupButtonPressed event, Emitter<LoginState> emit) async {
@@ -89,9 +93,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(LoginError(msg: authData['errors']['non_field_errors'][0]));
       }
     } catch (e) {
-      final authData =
-          await repo.signIn(event.email, event.password, event.confirmPassword);
-      emit(LoginError(msg: authData['errors']['email'][0]));
+      // final authData =
+      //     await repo.signIn(event.email, event.password, event.confirmPassword);
+      // emit(LoginError(msg: authData['errors']['email'][0]));
     }
   }
 
@@ -101,15 +105,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       await repo.deleteToken();
       emit(LoginUnAuthenticated());
     } catch (e) {
-      emit(LoginError(msg: e.toString()));
+      // emit(LoginError(msg: e.toString()));
     }
   }
+
 
   void _onAppinformationSeen(
       AppInformationSkipedPressed event, Emitter<LoginState> emit) async {
     await repo.persistAppInformation();
     emit(LoginUnAuthenticated());
   }
+
 
   Future<void> loginCheck(Emitter<LoginState> emit, bool tokenData) async {
     final Map profileData = await repo.getProfileData();
@@ -123,13 +129,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else if (isAppInfoSeen && tokenData && userModel.isEmailVerified!) {
       final Map userInfoMap =
           await repo.registeredProfileData(id: userModel.id!);
+
       if (userInfoMap['status'] == "success") {
         final UserInfoModel user =
             UserInfoModel.fromJson(userInfoMap['candidates']);
-
         emit(LoginAuthenticated(user: user));
-      } else {
-        
+
+      } else {       
         emit(UnRegisteredUser(
             email: userModel.email!,
             id: userModel.id!,

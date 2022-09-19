@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/blocs/theme/theme_bloc_bloc.dart';
-import 'package:sanity/screens/profile/profile.dart';
+import 'package:sanity/screens/settings/settings.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/custom_elevated_button.dart';
 import 'package:sanity/widgets/platform_aware.dart';
@@ -34,8 +34,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   defaultActionText: "Ok",
                 ).show(context);
               } else if (state is LoginUnAuthenticated) {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, 'landing_page', (route) => false);
+                Navigator.of(context,rootNavigator:true ).pushNamedAndRemoveUntil('landing_page', (route) => false);
               }
             },
             child: Column(
@@ -60,11 +59,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                     onTap: () {
                                       widget.scaffoldKey.currentState
                                           ?.closeDrawer();
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ProfilePage()));
+                                           Navigator.of(context, rootNavigator: true).pushNamed("profile_page");
+                                     
                                     },
                                     child: CircleAvatarCustom(
                                         radius:
@@ -89,6 +85,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                     const Divider(),
                     ListTile(
+                      onTap: (){},
                       leading: Icon(
                         Entypo.line_graph,
                         color: Theme.of(context).indicatorColor,
@@ -99,6 +96,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                     ),
                     ListTile(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>const Settings()));
+                      },
                       leading: Icon(
                         Ionicons.settings_outline,
                         color: Theme.of(context).indicatorColor,
@@ -116,7 +116,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         trailing: BlocBuilder<ThemeBloc, ThemeBlocState>(
                             builder: (context, state) {
                           return Switch(
-                            value: !state.isDark,
+                            value: state.isDark,
                             onChanged: (value) {
                               context.read<ThemeBloc>().add(ChangeTheme());
                               setState(() {
@@ -166,7 +166,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           builder: (context, state) {
                             if (state is LoginAuthenticated) {
                               return ElevatedButtonCustom(
-                                color: const Color(0xff111111),
+                                color: Color.fromARGB(255, 233, 11, 104),
                                 buttonTitle: "Logout",
                                 action: () {
                                   context

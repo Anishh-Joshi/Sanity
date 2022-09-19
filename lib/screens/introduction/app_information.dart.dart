@@ -9,7 +9,7 @@ class LoginInformation extends StatefulWidget {
   const LoginInformation({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const LoginInformation(),
+        builder: (context) => const LoginInformation(),
         settings: const RouteSettings(name: routeName));
   }
 

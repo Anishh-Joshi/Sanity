@@ -10,11 +10,11 @@ class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const Signup(),
+        builder: (context) => const Signup(),
         settings: const RouteSettings(name: routeName));
   }
 
-  @override
+@override
   State<Signup> createState() => _SignupState();
 }
 
@@ -161,11 +161,11 @@ _buildEmailForm(BuildContext context, TextEditingController emailController,
         style: Theme.of(context)
             .textTheme
             .bodyText2!
-            .copyWith(fontSize: 15, color: const Color(0xff787878)),
+     .copyWith(fontSize: 15, color: Theme.of(context).canvasColor),
         decoration: InputDecoration(
           enabled: true,
           hintText: "Email",
-          hintStyle: Theme.of(context).textTheme.headline5,
+    hintStyle: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 15, color: Theme.of(context).canvasColor),
           prefixIcon: Icon(Icons.mail, color: Theme.of(context).primaryColor),
           border: InputBorder.none,
         ),
@@ -200,7 +200,7 @@ _buildPasswordForm(BuildContext context,
         style: Theme.of(context)
             .textTheme
             .bodyText2!
-            .copyWith(fontSize: 15, color: const Color(0xff787878)),
+              .copyWith(fontSize: 15, color: Theme.of(context).canvasColor),
         onChanged: (password) {},
         obscureText: true,
         validator: (value) {
@@ -215,7 +215,7 @@ _buildPasswordForm(BuildContext context,
         decoration: InputDecoration(
           enabled: true,
           hintText: "Password",
-          hintStyle: Theme.of(context).textTheme.headline5,
+       hintStyle: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 15, color: Theme.of(context).canvasColor),
           border: InputBorder.none,
           prefixIcon: Icon(
             Icons.lock,
@@ -247,7 +247,7 @@ _buildConfirmPasswordForm(
         style: Theme.of(context)
             .textTheme
             .bodyText2!
-            .copyWith(fontSize: 15, color: const Color(0xff787878)),
+       .copyWith(fontSize: 15, color: Theme.of(context).canvasColor),
         onChanged: (password) {},
         obscureText: true,
         validator: (value) {
@@ -265,7 +265,7 @@ _buildConfirmPasswordForm(
         decoration: InputDecoration(
           enabled: true,
           hintText: "Confirm password",
-          hintStyle: Theme.of(context).textTheme.headline5,
+      hintStyle: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 15, color: Theme.of(context).canvasColor),
           border: InputBorder.none,
           prefixIcon: Icon(
             Icons.lock,

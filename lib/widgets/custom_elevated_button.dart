@@ -5,8 +5,11 @@ class ElevatedButtonCustom extends StatelessWidget {
   final String buttonTitle;
   final IconData? icon;
   final Color color;
+  final double? size;
   const ElevatedButtonCustom(
+    
       {Key? key,
+      this.size=18,
       required this.action,
       required this.color,
       required this.buttonTitle,
@@ -34,7 +37,7 @@ class ElevatedButtonCustom extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .headline3!
-                        .copyWith(color: Colors.white, fontSize: 18),
+                        .copyWith(color: Colors.white, fontSize: size),
                   ),
                   Opacity(
                     opacity: 0,

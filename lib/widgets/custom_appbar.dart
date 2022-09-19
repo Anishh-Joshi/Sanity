@@ -2,24 +2,28 @@ import 'package:flutter/material.dart';
 
 class MyCustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final String appBarTitle;
-  final IconData iconData;
-  final VoidCallback onPressed;
+  final IconData? iconData;
+  final VoidCallback? onPressed;
+  final double elevation;
+  final double? fontSize;
   const MyCustomAppBar({
     Key? key,
     required this.appBarTitle,
-    required this.iconData,
-    required this.onPressed,
+    this.iconData,
+    this.elevation = 1,
+    this.fontSize,
+    this.onPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      elevation: 1,
+      elevation: elevation,
       iconTheme: Theme.of(context).iconTheme,
-      automaticallyImplyLeading: true,
+      automaticallyImplyLeading: false,
       title: Text(
         appBarTitle,
-        style: Theme.of(context).textTheme.headline3,
+        style: Theme.of(context).textTheme.headline3!.copyWith(fontSize: fontSize),
       ),
       actions: [
         IconButton(

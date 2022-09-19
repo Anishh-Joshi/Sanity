@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
-import 'package:sanity/widgets/FloatingButton.dart';
+import 'package:sanity/widgets/floatingbutton.dart';
 import '../../widgets/platform_aware.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -10,7 +10,7 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => LoginScreen(),
+        builder: (context) => LoginScreen(),
         settings: const RouteSettings(name: routeName));
   }
 
@@ -167,12 +167,15 @@ _buildEmailForm(BuildContext context, TextEditingController controller) {
         style: Theme.of(context)
             .textTheme
             .bodyText2!
-            .copyWith(fontSize: 15, color: const Color(0xff787878)),
+            .copyWith(fontSize: 15, color: Theme.of(context).canvasColor),
         controller: controller,
         decoration: InputDecoration(
           enabled: true,
           hintText: "Email",
-          hintStyle: Theme.of(context).textTheme.headline5,
+          hintStyle: Theme.of(context)
+              .textTheme
+              .headline6!
+              .copyWith(fontSize: 15, color: Theme.of(context).canvasColor),
           prefixIcon: Icon(
             Icons.mail,
             color: Theme.of(context).primaryColor,
@@ -208,7 +211,7 @@ _buildPasswordForm(BuildContext context, TextEditingController controller) {
         style: Theme.of(context)
             .textTheme
             .bodyText2!
-            .copyWith(fontSize: 15, color: const Color(0xff787878)),
+            .copyWith(fontSize: 15, color: Theme.of(context).canvasColor),
         onChanged: (password) {},
         obscureText: true,
         controller: controller,
@@ -224,7 +227,10 @@ _buildPasswordForm(BuildContext context, TextEditingController controller) {
         decoration: InputDecoration(
           enabled: true,
           hintText: "Passsword",
-          hintStyle: Theme.of(context).textTheme.headline5,
+          hintStyle: Theme.of(context)
+              .textTheme
+              .headline6!
+              .copyWith(fontSize: 15, color: Theme.of(context).canvasColor),
           border: InputBorder.none,
           prefixIcon: Icon(
             Icons.lock,
