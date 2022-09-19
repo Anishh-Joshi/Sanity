@@ -95,9 +95,7 @@ class _HomeState extends State<Home> {
                               ],
                             );
                           }
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
+                          return const CircularProgressIndicatorCustom();
                         },
                       ),
                       leading: BlocBuilder<HomeBloc, HomeState>(
@@ -116,157 +114,132 @@ class _HomeState extends State<Home> {
                               ),
                             );
                           }
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
+                          return const CircularProgressIndicatorCustom();
                         },
                       ))
                 ],
                 body: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SafeArea(
-                      child: BlocListener<LoginBloc, LoginState>(
-                          listener: (context, state) {
-                            if (state is LoginError) {
-                              const PlatformAADialog(
-                                title: 'Oops',
-                                content: "Something Went Wrong!",
-                                defaultActionText: "Ok",
-                              ).show(context);
-                            } else if (state is LoginUnAuthenticated) {
-                              Navigator.of(context, rootNavigator: true)
-                                  .pushNamedAndRemoveUntil(
-                                      'landing_page', (route) => false);
-                            }
-                          },
-                          child: SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: CustomForm(
-                                    iconDataSuffix: Icons.clear_rounded,
-                                    hintText: "Therapies Eg:Anxeity",
-                                    containerColor: Theme.of(context).cardColor,
-                                    iconColor: Theme.of(context).canvasColor,
-                                    keyboardType: TextInputType.text,
-                                    borderColor: Colors.transparent,
-                                    iconData: Icons.search,
-                                    borderRadius: 20,
-                                    onChanged: (val) {},
-                                  ),
-                                ),
-                                const Divider(
-                                  color: Colors.transparent,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Therapies",
-                                      style:
-                                          Theme.of(context).textTheme.headline2,
-                                    ),
-                                    TextButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        "See all",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline3!
-                                            .copyWith(color: Colors.pink),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const Divider(
-                                  color: Colors.transparent,
-                                ),
-                                BlocBuilder<TherapyBloc, TherapyState>(
-                                  builder: (context, state) {
-                                    if (state is TherapyLoaded) {
-                                      return SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                4,
-                                        child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount:
-                                                state.therapyList!.length,
-                                            itemBuilder: (context, index) {
-                                              final TherapyModel therapy =
-                                                  TherapyModel.fromJSON(
-                                                      state.therapyList![index],
-                                                      state.emoteMap!);
-                                              return InkWell(
-                                                onTap: () {
-                                                  Navigator.pushNamed(
-                                                    context,
-                                                    Therapy.routeName,
-                                                    arguments: therapy,
-                                                  );
-                                                  context
-                                                      .read<TherapyBloc>()
-                                                      .add(GetTherapyDetails(
-                                                          therapyId: therapy
-                                                              .therapyId!,
-                                                          emoteMap:
-                                                              state.emoteMap,
-                                                          therapyList: state
-                                                              .therapyList));
-                                                },
-                                                child: TherapyCard(
-                                                  therapy: therapy,
-                                                ),
-                                              );
-                                            }),
-                                      );
-                                    } 
-                                    return const SizedBox();
-                                  },
-                                ),
-                                const Divider(
-                                  color: Colors.transparent,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Threads",
-                                      style:
-                                          Theme.of(context).textTheme.headline2,
-                                    ),
-                                    TextButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        "See all",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline3!
-                                            .copyWith(color: Colors.pink),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const Divider(
-                                  color: Colors.transparent,
-                                ),
-                                ListView.builder(
-                                  itemCount: 50,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return const ThreadCard();
-                                  },
-                                ),
-                              ],
+                    padding: const EdgeInsets.all(16.0),
+                    child: SafeArea(
+                        child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: CustomForm(
+                              iconDataSuffix: Icons.clear_rounded,
+                              hintText: "Therapies Eg:Anxeity",
+                              containerColor: Theme.of(context).cardColor,
+                              iconColor: Theme.of(context).canvasColor,
+                              keyboardType: TextInputType.text,
+                              borderColor: Colors.transparent,
+                              iconData: Icons.search,
+                              borderRadius: 20,
+                              onChanged: (val) {},
                             ),
-                          ))),
-                ),
+                          ),
+                          const Divider(
+                            color: Colors.transparent,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Therapies",
+                                style: Theme.of(context).textTheme.headline2,
+                              ),
+                              TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  "See all",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline3!
+                                      .copyWith(color: Colors.pink),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(
+                            color: Colors.transparent,
+                          ),
+                          BlocBuilder<TherapyBloc, TherapyState>(
+                            builder: (context, state) {
+                              if (state is TherapyLoaded) {
+                                return SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height / 4,
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: state.therapyList!.length,
+                                      itemBuilder: (context, index) {
+                                        final TherapyModel therapy =
+                                            TherapyModel.fromJSON(
+                                                state.therapyList![index],
+                                                state.emoteMap!);
+                                        return InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              Therapy.routeName,
+                                              arguments: therapy,
+                                            );
+                                            context.read<TherapyBloc>().add(
+                                                GetTherapyDetails(
+                                                    therapyId:
+                                                        therapy.therapyId!,
+                                                    emoteMap: state.emoteMap,
+                                                    therapyList:
+                                                        state.therapyList));
+                                          },
+                                          child: TherapyCard(
+                                            therapy: therapy,
+                                          ),
+                                        );
+                                      }),
+                                );
+                              }
+                              return const SizedBox();
+                            },
+                          ),
+                          const Divider(
+                            color: Colors.transparent,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Threads",
+                                style: Theme.of(context).textTheme.headline2,
+                              ),
+                              TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  "See all",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline3!
+                                      .copyWith(color: Colors.pink),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(
+                            color: Colors.transparent,
+                          ),
+                          ListView.builder(
+                            itemCount: 50,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return const ThreadCard();
+                            },
+                          ),
+                        ],
+                      ),
+                    ))),
               ),
             ),
           ),

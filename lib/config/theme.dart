@@ -34,7 +34,7 @@ Color shadowColor(bool isDark) {
 }
 
 Color primaryColor(bool isDark) {
-  return const Color(0xff9A9EF3);
+  return  Colors.deepPurpleAccent;
 }
 
 Color canvasColor(bool isDark) {

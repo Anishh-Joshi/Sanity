@@ -63,9 +63,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         } else if (!tokenData) {
           emit(LoginUnAuthenticated());
         }
-      } else {
-        emit(LoginError(msg: authData['errors']['non_field_errors'][0]));
-      }
+      } 
     } catch (e) {
       // emit(LoginError(msg: e.toString()));
     }
@@ -105,6 +103,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       await repo.deleteToken();
       emit(LoginUnAuthenticated());
     } catch (e) {
+      print("yeta aairacha");
       // emit(LoginError(msg: e.toString()));
     }
   }

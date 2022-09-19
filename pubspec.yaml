@@ -51,6 +51,10 @@ dependencies:
   intl: ^0.17.0
   timeago: ^3.3.0
   flutter_tts: ^3.5.3
+  animated_text_kit: ^4.2.2
+  delayed_widget: ^1.1.2
+  audioplayers:  any
+
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +66,14 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  flutter_native_splash: ^2.2.9
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/logos/sanity_half.png
+  color_dark: "#000000"
+  android: true
+  ios: true
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -79,6 +91,7 @@ flutter:
     - assets/lottie/
     - assets/logos/
     - assets/images/
+    - assets/music/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

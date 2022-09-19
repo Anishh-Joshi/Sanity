@@ -20,7 +20,7 @@ class UserInfoModel extends Equatable {
       this.nmcId,
       this.age,
       this.gender,
-      this.isDoctor,
+      this.isDoctor=false,
       this.profileImage});
 
   factory UserInfoModel.fromJson(Map response) {

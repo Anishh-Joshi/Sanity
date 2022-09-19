@@ -45,19 +45,10 @@ class LoginScreen extends StatelessWidget {
               content: "Incorrect Email or Password",
               defaultActionText: "Ok",
             ).show(context);
-          } else if (state is LoginAuthenticated) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, 'landing_page', (route) => false);
-          } else if (state is UnRegisteredUser) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, 'landing_page', (route) => false);
-          } else if (state is LoginEmailNotVerified) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, 'landing_page', (route) => false);
-          } else if (state is LoginUnAuthenticated) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, 'landing_page', (route) => false);
           }
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'landing_page', (route) => false);
+          
         },
         child: Scaffold(
           body: SafeArea(

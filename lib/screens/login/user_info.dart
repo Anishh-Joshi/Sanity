@@ -109,7 +109,7 @@ class _UserInfoState extends State<UserInfo> {
                               const SnackBar(
                                   content:
                                       Text("Address field can't be empty!")));
-                        } else if (state.userInfoModel.isDoctor != null &&
+                        } else if (state.userInfoModel.isDoctor! &&
                             state.userInfoModel.nmcId == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -271,15 +271,16 @@ class _UserInfoState extends State<UserInfo> {
                                                                     getColor),
                                                         value: isChecked,
                                                         onChanged: (val) {
-                                                          setState(() {
-                                                            isChecked = val!;
-                                                          });
                                                           context
                                                               .read<
                                                                   UserInfoBloc>()
                                                               .add(UpdateUserInfo(
                                                                   isDoctor:
-                                                                      isChecked));
+                                                                      val));
+                                                          setState(() {
+                                                            isChecked = val!;
+                                                          });
+                                                          
                                                         }),
                                                   ],
                                                 ),

@@ -7,7 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'package:sanity/blocs/therapy/therapy_bloc.dart';
 import 'package:sanity/widgets/circular_progress.dart';
 import 'package:sanity/widgets/timeline_tiles.dart';
-import '../home/home.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class TherapyDetails extends StatefulWidget {
   static const String routeName = 'therapy_details';
@@ -24,14 +24,15 @@ class TherapyDetails extends StatefulWidget {
 
 class _TherapyDetailsState extends State<TherapyDetails> {
   List p = [];
-
   final FlutterTts flutterTts = FlutterTts();
-
   speak(String text) async {
-    await flutterTts.setLanguage("en-IN");
+     await Timer(const Duration(seconds: 1), () async{
+      await flutterTts.setLanguage("en-IN");
     await flutterTts.setPitch(0.85);
     await flutterTts.setSpeechRate(0.4);
     await flutterTts.speak(text);
+    });
+    
   }
 
   void splitValue(text) {
@@ -79,13 +80,7 @@ class _TherapyDetailsState extends State<TherapyDetails> {
                                 padding: EdgeInsets.all(8.0),
                                 child: Icon(Entypo.cross))),
                       ),
-                      Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Colors.deepPurpleAccent),
-                          child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Icon(Icons.music_note))),
+                      const MusicPlayer()
                     ],
                   ),
                   Lottie.asset('assets/lottie/consult.json', height: 200),
@@ -156,6 +151,64 @@ class _SelfSpeakingTextState extends State<SelfSpeakingText> {
       widget.content.split(".").getRange(currentIndex, nextIndex).join(", ") +
           ".",
       style: Theme.of(context).textTheme.headline3,
+    );
+  }
+}
+
+class MusicPlayer extends StatefulWidget {
+  const MusicPlayer({Key? key}) : super(key: key);
+
+  @override
+  State<MusicPlayer> createState() => _MusicPlayerState();
+}
+
+class _MusicPlayerState extends State<MusicPlayer> {
+  bool isPlaying = false;
+  AudioPlayer? advancedPlayer;
+  AudioCache? audioCache;
+
+  @override
+  void dispose() {
+    advancedPlayer!.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    isPlaying = true;
+    advancedPlayer = AudioPlayer();
+    audioCache = AudioCache(fixedPlayer: advancedPlayer);
+    audioCache!.play('music/Relax.mp3');
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(10),
+      
+      onTap: () async {
+        if (isPlaying) {
+          advancedPlayer!.pause();
+
+          setState(() {
+            isPlaying = false;
+          });
+        } else {
+          audioCache!.play('music/Waves.mp3');
+
+          setState(() {
+            isPlaying = true;
+          });
+        }
+      },
+      child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: Colors.deepPurpleAccent),
+          child: Padding(
+              padding: const EdgeInsets.all(8.0), child: Icon(isPlaying?Entypo.controller_stop: Icons.music_note))),
     );
   }
 }

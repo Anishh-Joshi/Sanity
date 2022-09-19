@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/screens/home/home.dart';
-import 'package:sanity/screens/home/homeLandingPage.dart';
-import 'package:sanity/screens/write/write_textfield.dart';
 
 class LandingPage extends StatefulWidget {
   static const String routeName = 'landing_page';
@@ -30,33 +28,24 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
-          print(state);
           if (state is LoginLoading) {
             const Center(child: CircularProgressIndicator());
           }
           if (state is LoginUnAuthenticated) {
-            Navigator.pushNamed(
-              context,
-              'login_landing',
-            );
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'login_landing', (route) => false);
           }
           if (state is InformationNotSeen) {
-            Navigator.pushNamed(
-              context,
-              'loginInfo',
-            );
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'loginInfo', (route) => false);
           }
           if (state is LoginEmailNotVerified) {
-            Navigator.pushNamed(
-              context,
-              'email_verification',
-            );
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'email_verification', (route) => false);
           }
           if (state is UnRegisteredUser) {
-            Navigator.pushNamed(
-              context,
-              'user_info',
-            );
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'user_info', (route) => false);
           }
           if (state is LoginTokenError) {
             Scaffold(
@@ -75,11 +64,10 @@ class _LandingPageState extends State<LandingPage> {
             );
           }
           if (state is LoginAuthenticated) {
-            Navigator.pushNamed(context, Home.routeName);
-          } else {
-            const Center(child: Text("SOMETHING WENT WRONG"));
+            Navigator.pushNamedAndRemoveUntil(
+                context, Home.routeName, (route) => false);
           }
         },
-        child: const Center(child: CircularProgressIndicator(color: Colors.red,)));
+        child: const SizedBox());
   }
 }

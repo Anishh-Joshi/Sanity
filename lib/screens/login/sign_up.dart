@@ -71,19 +71,7 @@ class _SignupState extends State<Signup> {
             if (state is LoginError) {
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text(state.msg)));
-            } else if (state is LoginEmailNotVerified) {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, 'landing_page', (route) => false);
-            } else if (state is LoginAuthenticated) {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, 'landing_page', (route) => false);
-            } else if (state is UnRegisteredUser) {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, 'landing_page', (route) => false);
-            } else if (state is LoginEmailNotVerified) {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, 'landing_page', (route) => false);
-            } else if (state is LoginUnAuthenticated) {
+            } else{
               Navigator.pushNamedAndRemoveUntil(
                   context, 'landing_page', (route) => false);
             }

@@ -1,5 +1,6 @@
+import 'package:delayed_widget/delayed_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_font_icons/flutter_font_icons.dart';
+import 'package:flutter/services.dart';
 
 class LoginLanding extends StatelessWidget {
   static const String routeName = 'login_landing';
@@ -12,25 +13,45 @@ class LoginLanding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Theme.of(context).scaffoldBackgroundColor,
+    ));
+    final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
+      body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Expanded(
-                child: Opacity(
-                  opacity: 0,
-                  child: Image(
-                    image: AssetImage('assets/logos/sanity_full.png'),
+              const Expanded(child: Text("")),
+              Column(
+                children: [
+                  const Image(
+                    image: AssetImage('assets/logos/sanity_half.png'),
                   ),
-                ),
+                  Center(
+                      child: DelayedWidget(
+                    delayDuration:
+                        const Duration(milliseconds: 200), // Not required
+                    animationDuration:
+                        const Duration(seconds: 1), // Not required
+                    animation:
+                        DelayedAnimations.SLIDE_FROM_BOTTOM, // Not required
+
+                    child: Text(
+                      "Sanity",
+                      style: Theme.of(context).textTheme.headline3!.copyWith(
+                          color: Color.fromARGB(255, 216, 151, 228),
+                          fontSize: height * 0.05),
+                    ),
+                  )),
+                ],
               ),
+              const Expanded(child: Text("")),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor,
+                      primary: Colors.purple,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
                   onPressed: () {
@@ -49,35 +70,6 @@ class LoginLanding extends StatelessWidget {
                               .copyWith(color: Colors.white, fontSize: 18),
                         )),
                       ))),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.black,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12))),
-                  onPressed: () {},
-                  child: SizedBox(
-                      width: MediaQuery.of(context).size.width / 1.4,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Image.asset(
-                              'assets/images/google-logo.png',
-                              height: 30,
-                            ),
-                            Text(
-                              "Google",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline3!
-                                  .copyWith(color: Colors.white, fontSize: 18),
-                            ),
-                            const Opacity(
-                                opacity: 0, child: Icon(AntDesign.google)),
-                          ],
-                        ),
-                      ))),
               TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, 'signup');
@@ -87,16 +79,13 @@ class LoginLanding extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .bodyText1!
-                        .copyWith(color: const Color(0xff787878), fontSize: 14),
+                        .copyWith(fontSize: 14),
                   )),
               TextButton(
                   onPressed: () {},
                   child: Text(
                     "Privacy Policy",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6!
-                        .copyWith(color: const Color(0xff787878)),
+                    style: Theme.of(context).textTheme.headline6!,
                   )),
             ],
           ),
