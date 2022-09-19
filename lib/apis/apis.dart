@@ -43,4 +43,9 @@ class APIs {
   String deleteTherapy(int id) {
     return "http://$localhost/api/assistant/delete/therapy/?id=$id";
   }
+
+  String getTherapyDetails({required int id}){
+    return "http://$localhost/api/assistant/get/therapy_details/?id=$id";
+
+  }
 }

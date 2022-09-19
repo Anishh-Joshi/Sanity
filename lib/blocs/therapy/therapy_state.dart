@@ -10,12 +10,14 @@ abstract class TherapyState extends Equatable {
 class TherapyLoading extends TherapyState {}
 
 class TherapyLoaded extends TherapyState {
-  final List therapyList;
-  final Map emoteMap;
+  final List? therapyList;
+  final Map? emoteMap;
+  final Map? raw;
+  final TherapyDetailsModel? therapydetails;
 
-  const TherapyLoaded({required this.therapyList,required this.emoteMap});
+  const TherapyLoaded({this.therapydetails, this.therapyList, this.emoteMap,this.raw});
    @override
-  List<Object> get props => [therapyList,emoteMap];
+  List<Object> get props => [therapyList!,emoteMap!,therapyList!,raw!];
 
 }
 

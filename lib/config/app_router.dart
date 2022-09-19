@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:sanity/landingpage.dart';
 import 'package:sanity/screens/doctor/appointment_information.dart';
@@ -14,6 +13,7 @@ import 'package:sanity/screens/message/messagePage.dart';
 import 'package:sanity/screens/notifications/notification.dart';
 import 'package:sanity/screens/profile/profile.dart';
 import 'package:sanity/screens/therapy/therapy.dart';
+import 'package:sanity/screens/therapy/therapy_details.dart';
 import 'package:sanity/screens/write/write.dart';
 import 'package:sanity/screens/write/write_textfield.dart';
 import '../screens/doctor/doctor.dart';
@@ -54,9 +54,11 @@ class AppRouter {
       case MessagePage.routeName:
         return MessagePage.route();
       case ProfilePage.routeName:
-        return  ProfilePage.route();
+        return ProfilePage.route();
       case Therapy.routeName:
         return Therapy.route(setting);
+      case TherapyDetails.routeName:
+        return TherapyDetails.route(setting);
       default:
         _errorRoute();
     }

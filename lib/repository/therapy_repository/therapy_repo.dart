@@ -12,4 +12,12 @@ class TherapyRepository {
     final Map therapyResponse = json.decode(response.body);
     return therapyResponse;
   }
+
+    Future<Map> getTherapyDetails({required int id}) async {
+    final client = http.Client();
+    final http.Response response =
+        await client.get(Uri.parse(api.getTherapyDetails(id:id )));
+    final Map therapyDetailsResponse = json.decode(response.body);
+    return therapyDetailsResponse;
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'dart:convert' show utf8;
+
 class TherapyModel {
   final String? title;
   final int? therapyId;

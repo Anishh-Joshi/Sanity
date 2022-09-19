@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
-import 'package:sanity/blocs/therapy/bloc/therapy_bloc.dart';
+import 'package:sanity/blocs/therapy/therapy_bloc.dart';
 import 'package:sanity/model/therapy_model.dart';
 import 'package:sanity/screens/therapy/therapy.dart';
 import 'package:sanity/widgets/bottom_appbar.dart';
@@ -29,6 +29,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final refreshKey = GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String greetingMessage() {
     var timeNow = DateTime.now().hour;
@@ -42,6 +43,11 @@ class _HomeState extends State<Home> {
     }
   }
 
+  Future<void> _refresh(BuildContext context) async {
+    print("here");
+    refreshKey.currentState?.show(atTop: false);
+    context.read<TherapyBloc>().add(GetAllTherapy());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,191 +64,209 @@ class _HomeState extends State<Home> {
             return const SizedBox();
           },
         ),
-        body: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: SafeArea(
-            child: NestedScrollView(
-              floatHeaderSlivers: true,
-              headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                SliverAppBar(
-                    toolbarHeight: MediaQuery.of(context).size.height * 0.10,
-                    automaticallyImplyLeading: false,
-                    floating: true,
-                    title: BlocBuilder<HomeBloc, HomeState>(
-                      builder: (context, state) {
-                        if (state is HomeLoaded) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${greetingMessage()}",
-                                style: Theme.of(context).textTheme.headline2,
-                              ),
-                              Text(
-                                "${state.user!.fullName}",
-                                style: Theme.of(context).textTheme.headline3,
-                              ),
-                            ],
-                          );
-                        }
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      },
-                    ),
-                    leading: BlocBuilder<HomeBloc, HomeState>(
-                      builder: (context, state) {
-                        if (state is HomeLoaded) {
-                          return Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                Scaffold.of(context).openDrawer();
-                              },
-                              child: CircleAvatarCustom(
-                                url: state.user!.profileImgUrl!,
-                                radius: 50,
-                              ),
-                            ),
-                          );
-                        }
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      },
-                    ))
-              ],
-              body: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: SafeArea(
-                    child: BlocListener<LoginBloc, LoginState>(
-                        listener: (context, state) {
-                          if (state is LoginError) {
-                            const PlatformAADialog(
-                              title: 'Oops',
-                              content: "Something Went Wrong!",
-                              defaultActionText: "Ok",
-                            ).show(context);
-                          } else if (state is LoginUnAuthenticated) {
-                            Navigator.of(context, rootNavigator: true)
-                                .pushNamedAndRemoveUntil(
-                                    'landing_page', (route) => false);
+        body: RefreshIndicator(
+          onRefresh: () => _refresh(context),
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: SafeArea(
+              child: NestedScrollView(
+                floatHeaderSlivers: true,
+                headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                  SliverAppBar(
+                      toolbarHeight: MediaQuery.of(context).size.height * 0.10,
+                      automaticallyImplyLeading: false,
+                      floating: true,
+                      title: BlocBuilder<HomeBloc, HomeState>(
+                        builder: (context, state) {
+                          if (state is HomeLoaded) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${greetingMessage()}",
+                                  style: Theme.of(context).textTheme.headline2,
+                                ),
+                                Text(
+                                  "${state.user!.fullName}",
+                                  style: Theme.of(context).textTheme.headline3,
+                                ),
+                              ],
+                            );
                           }
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
                         },
-                        child: SingleChildScrollView(
-                          physics: const BouncingScrollPhysics(),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: CustomForm(
-                                  iconDataSuffix: Icons.clear_rounded,
-                                  hintText: "Therapies Eg:Anxeity",
-                                  containerColor: Theme.of(context).cardColor,
-                                  iconColor: Theme.of(context).canvasColor,
-                                  keyboardType: TextInputType.text,
-                                  borderColor: Colors.transparent,
-                                  iconData: Icons.search,
-                                  borderRadius: 20,
-                                  onChanged: (val) {},
+                      ),
+                      leading: BlocBuilder<HomeBloc, HomeState>(
+                        builder: (context, state) {
+                          if (state is HomeLoaded) {
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Scaffold.of(context).openDrawer();
+                                },
+                                child: CircleAvatarCustom(
+                                  url: state.user!.profileImgUrl!,
+                                  radius: 50,
                                 ),
                               ),
-                              const Divider(
-                                color: Colors.transparent,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Therapies",
-                                    style:
-                                        Theme.of(context).textTheme.headline2,
+                            );
+                          }
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      ))
+                ],
+                body: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SafeArea(
+                      child: BlocListener<LoginBloc, LoginState>(
+                          listener: (context, state) {
+                            if (state is LoginError) {
+                              const PlatformAADialog(
+                                title: 'Oops',
+                                content: "Something Went Wrong!",
+                                defaultActionText: "Ok",
+                              ).show(context);
+                            } else if (state is LoginUnAuthenticated) {
+                              Navigator.of(context, rootNavigator: true)
+                                  .pushNamedAndRemoveUntil(
+                                      'landing_page', (route) => false);
+                            }
+                          },
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: CustomForm(
+                                    iconDataSuffix: Icons.clear_rounded,
+                                    hintText: "Therapies Eg:Anxeity",
+                                    containerColor: Theme.of(context).cardColor,
+                                    iconColor: Theme.of(context).canvasColor,
+                                    keyboardType: TextInputType.text,
+                                    borderColor: Colors.transparent,
+                                    iconData: Icons.search,
+                                    borderRadius: 20,
+                                    onChanged: (val) {},
                                   ),
-                                  TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      "See all",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline3!
-                                          .copyWith(color: Colors.pink),
+                                ),
+                                const Divider(
+                                  color: Colors.transparent,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Therapies",
+                                      style:
+                                          Theme.of(context).textTheme.headline2,
                                     ),
-                                  ),
-                                ],
-                              ),
-                              const Divider(
-                                color: Colors.transparent,
-                              ),
-                              BlocBuilder<TherapyBloc, TherapyState>(
-                                builder: (context, state) {
-                                  if(state is TherapyLoaded){
-                                    return SizedBox(
-                                    height:
-                                        MediaQuery.of(context).size.height / 4,
-                                    child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: state.therapyList.length,
-                                        itemBuilder: (context, index) {
-                                          final TherapyModel therapy = TherapyModel.fromJSON(state.therapyList[index],state.emoteMap);
-                                          return InkWell(
-                                            onTap: (){
-                                              Navigator.pushNamed(context, Therapy.routeName,arguments: therapy);
-                                            },
-                                            child: TherapyCard(
-                                              therapy: therapy,
-                                            ),
-                                          );
-                                        }),
-                                  );
-                                  }
-                                  else if(state is TherapyLoading){
-                                    return const CircularProgressIndicatorCustom();
-                                  }
-                                  return const SizedBox();
-                                },
-                              ),
-                              const Divider(
-                                color: Colors.transparent,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Threads",
-                                    style:
-                                        Theme.of(context).textTheme.headline2,
-                                  ),
-                                  TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      "See all",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline3!
-                                          .copyWith(color: Colors.pink),
+                                    TextButton(
+                                      onPressed: () {},
+                                      child: Text(
+                                        "See all",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline3!
+                                            .copyWith(color: Colors.pink),
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              const Divider(
-                                color: Colors.transparent,
-                              ),
-                              ListView.builder(
-                                itemCount: 50,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return const ThreadCard();
-                                },
-                              ),
-                            ],
-                          ),
-                        ))),
+                                  ],
+                                ),
+                                const Divider(
+                                  color: Colors.transparent,
+                                ),
+                                BlocBuilder<TherapyBloc, TherapyState>(
+                                  builder: (context, state) {
+                                    if (state is TherapyLoaded) {
+                                      return SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                4,
+                                        child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount:
+                                                state.therapyList!.length,
+                                            itemBuilder: (context, index) {
+                                              final TherapyModel therapy =
+                                                  TherapyModel.fromJSON(
+                                                      state.therapyList![index],
+                                                      state.emoteMap!);
+                                              return InkWell(
+                                                onTap: () {
+                                                  Navigator.pushNamed(
+                                                    context,
+                                                    Therapy.routeName,
+                                                    arguments: therapy,
+                                                  );
+                                                  context
+                                                      .read<TherapyBloc>()
+                                                      .add(GetTherapyDetails(
+                                                          therapyId: therapy
+                                                              .therapyId!,
+                                                          emoteMap:
+                                                              state.emoteMap,
+                                                          therapyList: state
+                                                              .therapyList));
+                                                },
+                                                child: TherapyCard(
+                                                  therapy: therapy,
+                                                ),
+                                              );
+                                            }),
+                                      );
+                                    } 
+                                    return const SizedBox();
+                                  },
+                                ),
+                                const Divider(
+                                  color: Colors.transparent,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Threads",
+                                      style:
+                                          Theme.of(context).textTheme.headline2,
+                                    ),
+                                    TextButton(
+                                      onPressed: () {},
+                                      child: Text(
+                                        "See all",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline3!
+                                            .copyWith(color: Colors.pink),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Divider(
+                                  color: Colors.transparent,
+                                ),
+                                ListView.builder(
+                                  itemCount: 50,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return const ThreadCard();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ))),
+                ),
               ),
             ),
           ),
