@@ -17,9 +17,9 @@ class LoginInformation extends StatefulWidget {
   State<LoginInformation> createState() => _LoginInformationState();
 }
 
+
 class _LoginInformationState extends State<LoginInformation> {
   int index = 0;
-
   List infoData = [
     {
       "screen": 1,
@@ -46,6 +46,7 @@ class _LoginInformationState extends State<LoginInformation> {
       "repeat": true
     },
   ];
+  
 
   @override
   Widget build(BuildContext context) {

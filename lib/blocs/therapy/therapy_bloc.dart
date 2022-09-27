@@ -1,4 +1,3 @@
-// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:sanity/model/therapy_details.dart';
@@ -11,6 +10,7 @@ class TherapyBloc extends Bloc<TherapyEvent, TherapyState> {
   TherapyBloc({required this.repo}) : super(TherapyLoading()) {
     on<GetAllTherapy>(_getAllTherapy);
     on<GetTherapyDetails>(_getTherapyDetails);
+    on<AddTherapyData>(_addTherapy);
   }
 
   void _getAllTherapy(GetAllTherapy event, Emitter<TherapyState> emit) async {
@@ -18,6 +18,7 @@ class TherapyBloc extends Bloc<TherapyEvent, TherapyState> {
     try {
       final Map therapy = await repo.getAllTherapy();
       emit(TherapyLoaded(
+          byDoctor: therapy['doc_info'],
           therapyList: therapy['therapy_data'],
           emoteMap: therapy['categories']));
     } catch (e) {
@@ -34,10 +35,24 @@ class TherapyBloc extends Bloc<TherapyEvent, TherapyState> {
       emit(TherapyLoaded(
         emoteMap: event.emoteMap,
         therapyList: event.therapyList,
-          therapydetails: TherapyDetailsModel.fromJSON(
-              therapyDetails['therapy_data'][0], therapyDetails['doc_info'])));
+        byDoctor: event.byDoctor,
+        therapydetails:
+            TherapyDetailsModel.fromJSON(therapyDetails['therapy_data'][0]),
+      ));
     } catch (e) {
-      print(e.toString());
+      emit(TherapyError(err: e.toString()));
+    }
+  }
+  void _addTherapy(
+      AddTherapyData event, Emitter<TherapyState> emit) async {
+    emit(TherapyLoading());
+    try {
+      final Map therapyDetails =
+          await repo.addTherapy(event.docId,event.contents, event.category, event.title);
+          if(therapyDetails['status']=='success'){
+            emit(TherapyAdditionSuccess());
+          }
+    } catch (e) {
       emit(TherapyError(err: e.toString()));
     }
   }

@@ -13,11 +13,13 @@ class CustomForm extends StatelessWidget {
   final bool? enabled;
   final bool?expands;
   final int?maxLines;
+  final TextEditingController? controller;
 
   final double? borderRadius;
   const CustomForm(
       {Key? key,
       this.hintText,
+      this.controller,
       this.expands = false,
       this.maxLines = 1,
       this.borderRadius,
@@ -43,6 +45,7 @@ class CustomForm extends StatelessWidget {
         padding: const EdgeInsets.only(left: 8.0, right: 8),
         child: TextFormField(
           expands: expands!,
+          controller: controller,
           maxLines: maxLines,
           enabled: enabled,
           keyboardType: keyboardType,

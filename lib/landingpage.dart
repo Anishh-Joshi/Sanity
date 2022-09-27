@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/screens/home/home.dart';
+import 'package:sanity/widgets/circular_progress.dart';
 
 class LandingPage extends StatefulWidget {
   static const String routeName = 'landing_page';
@@ -68,6 +69,13 @@ class _LandingPageState extends State<LandingPage> {
                 context, Home.routeName, (route) => false);
           }
         },
-        child: const SizedBox());
+        child:  Scaffold(
+          body: Column(
+            children: [
+              Image.asset('assets/logos/sanity_half.png',height: 500,),
+              const CircularProgressIndicatorCustom(),
+            ],
+          ),
+        ));
   }
 }

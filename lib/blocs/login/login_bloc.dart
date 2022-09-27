@@ -30,12 +30,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   void _onLoginPressed(
       LoginButtonPressed event, Emitter<LoginState> emit) async {
-        bool tokenData = await repo.hasToken();
-      final authData = await repo.login(event.email, event.password);
     try {
       emit(LoginLoading());
-     
-
+      bool tokenData = await repo.hasToken();
+      final authData = await repo.login(event.email, event.password);
       if (authData["token"] != null) {
         await repo.persistToken((authData["token"]['access']));
         final Map profileData = await repo.getProfileData();
@@ -65,7 +63,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
       } 
     } catch (e) {
-      // emit(LoginError(msg: e.toString()));
+      emit(LoginError(msg: e.toString()));
     }
   }
 
@@ -91,9 +89,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(LoginError(msg: authData['errors']['non_field_errors'][0]));
       }
     } catch (e) {
-      // final authData =
-      //     await repo.signIn(event.email, event.password, event.confirmPassword);
-      // emit(LoginError(msg: authData['errors']['email'][0]));
+      final authData =
+          await repo.signIn(event.email, event.password, event.confirmPassword);
+      emit(LoginError(msg: authData['errors']['email'][0]));
     }
   }
 
@@ -103,8 +101,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       await repo.deleteToken();
       emit(LoginUnAuthenticated());
     } catch (e) {
-      print("yeta aairacha");
-      // emit(LoginError(msg: e.toString()));
+      emit(LoginError(msg: e.toString()));
     }
   }
 

@@ -15,12 +15,11 @@ class TherapyDetailsModel {
     this.contents,
   });
 
-  factory TherapyDetailsModel.fromJSON(Map responseTherapy, Map doctor) {
+  factory TherapyDetailsModel.fromJSON(Map responseTherapy) {
     return TherapyDetailsModel(
         therapyDetailId: responseTherapy["id"],
         therapyId: responseTherapy["fk_therapy_id"],
         doctorProfileId: responseTherapy["doctor_profile_id"],
-        contents: responseTherapy["contents"],
-        byDoctor: UserInfoModel.fromJson(doctor));
+        contents: responseTherapy["contents"],);
   }
 }

@@ -1,5 +1,7 @@
 class APIs {
   get localhost => "10.0.2.2:8000";
+  // get localhost => "sanityhealth.herokuapp.com";
+
   get getDoctorList => "http://$localhost/api/assistant/doctors/";
 
   get loginUrl => "http://$localhost/api/user/login/";
@@ -8,8 +10,8 @@ class APIs {
   get setProfile => "http://$localhost/api/user/setprofile/";
   get sendDailyLog => "http://$localhost/api/assistant/set/dailylog/";
 
-  String retrieveLog({int id = 1}) {
-    return "http://$localhost/api/assistant/get/dailylog/?id=1";
+  String retrieveLog({int? id}) {
+    return "http://$localhost/api/assistant/get/dailylog/?id=$id";
   }
 
   String userProfile({required int id}) {
@@ -44,8 +46,22 @@ class APIs {
     return "http://$localhost/api/assistant/delete/therapy/?id=$id";
   }
 
-  String getTherapyDetails({required int id}){
+  String getTherapyDetails({required int id}) {
     return "http://$localhost/api/assistant/get/therapy_details/?id=$id";
-
   }
+
+  get addTherapy => "http://$localhost/api/assistant/add/therapy/";
+  get addTherapyDetails =>
+      "http://$localhost/api/assistant/add/therapy_details/";
+
+
+  String incrementInvolved({required int id}){
+    return "http://$localhost/api/assistant/update/therapy/?id=$id";
+  }
+      
+
+
+
+
+      
 }

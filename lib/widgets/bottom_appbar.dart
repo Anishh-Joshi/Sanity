@@ -14,6 +14,9 @@ class CustomNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
+      shape: const CircularNotchedRectangle(),
+      notchMargin: 8.0,
+      clipBehavior: Clip.antiAlias,
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
         IconButton(
@@ -27,10 +30,12 @@ class CustomNavbar extends StatelessWidget {
             },
             icon: const Icon(MaterialIcons.notifications)),
         IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, WritePage.routeName);
-            },
-            icon: const Icon(MaterialCommunityIcons.pentagon)),
+          onPressed: () {
+            Navigator.pushNamed(context, WritePage.routeName);
+          },
+          icon: const Icon(MaterialCommunityIcons.plus_circle),
+          iconSize: 40,
+        ),
         isDoctor
             ? IconButton(
                 onPressed: () {

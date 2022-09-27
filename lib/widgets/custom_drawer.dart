@@ -4,14 +4,16 @@ import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/blocs/theme/theme_bloc_bloc.dart';
 import 'package:sanity/screens/settings/settings.dart';
+import 'package:sanity/screens/therapy/add_therapy.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/custom_elevated_button.dart';
 import 'package:sanity/widgets/platform_aware.dart';
 import '../blocs/login/login_bloc.dart';
 
 class CustomDrawer extends StatefulWidget {
+  final bool isDoctor;
   final GlobalKey<ScaffoldState> scaffoldKey;
-  const CustomDrawer({Key? key, required this.scaffoldKey}) : super(key: key);
+  const CustomDrawer({required this.isDoctor, Key? key, required this.scaffoldKey}) : super(key: key);
 
   @override
   State<CustomDrawer> createState() => _CustomDrawerState();
@@ -69,14 +71,21 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                 ),
                 const Divider(),
-                ListTile(
-                  onTap: () {},
+                 ListTile(
+                  onTap: () {
+                    if(widget.isDoctor){
+                      Navigator.pushNamed(context, AddTherapy.routeName);
+
+                    }else{
+
+                    }
+                  },
                   leading: Icon(
-                    Entypo.line_graph,
+                    widget.isDoctor?MaterialIcons.add: Entypo.line_graph,
                     color: Theme.of(context).indicatorColor,
                   ),
                   title: Text(
-                    'Progress Report',
+                    widget.isDoctor?'Add Therapy':'Progress Report',
                     style: Theme.of(context).textTheme.headline4,
                   ),
                 ),

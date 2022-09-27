@@ -26,10 +26,10 @@ class _TherapyDetailsState extends State<TherapyDetails> {
   List p = [];
   final FlutterTts flutterTts = FlutterTts();
   speak(String text) async {
-     await Timer(const Duration(seconds: 1), () async{
+      Timer(const Duration(seconds: 1), () async{
       await flutterTts.setLanguage("en-IN");
-    await flutterTts.setPitch(0.85);
-    await flutterTts.setSpeechRate(0.4);
+    await flutterTts.setPitch(0.90);
+    await flutterTts.setSpeechRate(0.35);
     await flutterTts.speak(text);
     });
     
@@ -89,9 +89,6 @@ class _TherapyDetailsState extends State<TherapyDetails> {
                     p: p,
                     content: state.therapydetails!.contents!,
                   )
-                  // ElevatedButtonCustom(action: (){
-                  //   speak();
-                  // }, color: Colors.red, buttonTitle: "speak")
                 ],
               );
             }
@@ -179,6 +176,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
     advancedPlayer = AudioPlayer();
     audioCache = AudioCache(fixedPlayer: advancedPlayer);
     audioCache!.play('music/Relax.mp3');
+    
 
     super.initState();
   }

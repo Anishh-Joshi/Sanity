@@ -13,11 +13,12 @@ class TherapyLoaded extends TherapyState {
   final List? therapyList;
   final Map? emoteMap;
   final Map? raw;
+  final List byDoctor;
   final TherapyDetailsModel? therapydetails;
 
-  const TherapyLoaded({this.therapydetails, this.therapyList, this.emoteMap,this.raw});
+  const TherapyLoaded({required this.byDoctor, this.therapydetails, this.therapyList, this.emoteMap,this.raw});
    @override
-  List<Object> get props => [therapyList!,emoteMap!,therapyList!,raw!];
+  List<Object> get props => [therapyList!,byDoctor,emoteMap!,therapyList!,raw!];
 
 }
 
@@ -29,3 +30,8 @@ class TherapyError extends TherapyState {
   @override
   List<Object> get props => [err];
 }
+
+
+class TherapyAdditionSuccess extends TherapyState {
+}
+

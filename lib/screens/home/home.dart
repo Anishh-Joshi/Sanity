@@ -42,12 +42,27 @@ class _HomeState extends State<Home> {
       return 'Good Evening';
     }
   }
+  // List therapy =
+
+  // List suggestions = [];
 
   Future<void> _refresh(BuildContext context) async {
     print("here");
     refreshKey.currentState?.show(atTop: false);
     context.read<TherapyBloc>().add(GetAllTherapy());
   }
+
+  // void searchTherapy(String query, List therapy) {
+  //   final suggestion = therapy.where((therapy) {
+  //     final therapyTitle = therapy.title.toLowerCase();
+  //     final input = query.toLowerCase();
+  //     return therapyTitle.contains(input);
+  //   }).toList();
+
+  //   setState(() {
+  //     suggestions = suggestion;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -126,19 +141,28 @@ class _HomeState extends State<Home> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: CustomForm(
-                              iconDataSuffix: Icons.clear_rounded,
-                              hintText: "Therapies Eg:Anxeity",
-                              containerColor: Theme.of(context).cardColor,
-                              iconColor: Theme.of(context).canvasColor,
-                              keyboardType: TextInputType.text,
-                              borderColor: Colors.transparent,
-                              iconData: Icons.search,
-                              borderRadius: 20,
-                              onChanged: (val) {},
-                            ),
+                          BlocBuilder<TherapyBloc, TherapyState>(
+                            builder: (context, state) {
+                              if (state is TherapyLoaded) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: CustomForm(
+                                    iconDataSuffix: Icons.clear_rounded,
+                                    hintText: "Therapies Eg:Anxeity",
+                                    containerColor: Theme.of(context).cardColor,
+                                    iconColor: Theme.of(context).canvasColor,
+                                    keyboardType: TextInputType.text,
+                                    borderColor: Colors.transparent,
+                                    iconData: Icons.search,
+                                    borderRadius: 20,
+                                    onChanged: (val) {
+                                      // searchTherapy(val, state.therapyList!);
+                                    },
+                                  ),
+                                );
+                              }
+                              return const SizedBox();
+                            },
                           ),
                           const Divider(
                             color: Colors.transparent,
@@ -178,21 +202,24 @@ class _HomeState extends State<Home> {
                                         final TherapyModel therapy =
                                             TherapyModel.fromJSON(
                                                 state.therapyList![index],
-                                                state.emoteMap!);
+                                                state.emoteMap!,
+                                                state.byDoctor[index]);
                                         return InkWell(
                                           onTap: () {
-                                            Navigator.pushNamed(
-                                              context,
-                                              Therapy.routeName,
-                                              arguments: therapy,
-                                            );
                                             context.read<TherapyBloc>().add(
                                                 GetTherapyDetails(
+                                                    byDoctor: state.byDoctor,
                                                     therapyId:
                                                         therapy.therapyId!,
                                                     emoteMap: state.emoteMap,
                                                     therapyList:
                                                         state.therapyList));
+
+                                            Navigator.pushNamed(
+                                              context,
+                                              Therapy.routeName,
+                                              arguments: therapy,
+                                            );
                                           },
                                           child: TherapyCard(
                                             therapy: therapy,
@@ -244,8 +271,16 @@ class _HomeState extends State<Home> {
             ),
           ),
         ),
-        drawer: CustomDrawer(
-          scaffoldKey: _scaffoldKey,
+        drawer: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            if (state is HomeLoaded) {
+              return CustomDrawer(
+                isDoctor: state.user!.isDoctor!,
+                scaffoldKey: _scaffoldKey,
+              );
+            }
+            return const SizedBox();
+          },
         ));
   }
 }

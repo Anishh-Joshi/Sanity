@@ -46,9 +46,8 @@ class LoginScreen extends StatelessWidget {
               defaultActionText: "Ok",
             ).show(context);
           }
-            Navigator.pushNamedAndRemoveUntil(
-                context, 'landing_page', (route) => false);
-          
+          Navigator.pushNamedAndRemoveUntil(
+              context, 'landing_page', (route) => false);
         },
         child: Scaffold(
           body: SafeArea(

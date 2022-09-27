@@ -23,7 +23,7 @@ String utf8convert(String text) {
     return Padding(
       padding: const EdgeInsets.only(left: 5),
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.7,
+        width: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(10),
@@ -45,7 +45,7 @@ String utf8convert(String text) {
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   Text(
-                    therapy.doctorId.toString(),
+                    therapy.byDoctor!.fullName!,
                     style: Theme.of(context).textTheme.headline5,
                   ),
                 ],
@@ -53,7 +53,7 @@ String utf8convert(String text) {
               Row(
                 children: [
                   Icon(AntDesign.clockcircleo,size: 14,color: Theme.of(context).canvasColor,),
-                  SizedBox(width: 4,),
+                  const SizedBox(width: 4,),
                   Text(timeago.format(therapy.createdAt!),style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).canvasColor)),
                 ],
               ),
@@ -90,7 +90,7 @@ String utf8convert(String text) {
                   Row(
                     children: [
                       Text(
-                        "${therapy.involved}+",
+                        "${therapy.involved??0}+",
                         style: Theme.of(context)
                             .textTheme
                             .headline3!

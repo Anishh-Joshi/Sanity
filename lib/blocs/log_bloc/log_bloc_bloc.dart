@@ -1,7 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:sanity/blocs/login/login_bloc.dart';
-import 'package:sanity/model/log_model.dart';
 import 'package:sanity/repository/log_repository/log_repo.dart';
 part 'log_bloc_event.dart';
 part 'log_bloc_state.dart';
@@ -19,7 +17,6 @@ class LogBlocBloc extends Bloc<LogBlocEvent, LogBlocState> {
     try {
       await repo.sendLog(event.log, event.userId);
     } catch (e) {
-      print(e.toString());
       emit(LogSent());
     }
     emit(LogSent());
@@ -28,7 +25,7 @@ class LogBlocBloc extends Bloc<LogBlocEvent, LogBlocState> {
 
   void _retrieveLog(RetrieveLog event, Emitter<LogBlocState> emit) async {
     emit(LogBlocLoading());
-    final Map receivedMap = await repo.retrieveLog(1);
+    final Map receivedMap = await repo.retrieveLog(event.id);
     emit(LogRetrieved(log: receivedMap['candidates']));
 
   }
