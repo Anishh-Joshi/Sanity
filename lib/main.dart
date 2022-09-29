@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/appointment/appointment_bloc.dart';
+import 'package:sanity/blocs/comment_bloc/comment_bloc.dart';
 import 'package:sanity/blocs/doctor_bloc/doctor_bloc.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/blocs/log_bloc/log_bloc_bloc.dart';
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
+           BlocProvider(
+              lazy: true,
+              create: (context) => CommentBloc()..add(Toggle(isOnComment: true))),
           BlocProvider(
               lazy: true,
               create: (context) => ThreadsBloc(threadRepo: ThreadsRepo())..add(FetchAllThreads())),

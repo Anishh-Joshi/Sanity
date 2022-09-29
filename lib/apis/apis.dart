@@ -67,4 +67,6 @@ class APIs {
   }
 
   get addThread => "http://$localhost/api/assistant/add/threads/";
+    get addComment => "http://$localhost/api/assistant/add/comment/";
+      get addReply => "http://$localhost/api/assistant/add/reply/";
 }

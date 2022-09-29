@@ -46,3 +46,31 @@ class AddThread extends ThreadsEvent {
 class UpdateThread extends ThreadsEvent {}
 
 class DeleteThread extends ThreadsEvent {}
+
+class CommentOnThread extends ThreadsEvent {
+  final String comment;
+  final int userId;
+  final int threadId;
+
+  const CommentOnThread(
+      {required this.comment, required this.userId, required this.threadId});
+
+  @override
+  List<Object> get props => [comment, userId, threadId];
+}
+
+class ReplyOnThread extends ThreadsEvent {
+  final String reply;
+  final int userId;
+  final int threadId;
+  final int commentId;
+
+  const ReplyOnThread(
+      {required this.reply,
+      required this.userId,
+      required this.threadId,
+      required this.commentId});
+
+  @override
+  List<Object> get props => [reply, userId, threadId, commentId];
+}

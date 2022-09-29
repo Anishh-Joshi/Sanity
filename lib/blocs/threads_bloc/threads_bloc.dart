@@ -17,6 +17,22 @@ class ThreadsBloc extends Bloc<ThreadsEvent, ThreadsState> {
     on<AddThread>(_onAddThread);
     on<UpdateThread>(_onUpdateThread);
     on<DeleteThread>(_onDeleteThread);
+    on<CommentOnThread>(_onCommentOnThread);
+    on<ReplyOnThread>(_onReplyOnThread);
+  }
+
+  void _onCommentOnThread(
+      CommentOnThread event, Emitter<ThreadsState> emit) async {
+    await _threadRepo.addComment(
+        userId: event.userId, comment: event.comment, threadId: event.threadId);
+  }
+
+  void _onReplyOnThread(ReplyOnThread event, Emitter<ThreadsState> emit) async {
+    await _threadRepo.addReply(
+        reply: event.reply,
+        userId: event.userId,
+        threadId: event.threadId,
+        commentId: event.commentId);
   }
 
   void _onFetchAllThreads(

@@ -47,6 +47,7 @@ class CustomForm extends StatelessWidget {
           expands: expands!,
           controller: controller,
           maxLines: maxLines,
+          
           enabled: enabled,
           keyboardType: keyboardType,
           onChanged: onChanged,
