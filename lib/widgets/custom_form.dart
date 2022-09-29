@@ -55,7 +55,7 @@ class CustomForm extends StatelessWidget {
             enabled: true,
             hintText: hintText,
             border: InputBorder.none,
-            hintStyle: Theme.of(context).textTheme.headline5,
+            hintStyle: Theme.of(context).textTheme.headline5!.copyWith(color: Colors.grey),
             prefixIcon: iconData == null
                 ? null
                 : Icon(

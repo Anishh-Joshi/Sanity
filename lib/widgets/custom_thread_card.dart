@@ -1,9 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
+import 'package:sanity/apis/utf_converter.dart';
+import 'package:sanity/blocs/threads_bloc/threads_bloc.dart';
+import 'package:sanity/model/threads_model.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
-class ThreadCard extends StatelessWidget {
-  const ThreadCard({Key? key}) : super(key: key);
+class ThreadCard extends StatefulWidget {
+  final ThreadsModel thread;
+  final int userId;
+  const ThreadCard({Key? key, required this.userId, required this.thread})
+      : super(key: key);
+
+  @override
+  State<ThreadCard> createState() => _ThreadCardState();
+}
+
+class _ThreadCardState extends State<ThreadCard> {
+  bool determineLike() {
+    setState(() {
+      upVote = widget.thread.upvotingUsers.length;
+    });
+    var filtered = widget.thread.upvotingUsers
+        .where((content) => content.userId == widget.userId)
+        .toList();
+    return filtered.isEmpty;
+  }
+
+  List getComments() {
+    var filtered = widget.thread.comments
+        .where((content) => content.fk == widget.thread.threadId)
+        .toList();
+    return filtered;
+  }
+
+  List? comment;
+
+  @override
+  void initState() {
+    setState(() {
+      isLiked = determineLike();
+      comment = getComments();
+    });
+    super.initState();
+  }
+
+  bool isLiked = false;
+  int? upVote;
+
+  void handleUpvote({required int userId, required int threadId}) {
+    !isLiked
+        ? context
+            .read<ThreadsBloc>()
+            .add(RemoveUpVote(threadId: threadId, userId: userId))
+        : context
+            .read<ThreadsBloc>()
+            .add(UpVote(threadId: threadId, userId: userId));
+    setState(() {
+      !isLiked ? upVote = upVote! - 1 : upVote = upVote = upVote! + 1;
+      isLiked = !isLiked;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,16 +75,21 @@ class ThreadCard extends StatelessWidget {
         children: [
           ListTile(
             leading: CircleAvatarCustom(
-              radius: 20,
-              url: "/media/default.jpg",
+              radius: 30,
+              url: widget.thread.ownerInfo.profileImgUrl!,
             ),
             title: Text(
-              "Help Me !!",
+             Converter.utf8convert( widget.thread.title),
               style: Theme.of(context).textTheme.headline4,
             ),
-            trailing: const Text("14m ago"),
+            trailing: Text(
+              timeago.format(widget.thread.createdAt,locale: 'en_short'),
+            ),
             subtitle: Text(
-              "So this is the sotru of anish joshi hakuna matatatattatata.so this is the sotru of anish joshi hakuna matatatattatata.so this is the sotru of anish joshi hakuna matatatattatata.so this is the sotru of anish joshi hakuna matatatattatata.so this is the sotru of anish joshi hakuna matatatattatataso this is the sotru of anish joshi hakuna matatatattatata",
+              widget.thread.contents.length > 50
+                  ? widget.thread.contents.substring(0, 50)+
+                      "..."
+                  : widget.thread.contents,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.headline6,
             ),
@@ -38,48 +101,55 @@ class ThreadCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children:  [
-                  Text("48",style: Theme.of(context).textTheme.bodyLarge,),
-                      const SizedBox(
-                    width: 4,
-                  ),
+                children: [
                   const Icon(
                     FontAwesome5.comment_alt,
-                    size: 14,
+                    size: 21,
                     color: Color(0xff787878),
                   ),
-                  
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    comment!.length.toString(),
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
                   const SizedBox(
                     width: 10,
                   ),
-                
-                  Text("8",style: Theme.of(context).textTheme.bodyLarge,),
-                   const SizedBox(
-                    width: 4,
-                  ),
-                   const Icon(
-                    Fontisto.doctor,
-                    size: 10,
-                    color: Color(0xff787878),
-                  ),
-
-                 const SizedBox(
-                    width: 10,
-                  ),
-                  
                   const Icon(
-                    AntDesign.caretup,
-                    color: Colors.greenAccent,
+                    Fontisto.doctor,
+                    size: 20,
+                    color: Color(0xff787878),
                   ),
-                 
                   const SizedBox(
                     width: 4,
                   ),
-                   Text("48",style: Theme.of(context).textTheme.bodyLarge,),
+                  Text(
+                    widget.thread.docInvolved.toString(),
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  InkWell(
+                    onTap: () => handleUpvote(
+                        threadId: widget.thread.threadId,
+                        userId: widget.userId),
+                    child: Icon(
+                      FontAwesome.arrow_circle_up,
+                      size: 23,
+                      color: isLiked ? Colors.grey : Colors.greenAccent,
+                    ),
+                  ),
+                  Text(
+                    upVote.toString(),
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );

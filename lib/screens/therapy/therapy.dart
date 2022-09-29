@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sanity/apis/apis.dart';
 import 'package:sanity/blocs/therapy/therapy_bloc.dart';
 import 'package:sanity/screens/therapy/therapy_details.dart';
 import 'package:sanity/widgets/circular_progress.dart';
@@ -14,14 +15,14 @@ import 'package:http/http.dart' as http;
 
 class Therapy extends StatelessWidget {
   static const String routeName = 'therapy_info';
-  
-  get api => null;
+  final APIs api = APIs();
+
   static Route route(RouteSettings settings) {
     return MaterialPageRoute(
-        builder: (context) => const Therapy(), settings: settings);
+        builder: (context) => Therapy(), settings: settings);
   }
 
-  const Therapy({Key? key}) : super(key: key);
+   Therapy({Key? key}) : super(key: key);
   String utf8convert(String text) {
     List<int> bytes = text.toString().codeUnits;
     return utf8.decode(bytes);
@@ -30,13 +31,7 @@ class Therapy extends StatelessWidget {
   Future<Map> addInvolved(int id)async{
     final client = http.Client();
     final http.Response response =
-        await http.put(Uri.parse(api.incrementInvolved(id:id)),
-            body: jsonEncode({
-            }),
-               headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },);
-
+        await http.put(Uri.parse(api.incrementInvolved(id:id)),);
     final appointmentResponse = json.decode(response.body);
     return appointmentResponse;
 

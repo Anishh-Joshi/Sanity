@@ -49,30 +49,25 @@ class _LandingPageState extends State<LandingPage> {
                 context, 'user_info', (route) => false);
           }
           if (state is LoginTokenError) {
-            Scaffold(
-              body: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text("TOKEN EXPIRED or your Account is deleted"),
-                  TextButton(
-                      onPressed: () {
-                        context.read<LoginBloc>().add(BackToLoginPage());
-                      },
-                      child: const Text("Get back to Login Page"))
-                ],
-              ),
-            );
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'token_err', (route) => false);
           }
           if (state is LoginAuthenticated) {
             Navigator.pushNamedAndRemoveUntil(
                 context, Home.routeName, (route) => false);
           }
+          if (state is BackToLoginPage) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'login_landing', (route) => false);
+          }
         },
-        child:  Scaffold(
+        child: Scaffold(
           body: Column(
             children: [
-              Image.asset('assets/logos/sanity_half.png',height: 500,),
+              Image.asset(
+                'assets/logos/sanity_half.png',
+                height: 500,
+              ),
               const CircularProgressIndicatorCustom(),
             ],
           ),

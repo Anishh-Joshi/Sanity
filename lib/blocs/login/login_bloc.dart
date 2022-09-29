@@ -6,10 +6,7 @@ import '../../model/user_class.dart';
 part 'login_event.dart';
 part 'login_state.dart';
 
-
-
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-
   final AuthRepository repo;
 
   LoginBloc({required this.repo}) : super(LoginLoading()) {
@@ -26,7 +23,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     bool tokenData = await repo.hasToken();
     await loginCheck(emit, tokenData);
   }
-
 
   void _onLoginPressed(
       LoginButtonPressed event, Emitter<LoginState> emit) async {
@@ -61,7 +57,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         } else if (!tokenData) {
           emit(LoginUnAuthenticated());
         }
-      } 
+      }
     } catch (e) {
       emit(LoginError(msg: e.toString()));
     }
@@ -69,7 +65,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   void _backToLoginPage(BackToLoginPage event, Emitter<LoginState> emit) async {
     emit(LoginUnAuthenticated());
-  } 
+  }
 
   void _onSignupPressed(
       SignupButtonPressed event, Emitter<LoginState> emit) async {
@@ -105,47 +101,48 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-
   void _onAppinformationSeen(
       AppInformationSkipedPressed event, Emitter<LoginState> emit) async {
     await repo.persistAppInformation();
     emit(LoginUnAuthenticated());
   }
 
-
   Future<void> loginCheck(Emitter<LoginState> emit, bool tokenData) async {
     final Map profileData = await repo.getProfileData();
+
     final bool isAppInfoSeen = await repo.hasAppInformation();
     final User userModel = User.fromJson(profileData);
-
+    print(userModel);
     if (!isAppInfoSeen) {
       emit(InformationNotSeen());
     } else if (!tokenData) {
+      print("token");
       emit(LoginUnAuthenticated());
-    } else if (isAppInfoSeen && tokenData && userModel.isEmailVerified!) {
+    
+    } else if (userModel.email!=null&& isAppInfoSeen && tokenData && userModel.isEmailVerified!) {
       final Map userInfoMap =
           await repo.registeredProfileData(id: userModel.id!);
 
-      if (userInfoMap['status'] == "success") {
+      if (userModel.email!=null&&userInfoMap['status'] == "success") {
         final UserInfoModel user =
             UserInfoModel.fromJson(userInfoMap['candidates']);
         emit(LoginAuthenticated(user: user));
-
-      } else {       
+      } else {
         emit(UnRegisteredUser(
             email: userModel.email!,
             id: userModel.id!,
             isEmailVerified: userModel.isEmailVerified!));
       }
-    } else if (tokenData && !userModel.isEmailVerified!) {
+    } else if (userModel.email!=null&& tokenData && !userModel.isEmailVerified!) {
       emit(LoginEmailNotVerified(
           email: userModel.email!,
           id: userModel.id!,
           isEmailVerified: userModel.isEmailVerified!));
-    } else if (profileData['errors']["details"] != null) {
-      emit(LoginTokenError());
-    } else if (!tokenData) {
+    }  else if (!tokenData) {
       emit(LoginUnAuthenticated());
+    }else{
+      emit(LoginTokenError());
     }
+
   }
 }

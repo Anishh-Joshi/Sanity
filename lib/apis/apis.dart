@@ -54,14 +54,17 @@ class APIs {
   get addTherapyDetails =>
       "http://$localhost/api/assistant/add/therapy_details/";
 
-
-  String incrementInvolved({required int id}){
+  String incrementInvolved({required int id}) {
     return "http://$localhost/api/assistant/update/therapy/?id=$id";
   }
-      
 
+  get fetchAllThreads => "http://$localhost/api/assistant/get/threads/";
 
+  get upVote => "http://$localhost/api/assistant/add/upvote/";
 
+  String downVote({required int id}) {
+    return "http://$localhost/api/assistant/remove/upvote/?id=$id";
+  }
 
-      
+  get addThread => "http://$localhost/api/assistant/add/threads/";
 }

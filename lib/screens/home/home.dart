@@ -3,8 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/blocs/therapy/therapy_bloc.dart';
+import 'package:sanity/blocs/threads_bloc/threads_bloc.dart';
 import 'package:sanity/model/therapy_model.dart';
+import 'package:sanity/model/threads_model.dart';
 import 'package:sanity/screens/therapy/therapy.dart';
+import 'package:sanity/screens/threads/thread_page.dart';
+import 'package:sanity/screens/write/write_thread.dart';
 import 'package:sanity/widgets/bottom_appbar.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/circular_progress.dart';
@@ -13,7 +17,6 @@ import 'package:sanity/widgets/custom_form.dart';
 import 'package:sanity/widgets/custom_thread_card.dart';
 import 'package:sanity/widgets/home_card.dart';
 import '../../blocs/home/home_bloc.dart';
-import '../../widgets/platform_aware.dart';
 
 class Home extends StatefulWidget {
   static const String routeName = 'main_home';
@@ -70,6 +73,16 @@ class _HomeState extends State<Home> {
       statusBarColor: Theme.of(context).scaffoldBackgroundColor,
     ));
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.deepPurple,
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              WriteThread.routeName,
+            );
+          },
+          child: Icon(Icons.edit),
+        ),
         key: _scaffoldKey,
         bottomNavigationBar: BlocBuilder<LoginBloc, LoginState>(
           builder: (context, state) {
@@ -256,12 +269,53 @@ class _HomeState extends State<Home> {
                           const Divider(
                             color: Colors.transparent,
                           ),
-                          ListView.builder(
-                            itemCount: 50,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return const ThreadCard();
+                          BlocBuilder<ThreadsBloc, ThreadsState>(
+                            builder: (context, state) {
+                              if (state is ThreadsLoaded) {
+                                return ListView.builder(
+                                  itemCount: state.threads.length > 10
+                                      ? 10
+                                      : state.threads.length,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    final ThreadsModel thread =
+                                        ThreadsModel.fromJSON(
+                                            replies: state.replies,
+                                            replyOwners: state.replyOwner,
+                                            response: state.threads[index],
+                                            userMap: state.owners[index],
+                                            commentingUserList:
+                                                state.commentUsers,
+                                            comments: state.comments,
+                                            upVotingUserList: state.upVotes);
+                                    return BlocBuilder<HomeBloc, HomeState>(
+                                      builder: (context, state) {
+                                        if (state is HomeLoaded) {
+                                          return InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(context,
+                                                  ThreadsDetails.routeName,
+                                                  arguments: {
+                                                    "thread": thread,
+                                                    "userId":
+                                                        state.user!.userId!
+                                                  });
+                                            },
+                                            child: ThreadCard(
+                                              thread: thread,
+                                              userId: state.user!.userId!,
+                                            ),
+                                          );
+                                        }
+                                        return const SizedBox();
+                                      },
+                                    );
+                                  },
+                                );
+                              }
+
+                              return const CircularProgressIndicatorCustom();
                             },
                           ),
                         ],

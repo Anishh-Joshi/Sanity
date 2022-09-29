@@ -15,9 +15,12 @@ import 'package:sanity/screens/profile/profile.dart';
 import 'package:sanity/screens/therapy/add_therapy.dart';
 import 'package:sanity/screens/therapy/therapy.dart';
 import 'package:sanity/screens/therapy/therapy_details.dart';
+import 'package:sanity/screens/threads/thread_page.dart';
 import 'package:sanity/screens/write/write.dart';
 import 'package:sanity/screens/write/write_details.dart';
 import 'package:sanity/screens/write/write_textfield.dart';
+import 'package:sanity/screens/write/write_thread.dart';
+import 'package:sanity/widgets/token_error.dart';
 import '../screens/doctor/doctor.dart';
 
 class AppRouter {
@@ -65,6 +68,12 @@ class AppRouter {
         return WriteDetails.route(setting);
       case AddTherapy.routeName:
         return AddTherapy.route(setting);
+      case TokenError.routeName:
+        return TokenError.route();
+      case WriteThread.routeName:
+        return WriteThread.route(setting);
+      case ThreadsDetails.routeName:
+        return ThreadsDetails.route(setting);
       default:
         _errorRoute();
     }

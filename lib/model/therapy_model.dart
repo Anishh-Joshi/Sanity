@@ -1,6 +1,3 @@
-import 'package:flutter/foundation.dart';
-import 'dart:convert' show utf8;
-
 import 'package:sanity/model/user_info_model.dart';
 
 class TherapyModel {
