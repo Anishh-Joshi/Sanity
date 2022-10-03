@@ -1,12 +1,12 @@
 import 'package:sanity/model/user_info_model.dart';
 
 class RepliyModel {
-  final int replyId;
-  final int commentId;
-  final String reply;
-  final int threadId;
-  final DateTime createdAt;
-  final UserInfoModel replyOwner;
+  final int? replyId;
+  final int? commentId;
+  final String? reply;
+  final int? threadId;
+  final DateTime? createdAt;
+  final UserInfoModel? replyOwner;
 
   RepliyModel(
       {required this.replyId,
@@ -16,13 +16,13 @@ class RepliyModel {
       required this.replyOwner,
       required this.createdAt});
 
-  factory RepliyModel.fromJSON({required Map response, required Map owner}) {
+  factory RepliyModel.fromJSON({required Map response}) {
     return RepliyModel(
         replyId: response['thread_comment_reply_id'],
         threadId: response['thread_id'],
-        commentId: response['thread_reply_fk'],
+        commentId: response['thread_reply_fk']['thread_comment_id'],
         reply: response['reply'],
-        replyOwner: UserInfoModel.fromJson(owner),
+        replyOwner: UserInfoModel.fromJson(response['by_user']),
         createdAt: DateTime.parse(response['created_at']));
   }
 }

@@ -40,9 +40,9 @@ class ThreadsRepo {
     return upVote;
   }
 
-  Future<Map> downVote({required int threadId, required int userId}) async {
+  Future<Map> downVote({required int threadId,required int userId}) async {
     final http.Response response =
-        await client.delete(Uri.parse(api.downVote(id: userId)), headers: {
+        await client.delete(Uri.parse(api.downVote(id: threadId,userId:userId)), headers: {
       "Content-type": 'application/json',
       "Accept": "application/json",
       "Access-Control-Allow_origin": "*"
@@ -87,6 +87,7 @@ class ThreadsRepo {
           "Access-Control-Allow_origin": "*"
         });
     final threadResponse = json.decode(response.body);
+
     return threadResponse;
   }
 
@@ -95,6 +96,7 @@ class ThreadsRepo {
       required int userId,
       required int threadId,
       required int commentId}) async {
+
     final http.Response response = await client.post(Uri.parse(api.addReply),
         body: jsonEncode({
           "thread_reply_fk": commentId,
@@ -111,9 +113,9 @@ class ThreadsRepo {
     return threadResponse;
   }
 
-  Future<Map> deleteThread({required int userId}) async {
+  Future<Map> deleteThread({required int threadId}) async {
     final http.Response response =
-        await client.delete(Uri.parse(api.signInUrl), headers: {
+        await client.delete(Uri.parse(api.deleteThread(threadId: threadId)), headers: {
       "Content-type": 'application/json',
       "Accept": "application/json",
       "Access-Control-Allow_origin": "*"
@@ -143,5 +145,49 @@ class ThreadsRepo {
     });
     final updateThread = json.decode(response.body);
     return updateThread;
+  }
+
+    Future<Map> deleteComment({required int commentId}) async {
+    final http.Response response =
+        await client.delete(Uri.parse(api.removeComment(commentId: commentId)), headers: {
+      "Content-type": 'application/json',
+      "Accept": "application/json",
+      "Access-Control-Allow_origin": "*"
+    });
+    final deleteThread = json.decode(response.body);
+    return deleteThread;
+  }
+    Future<Map> deleteReply({required int replyId}) async {
+    final http.Response response =
+        await client.delete(Uri.parse(api.removeReply(replyId: replyId)), headers: {
+      "Content-type": 'application/json',
+      "Accept": "application/json",
+      "Access-Control-Allow_origin": "*"
+    });
+    final deleteThread = json.decode(response.body);
+    return deleteThread;
+  }
+
+
+    Future<Map> getComments({required int threadId}) async {
+    final http.Response response =
+        await client.get(Uri.parse(api.getComment(threadId: threadId)), headers: {
+      "Content-type": 'application/json',
+      "Accept": "application/json",
+      "Access-Control-Allow_origin": "*"
+    });
+    final comments = json.decode(response.body);
+    return comments;
+  }
+
+    Future<Map> getReplies({required int commentId}) async {
+    final http.Response response =
+        await client.get(Uri.parse(api.getReplies(commentId: commentId)), headers: {
+      "Content-type": 'application/json',
+      "Accept": "application/json",
+      "Access-Control-Allow_origin": "*"
+    });
+    final replies = json.decode(response.body);
+    return replies;
   }
 }

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
+import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/screens/doctor/appointment_information.dart';
 import 'package:sanity/screens/doctor/doctor.dart';
 import 'package:sanity/screens/home/home.dart';
 import 'package:sanity/screens/message/messagePage.dart';
 import 'package:sanity/screens/notifications/notification.dart';
+import 'package:sanity/screens/profile/profile.dart';
 import 'package:sanity/screens/write/write.dart';
+import 'package:sanity/widgets/circle_avatar.dart';
 
 class CustomNavbar extends StatelessWidget {
   final bool isDoctor;
@@ -48,11 +52,18 @@ class CustomNavbar extends StatelessWidget {
                   Navigator.pushNamed(context, DoctorsPage.routeName);
                 },
                 icon: const Icon(Fontisto.doctor)),
-        IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, MessagePage.routeName);
-            },
-            icon: const Icon(MaterialCommunityIcons.message))
+        BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            if(state is HomeLoaded){
+              return InkWell(
+                onTap: (){
+                  Navigator.pushNamed(context, ProfilePage.routeName);
+                },
+                child: CircleAvatarCustom(radius: 18,url: state.user!.profileImgUrl!,));
+            }
+            return CircleAvatarCustom(radius: 18,url: '',);
+          },
+        )
       ]),
     );
   }

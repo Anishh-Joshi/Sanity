@@ -7,6 +7,8 @@ import 'package:sanity/model/threads_model.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../model/upvotes_model.dart';
+
 class ThreadCard extends StatefulWidget {
   final ThreadsModel thread;
   final int userId;
@@ -18,14 +20,19 @@ class ThreadCard extends StatefulWidget {
 }
 
 class _ThreadCardState extends State<ThreadCard> {
-  bool determineLike() {
-    setState(() {
-      upVote = widget.thread.upvotingUsers.length;
-    });
-    var filtered = widget.thread.upvotingUsers
-        .where((content) => content.userId == widget.userId)
+  bool totalVotes() {
+    List<UpvotesModel> filtered = widget.thread.upvotingUsers
+        .where((content) => content.threadId == widget.thread.threadId)
         .toList();
-    return filtered.isEmpty;
+
+    List<UpvotesModel> upvotesList = filtered
+        .where((element) => element.upVoteOwner == widget.userId)
+        .toList();
+
+    setState(() {
+      upVote = filtered.length;
+    });
+    return upvotesList.isEmpty ? false : true;
   }
 
   List getComments() {
@@ -36,13 +43,15 @@ class _ThreadCardState extends State<ThreadCard> {
   }
 
   List? comment;
+  List<UpvotesModel>? total;
 
   @override
   void initState() {
     setState(() {
-      isLiked = determineLike();
       comment = getComments();
+      isLiked = totalVotes();
     });
+
     super.initState();
   }
 
@@ -50,7 +59,7 @@ class _ThreadCardState extends State<ThreadCard> {
   int? upVote;
 
   void handleUpvote({required int userId, required int threadId}) {
-    !isLiked
+    isLiked
         ? context
             .read<ThreadsBloc>()
             .add(RemoveUpVote(threadId: threadId, userId: userId))
@@ -58,7 +67,7 @@ class _ThreadCardState extends State<ThreadCard> {
             .read<ThreadsBloc>()
             .add(UpVote(threadId: threadId, userId: userId));
     setState(() {
-      !isLiked ? upVote = upVote! - 1 : upVote = upVote = upVote! + 1;
+      isLiked ? upVote = upVote! - 1 : upVote = upVote = upVote! + 1;
       isLiked = !isLiked;
     });
   }
@@ -79,16 +88,15 @@ class _ThreadCardState extends State<ThreadCard> {
               url: widget.thread.ownerInfo.profileImgUrl!,
             ),
             title: Text(
-             Converter.utf8convert( widget.thread.title),
+              Converter.utf8convert(widget.thread.title),
               style: Theme.of(context).textTheme.headline4,
             ),
             trailing: Text(
-              timeago.format(widget.thread.createdAt,locale: 'en_short'),
+              timeago.format(widget.thread.createdAt, locale: 'en_short'),
             ),
             subtitle: Text(
               widget.thread.contents.length > 50
-                  ? widget.thread.contents.substring(0, 50)+
-                      "..."
+                  ? widget.thread.contents.substring(0, 50) + "..."
                   : widget.thread.contents,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.headline6,
@@ -139,7 +147,7 @@ class _ThreadCardState extends State<ThreadCard> {
                     child: Icon(
                       FontAwesome.arrow_circle_up,
                       size: 23,
-                      color: isLiked ? Colors.grey : Colors.greenAccent,
+                      color: !isLiked ? Colors.grey : Colors.greenAccent,
                     ),
                   ),
                   Text(

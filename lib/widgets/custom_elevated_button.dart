@@ -25,7 +25,7 @@ class ElevatedButtonCustom extends StatelessWidget {
                 borderRadius: BorderRadius.circular(40))),
         onPressed: action,
         child: SizedBox(
-            width: MediaQuery.of(context).size.width / 1.4,
+            width: MediaQuery.of(context).size.width / 1.5,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(

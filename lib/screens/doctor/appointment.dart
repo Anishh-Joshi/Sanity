@@ -95,7 +95,7 @@ class _AppointmentState extends State<Appointment> {
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Appointment Verified")));
             context.read<AppointmentBloc>().add(RetrieveAppointmentDoctor(
-                doctorId: widget.appointmentModel!.doctorName!));
+                doctorId: widget.appointmentModel!.doctor.userId!));
           }
         },
         child: SafeArea(
@@ -247,34 +247,35 @@ class _AppointmentState extends State<Appointment> {
                                 "Date",
                                 style: Theme.of(context).textTheme.headline4,
                               ),
-                              SizedBox(
-                                width: width * 0.24,
-                              ),
-                              SizedBox(
-                                  width: width * 0.4,
-                                  child: ElevatedButtonCustom(
-                                      action: () async {
-                                        DateTime? dateTime =
-                                            await showDatePicker(
-                                                context: context,
-                                                initialDate: _pickedDate!,
-                                                firstDate: DateTime(
-                                                    DateTime.now().year),
-                                                lastDate: DateTime(
-                                                    DateTime.now().year + 100));
-                                        if (dateTime != null) {
-                                          setState(() {
-                                            _pickedDate = dateTime;
-                                          });
-                                        }
-                                      },
-                                      color: Theme.of(context).cardColor,
-                                      buttonTitle:
-                                          months[_pickedDate!.month - 1]
-                                                  .toString()
-                                                  .toUpperCase() +
-                                              " " +
-                                              _pickedDate!.day.toString()))
+                              Flexible(
+                                child: Padding(
+                                  padding:  EdgeInsets.only(left:width*0.20),
+                                  child: SizedBox(
+                                      child: ElevatedButtonCustom(
+                                          action: () async {
+                                            DateTime? dateTime =
+                                                await showDatePicker(
+                                                    context: context,
+                                                    initialDate: _pickedDate!,
+                                                    firstDate: DateTime(
+                                                        DateTime.now().year),
+                                                    lastDate: DateTime(
+                                                        DateTime.now().year + 100));
+                                            if (dateTime != null) {
+                                              setState(() {
+                                                _pickedDate = dateTime;
+                                              });
+                                            }
+                                          },
+                                          color: Theme.of(context).cardColor,
+                                          buttonTitle:
+                                              months[_pickedDate!.month - 1]
+                                                      .toString()
+                                                      .toUpperCase() +
+                                                  " " +
+                                                  _pickedDate!.day.toString())),
+                                ),
+                              )
                             ],
                           ),
                           Row(
@@ -283,26 +284,28 @@ class _AppointmentState extends State<Appointment> {
                                 "Time",
                                 style: Theme.of(context).textTheme.headline4,
                               ),
-                              SizedBox(
-                                width: width * 0.24,
-                              ),
-                              SizedBox(
-                                  width: width * 0.4,
-                                  child: ElevatedButtonCustom(
-                                      action: () async {
-                                        TimeOfDay? t = await showTimePicker(
-                                            context: context,
-                                            initialTime: timeOfDay!);
-                                        if (t != null) {
-                                          setState(() {
-                                            timeOfDay = t;
-                                          });
-                                        }
-                                      },
-                                      color: Theme.of(context).cardColor,
-                                      buttonTitle: timeOfDay!.hour.toString() +
-                                          ":" +
-                                          timeOfDay!.minute.toString()))
+                              Flexible(
+                                child: Padding(
+                                  padding:  EdgeInsets.only(left:width*0.20),
+                                  child: SizedBox(
+                                     
+                                      child: ElevatedButtonCustom(
+                                          action: () async {
+                                            TimeOfDay? t = await showTimePicker(
+                                                context: context,
+                                                initialTime: timeOfDay!);
+                                            if (t != null) {
+                                              setState(() {
+                                                timeOfDay = t;
+                                              });
+                                            }
+                                          },
+                                          color: Theme.of(context).cardColor,
+                                          buttonTitle: timeOfDay!.hour.toString() +
+                                              ":" +
+                                              timeOfDay!.minute.toString())),
+                                ),
+                              )
                             ],
                           ),
                         ],

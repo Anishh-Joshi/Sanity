@@ -42,10 +42,18 @@ class AppointmentRepository {
     return appointmentResponse;
   }
 
-  Future<Map> retrieveAppointments({required int userId}) async {
+  Future<Map> retrieveAppointments({required int userId,required String cat}) async {
     final client = http.Client();
     final http.Response response =
-        await client.get(Uri.parse(api.retrieveAppointment(id: userId)));
+        await client.get(Uri.parse(api.retrieveAppointment(id: userId,key: 1,cat: cat)));
+    final Map logResponse = json.decode(response.body);
+    return logResponse;
+  }
+
+    Future<Map> retrieveAppointmentsNotification({required int userId,required String cat}) async {
+    final client = http.Client();
+    final http.Response response =
+        await client.get(Uri.parse(api.retrieveAppointment(id: userId,key: 2,cat: cat)));
     final Map logResponse = json.decode(response.body);
     return logResponse;
   }

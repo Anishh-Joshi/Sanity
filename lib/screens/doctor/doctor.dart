@@ -11,7 +11,7 @@ import 'package:sanity/widgets/custom_appbar.dart';
 import '../../widgets/bottom_appbar.dart';
 
 class DoctorsPage extends StatelessWidget {
-   static const String routeName = 'doctor_page';
+  static const String routeName = 'doctor_page';
   const DoctorsPage({Key? key}) : super(key: key);
   static Route route() {
     return MaterialPageRoute(
@@ -21,45 +21,67 @@ class DoctorsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
     context.read<DoctorBloc>().add(RetrieveDoctorsList());
-    return  Scaffold(
-      appBar: const MyCustomAppBar(appBarTitle: 'Doctors Near You'),
-      bottomNavigationBar: BlocBuilder<LoginBloc, LoginState>(
-      builder: (context, state) {
-        if(state is LoginAuthenticated){
-          return CustomNavbar(isDoctor: state.user.isDoctor!);
-        }
-        return const SizedBox();
-        
-      },
-    ),
-      body: SafeArea(
-        child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: BlocBuilder<DoctorBloc,DoctorState>(
-          builder: (context,state){
-            if(state is DoctorListLoaded){
-              return ListView.builder(
-                reverse: false,
-                itemCount: state.docList.length,
-                itemBuilder: (context,index){
-                  DoctorModel doc = DoctorModel.fromJson(state.docList[index]);
-                  return GestureDetector(
-                                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>DoctorProfile(url: doc.profileUrl,nmcId: doc.nmcId, profile: "General Doctor",name: doc.name,doctorId: doc.doctorId,)));
-                },
-                    child: DoctorCard(doctorName:doc.name , gender: doc.gender, location: doc.location, profileUrl: doc.profileUrl, nmcId: doc.nmcId, hospitalName: "KMC"));
-              
-                },
-                 );
+    return Scaffold(
+        bottomNavigationBar: BlocBuilder<LoginBloc, LoginState>(
+          builder: (context, state) {
+            if (state is LoginAuthenticated) {
+              return CustomNavbar(isDoctor: state.user.isDoctor!);
             }
-            else if(state is DoctorLoading){
-              return const Center(child: CircularProgressIndicator(),);
-            }
-            return const Center(child: CircularProgressIndicator(),);
-          }
-          ),
+            return const SizedBox();
+          },
         ),
-    ));
+        appBar: MyCustomAppBar(
+            elevation: 0,
+            fontSize: 25,
+            appBarTitle: '  Doctors',
+            onPressed: () {}),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child:
+                BlocBuilder<DoctorBloc, DoctorState>(builder: (context, state) {
+              if (state is DoctorListLoaded) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  reverse: false,
+                  itemCount: state.docList.length,
+                  itemBuilder: (context, index) {
+                    DoctorModel doc =
+                        DoctorModel.fromJson(state.docList[index]);
+                    return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DoctorProfile(
+                                        url: doc.profileUrl,
+                                        nmcId: doc.nmcId,
+                                        profile: "General Doctor",
+                                        name: doc.name,
+                                        doctorId: doc.doctorId,
+                                      )));
+                        },
+                        child: DoctorCard(
+                            doctorName: doc.name,
+                            gender: doc.gender,
+                            location: doc.location,
+                            profileUrl: doc.profileUrl,
+                            nmcId: doc.nmcId,
+                            hospitalName: "KMC"));
+                  },
+                );
+              } else if (state is DoctorLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }),
+          ),
+        ));
   }
 }

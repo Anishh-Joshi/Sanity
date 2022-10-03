@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sanity/apis/apis.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CircleAvatarCustom extends StatelessWidget {
   final APIs api = APIs();
@@ -13,13 +14,15 @@ class CircleAvatarCustom extends StatelessWidget {
   Widget build(BuildContext context) {
     return url == '/media/default.jpg'
         ? CircleAvatar(
-            backgroundColor: Colors.transparent,
+          
+          backgroundColor: Theme.of(context).cardColor,
             radius: radius,
             child: Image.asset('assets/images/default.png'),
           )
         : CircleAvatar(
+          backgroundColor: Theme.of(context).cardColor,
             radius: radius,
-            backgroundImage: NetworkImage("http://10.0.2.2:8000$url"),
+            backgroundImage: CachedNetworkImageProvider("http://${api.localhost}$url",),
           );
   }
 }

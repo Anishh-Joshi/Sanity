@@ -1,6 +1,6 @@
 class APIs {
   get localhost => "10.0.2.2:8000";
-  // get localhost => "sanityhealth.herokuapp.com";
+  //get localhost => "sanityhealth.herokuapp.com";
 
   get getDoctorList => "http://$localhost/api/assistant/doctors/";
 
@@ -18,8 +18,8 @@ class APIs {
     return "http://$localhost/api/user/get/profile/?id=$id";
   }
 
-  String retrieveAppointment({required int id}) {
-    return "http://$localhost/api/assistant/retrieve/appointment/?id=$id";
+  String retrieveAppointment({required int id, required int key,required String cat}) {
+    return "http://$localhost/api/assistant/retrieve/appointment/?id=$id&key=$key&cat=$cat";
   }
 
   String requestAppointment() {
@@ -46,6 +46,10 @@ class APIs {
     return "http://$localhost/api/assistant/delete/therapy/?id=$id";
   }
 
+  String deleteThread({required int threadId}) {
+    return "http://$localhost/api/assistant/delete/threads/?id=$threadId";
+  }
+
   String getTherapyDetails({required int id}) {
     return "http://$localhost/api/assistant/get/therapy_details/?id=$id";
   }
@@ -62,11 +66,24 @@ class APIs {
 
   get upVote => "http://$localhost/api/assistant/add/upvote/";
 
-  String downVote({required int id}) {
-    return "http://$localhost/api/assistant/remove/upvote/?id=$id";
+  String downVote({required int id, required int userId}) {
+    return "http://$localhost/api/assistant/remove/upvote/?id=$id&key=$userId";
   }
 
   get addThread => "http://$localhost/api/assistant/add/threads/";
-    get addComment => "http://$localhost/api/assistant/add/comment/";
-      get addReply => "http://$localhost/api/assistant/add/reply/";
+
+  get addComment => "http://$localhost/api/assistant/add/comment/";
+
+  String getComment({required int threadId}) =>
+      "http://$localhost/api/assistant/get/comment/?id=$threadId";
+
+  String getReplies({required int commentId}) =>
+      "http://$localhost/api/assistant/get/replies/?id=$commentId";
+
+  get addReply => "http://$localhost/api/assistant/add/reply/";
+
+  String removeComment({required int commentId}) =>
+      "http://$localhost/api/assistant/add/comment/?id=$commentId";
+  String removeReply({required int replyId}) =>
+      "http://$localhost/api/assistant/add/reply/?id=$replyId";
 }

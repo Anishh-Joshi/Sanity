@@ -18,7 +18,7 @@ import 'package:sanity/widgets/custom_thread_card.dart';
 import 'package:sanity/widgets/home_card.dart';
 import '../../blocs/comment_bloc/comment_bloc.dart';
 import '../../blocs/home/home_bloc.dart';
-
+import '../../widgets/platform_aware.dart';
 
 class Home extends StatefulWidget {
   static const String routeName = 'main_home';
@@ -52,25 +52,28 @@ class _HomeState extends State<Home> {
   // List suggestions = [];
 
   Future<void> _refresh(BuildContext context) async {
-    print("here");
     refreshKey.currentState?.show(atTop: false);
     context.read<TherapyBloc>().add(GetAllTherapy());
   }
 
-  // void searchTherapy(String query, List therapy) {
-  //   final suggestion = therapy.where((therapy) {
-  //     final therapyTitle = therapy.title.toLowerCase();
-  //     final input = query.toLowerCase();
-  //     return therapyTitle.contains(input);
-  //   }).toList();
+  Future<void> _confirmDelete(BuildContext context, int threadId) async {
+    final didRequest = await const PlatformAADialog(
+      title: "Confirm Delete",
+      content: "Are you sure you want to delete this thread ?",
+      cancelActionText: "Cancel",
+      defaultActionText: 'Delete',
+    ).show(context);
+    if (didRequest) {
+      context.read<ThreadsBloc>().add(DeleteThread(threadId: threadId));
+    }
 
-  //   setState(() {
-  //     suggestions = suggestion;
-  //   });
-  // }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
+    FocusManager.instance.primaryFocus?.unfocus();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Theme.of(context).scaffoldBackgroundColor,
     ));
@@ -83,7 +86,7 @@ class _HomeState extends State<Home> {
               WriteThread.routeName,
             );
           },
-          child: Icon(Icons.edit),
+          child: const Icon(Icons.edit),
         ),
         key: _scaffoldKey,
         bottomNavigationBar: BlocBuilder<LoginBloc, LoginState>(
@@ -283,18 +286,21 @@ class _HomeState extends State<Home> {
                                   itemBuilder: (context, index) {
                                     final ThreadsModel thread =
                                         ThreadsModel.fromJSON(
-                                            replies: state.replies,
-                                            replyOwners: state.replyOwner,
                                             response: state.threads[index],
                                             userMap: state.owners[index],
-                                            commentingUserList:
-                                                state.commentUsers,
                                             comments: state.comments,
                                             upVotingUserList: state.upVotes);
                                     return BlocBuilder<HomeBloc, HomeState>(
                                       builder: (context, state) {
                                         if (state is HomeLoaded) {
                                           return InkWell(
+                                            onLongPress: () {
+                                              thread.ownerInfo.userId ==
+                                                      state.user!.userId
+                                                  ? _confirmDelete(
+                                                      context, thread.threadId)
+                                                  : null;
+                                            },
                                             onTap: () {
                                               Navigator.pushNamed(context,
                                                   ThreadsDetails.routeName,

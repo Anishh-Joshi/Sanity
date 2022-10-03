@@ -34,12 +34,13 @@ class PlatformAADialog extends PlatformWidget {
   @override
   Widget buildMaterialWidget(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      elevation: 0,
+      backgroundColor: Theme.of(context).cardColor,
       content: Text(content,
           style: Theme.of(context)
               .textTheme
               .headline4!
-              .copyWith(color: const Color(0xff787878))),
+              ),
       title: Text(title, style: Theme.of(context).textTheme.headline3),
       actions: _buildActions(context),
     );

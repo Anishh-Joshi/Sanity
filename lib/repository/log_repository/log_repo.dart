@@ -21,10 +21,8 @@ class LogRepository {
 
 
   Future<Map> retrieveLog(int? userId) async {
-    print("here");
     final client = http.Client();
     final http.Response response = await client.get(Uri.parse(api.retrieveLog(id: userId!)));
-    print("yeta");
     final Map logResponse = json.decode(response.body);
     return logResponse;
   }

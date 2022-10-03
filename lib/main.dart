@@ -6,6 +6,7 @@ import 'package:sanity/blocs/doctor_bloc/doctor_bloc.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/blocs/log_bloc/log_bloc_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
+import 'package:sanity/blocs/notification_bloc/notification_bloc.dart';
 import 'package:sanity/blocs/theme/theme_bloc_bloc.dart';
 import 'package:sanity/blocs/therapy/therapy_bloc.dart';
 import 'package:sanity/blocs/threads_bloc/threads_bloc.dart';
@@ -20,9 +21,14 @@ import 'package:sanity/repository/log_repository/log_repo.dart';
 import 'package:sanity/repository/signup/signup_repo.dart';
 import 'package:sanity/repository/therapy_repository/therapy_repo.dart';
 import 'package:sanity/repository/threads_repository/threds_repo.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   runApp(const MyApp());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -31,12 +37,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-           BlocProvider(
-              lazy: true,
-              create: (context) => CommentBloc()..add(Toggle(isOnComment: true))),
           BlocProvider(
               lazy: true,
-              create: (context) => ThreadsBloc(threadRepo: ThreadsRepo())..add(FetchAllThreads())),
+              create: (context) => CommentBloc(threadRepo: ThreadsRepo())),
+
+           BlocProvider(
+              lazy: true,
+              create: (context) => NotificationBloc(repo: AppointmentRepository())),
+          BlocProvider(
+              lazy: true,
+              create: (context) => ThreadsBloc(threadRepo: ThreadsRepo())
+                ..add(FetchAllThreads())),
           BlocProvider(
               lazy: true,
               create: (context) =>

@@ -3,7 +3,15 @@ import 'package:flutter/material.dart';
 ThemeData theme({required bool isDark}) {
   return ThemeData(
       primaryColor: primaryColor(isDark),
-      
+      // timePickerTheme: TimePickerThemeData(
+      //   entryModeIconColor:Colors.red,
+
+      //     dialBackgroundColor: isDark
+      //         ? Color.fromARGB(255, 26, 25, 25)
+      //         : Color.fromARGB(255, 250, 250, 250),
+      //     dayPeriodColor: canvasColor(isDark),
+      //     dialHandColor: canvasColor(isDark),
+      //     backgroundColor: bottomAppBarColor(isDark)),
       appBarTheme:
           AppBarTheme(color: isDark ? const Color(0xff000000) : Colors.white),
       colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -15,7 +23,7 @@ ThemeData theme({required bool isDark}) {
       canvasColor: canvasColor(isDark),
       cardColor: isDark
           ? Color.fromARGB(255, 26, 25, 25)
-        : Color.fromARGB(255, 250, 250, 250),
+          : Color.fromARGB(255, 250, 250, 250),
       bottomAppBarColor: bottomAppBarColor(isDark),
       indicatorColor: indicatorColor(isDark),
       pageTransitionsTheme: const PageTransitionsTheme(builders: {
@@ -29,12 +37,13 @@ ThemeData theme({required bool isDark}) {
 Color indicatorColor(bool isDark) {
   return isDark ? Colors.white : const Color(0xff000000);
 }
+
 Color shadowColor(bool isDark) {
   return isDark ? Colors.black : primaryColor(isDark);
 }
 
 Color primaryColor(bool isDark) {
-  return  Colors.deepPurpleAccent;
+  return Colors.deepPurpleAccent;
 }
 
 Color canvasColor(bool isDark) {
@@ -46,7 +55,7 @@ IconThemeData iconTheme(bool isDark) {
 }
 
 Color bottomAppBarColor(bool isDark) {
-  return isDark ?const Color(0xff000000): Colors.white ;
+  return isDark ? const Color(0xff000000) : Colors.white;
 }
 
 TextTheme textTheme({required bool isDark}) {

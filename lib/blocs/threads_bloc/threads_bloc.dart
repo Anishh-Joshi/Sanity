@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:sanity/model/threads_model.dart';
 import 'package:sanity/repository/threads_repository/threds_repo.dart';
 part 'threads_event.dart';
 part 'threads_state.dart';
@@ -17,22 +16,6 @@ class ThreadsBloc extends Bloc<ThreadsEvent, ThreadsState> {
     on<AddThread>(_onAddThread);
     on<UpdateThread>(_onUpdateThread);
     on<DeleteThread>(_onDeleteThread);
-    on<CommentOnThread>(_onCommentOnThread);
-    on<ReplyOnThread>(_onReplyOnThread);
-  }
-
-  void _onCommentOnThread(
-      CommentOnThread event, Emitter<ThreadsState> emit) async {
-    await _threadRepo.addComment(
-        userId: event.userId, comment: event.comment, threadId: event.threadId);
-  }
-
-  void _onReplyOnThread(ReplyOnThread event, Emitter<ThreadsState> emit) async {
-    await _threadRepo.addReply(
-        reply: event.reply,
-        userId: event.userId,
-        threadId: event.threadId,
-        commentId: event.commentId);
   }
 
   void _onFetchAllThreads(
@@ -41,16 +24,16 @@ class ThreadsBloc extends Bloc<ThreadsEvent, ThreadsState> {
   ) async {
     emit(ThreadsLoading());
     try {
+      print("deleted");
       final Map response = await _threadRepo.getThreads();
       emit(ThreadsLoaded(
-          replies: response['replies'],
-          replyOwner: response['reply_owner'],
           threads: response['threads'],
           owners: response['user_info'],
-          commentUsers: response['commenting_user_info'],
           upVotes: response['up_votes'],
-          comments: response['comment_info']));
+          comments: response['comments']));
+                print("deleted conform");
     } catch (e) {
+      print("error");
       emit(ThreadsError(err: e.toString()));
     }
   }
@@ -101,5 +84,16 @@ class ThreadsBloc extends Bloc<ThreadsEvent, ThreadsState> {
   void _onDeleteThread(
     DeleteThread event,
     Emitter<ThreadsState> emit,
-  ) async {}
+  ) async {
+    if (this.state is ThreadsLoaded) {
+      final state = this.state as ThreadsLoaded;
+
+      try {
+        emit(ThreadsLoading());
+        await _threadRepo.deleteThread(threadId: event.threadId);
+      } catch (e) {
+        emit(ThreadsError(err: e.toString()));
+      }
+    }
+  }
 }

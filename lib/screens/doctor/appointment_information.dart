@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
+import 'package:intl/intl.dart';
 import 'package:sanity/blocs/appointment/appointment_bloc.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/model/appointment_model.dart';
 import 'package:sanity/model/user_info_model.dart';
-import 'package:sanity/repository/auth_repo.dart';
 import 'package:sanity/screens/doctor/appointment.dart';
 import 'package:sanity/widgets/bottom_appbar.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/circular_progress.dart';
+
+import '../message/messagePage.dart';
 
 class AppointmentInformation extends StatefulWidget {
   static const String routeName = 'appointment_info';
@@ -131,12 +133,14 @@ class VerifiedAppointments extends StatelessWidget {
                           ? const SizedBox()
                           : AppointmentCard(
                               height: height,
+                              notificationView: false,
                               appointmentMOdel: appointModel,
                             )
                       : !appointModel.pending!
                           ? const SizedBox()
                           : AppointmentCard(
                               height: height,
+                              notificationView: false,
                               appointmentMOdel: appointModel,
                             );
                 }),
@@ -150,9 +154,11 @@ class VerifiedAppointments extends StatelessWidget {
 
 class AppointmentCard extends StatefulWidget {
   final AppointmentModel appointmentMOdel;
+  final bool notificationView;
   const AppointmentCard({
     Key? key,
     required this.height,
+    required this.notificationView,
     required this.appointmentMOdel,
   }) : super(key: key);
 
@@ -162,29 +168,12 @@ class AppointmentCard extends StatefulWidget {
   State<AppointmentCard> createState() => _AppointmentCardState();
 }
 
+
 class _AppointmentCardState extends State<AppointmentCard> {
   bool isLoading = false;
-  UserInfoModel patient = const UserInfoModel();
-
-  Future<UserInfoModel> getProfileDate(int id) async {
-    final AuthRepository repo = AuthRepository();
-    setState(() {
-      isLoading = true;
-    });
-
-    final Map profile = await repo.registeredProfileData(id: id);
-    final Map candidates = profile['candidates'];
-
-    setState(() {
-      patient = UserInfoModel.fromJson(candidates);
-      isLoading = false;
-    });
-    return patient;
-  }
 
   @override
   void initState() {
-    getProfileDate(widget.appointmentMOdel.patientName!);
     super.initState();
   }
 
@@ -194,13 +183,18 @@ class _AppointmentCardState extends State<AppointmentCard> {
         ? const SizedBox()
         : InkWell(
             onTap: () {
-              Navigator.push(
+              if(widget.notificationView){
+                Navigator.pushNamed(context, MessagePage.routeName, arguments: widget.appointmentMOdel );
+
+              }else{
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Appointment(
-                          patient: patient,
+                          patient: widget.appointmentMOdel.patient,
                           isForDoctor: true,
                           appointmentModel: widget.appointmentMOdel)));
+              }
             },
             child: Container(
               margin: const EdgeInsets.only(bottom: 8),
@@ -213,7 +207,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CircleAvatarCustom(
-                        url: patient.profileImgUrl!,
+                        url: widget.notificationView?widget.appointmentMOdel.doctor.profileImgUrl!: widget.appointmentMOdel.patient.profileImgUrl!,
                         radius: widget.height * 0.05),
                     Expanded(
                       child: Padding(
@@ -222,15 +216,15 @@ class _AppointmentCardState extends State<AppointmentCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              patient.fullName!,
+                             widget.notificationView?widget.appointmentMOdel.doctor.fullName!:  widget.appointmentMOdel.patient.fullName!,
                               style: Theme.of(context).textTheme.headline5,
                             ),
                             Text(
-                              patient.gender!,
+                             widget.notificationView?widget.appointmentMOdel.doctor.gender!:  widget.appointmentMOdel.patient.gender!,
                               style: Theme.of(context).textTheme.headline5,
                             ),
                             Text(
-                              patient.age!.toString(),
+                              widget.notificationView?widget.appointmentMOdel.doctor.age!.toString(): widget.appointmentMOdel.patient.age!.toString(),
                               style: Theme.of(context).textTheme.headline5,
                             ),
                             Row(

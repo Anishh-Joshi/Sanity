@@ -57,7 +57,7 @@ class AppRouter {
       case DoctorsPage.routeName:
         return DoctorsPage.route();
       case MessagePage.routeName:
-        return MessagePage.route();
+        return MessagePage.route(setting);
       case ProfilePage.routeName:
         return ProfilePage.route();
       case Therapy.routeName:

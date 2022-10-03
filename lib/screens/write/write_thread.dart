@@ -27,17 +27,21 @@ class _WriteThreadState extends State<WriteThread> {
   void handleSubmit(BuildContext context, int id) async {
     await send(id);
     _title.clear();
-
   }
 
-  Future<void> send(int id) async {
-       context.read<ThreadsBloc>().add(AddThread(userId: id,title: _title.text,content: _contents.text));
-          _contents.clear();
+  send(int id) async {
+    context.read<ThreadsBloc>().add(
+        AddThread(userId: id, title: _title.text, content: _contents.text));
+    await addDat();
+    _contents.clear();
     ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Thread Added Successfully")));
+        const SnackBar(content: Text("Thread Added Successfully")));
     Navigator.pop(context);
   }
 
+  addDat() {
+    context.read<ThreadsBloc>().add(FetchAllThreads());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +52,6 @@ class _WriteThreadState extends State<WriteThread> {
           child: BlocListener<TherapyBloc, TherapyState>(
             listener: (context, state) async {
               if (state is TherapyAdditionSuccess) {
-                
                 Navigator.pop(context);
               }
               if (state is TherapyError) {

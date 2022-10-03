@@ -53,7 +53,7 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
     emit(AppointmentLoadng());
     try {
       final Map response =
-          await repo.retrieveAppointments(userId: event.doctorId);
+          await repo.retrieveAppointments(userId: event.doctorId,cat: 'doc');
       if (response['status'] == 'success') {
         emit(AppointmentRetrieved(appointmentList: response['appointment_data']));
       } else {

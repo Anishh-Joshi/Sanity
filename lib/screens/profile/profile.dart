@@ -61,7 +61,6 @@ class ProfilePage extends StatelessWidget {
           flex: 1,
           child: GestureDetector(
             onTap: () {
-              print("Tapped");
             },
             child: Text("Goals",
                 style: Theme.of(context)
@@ -74,7 +73,7 @@ class ProfilePage extends StatelessWidget {
             flex: 1,
             child: GestureDetector(
               onTap: () {
-                print("tapped again");
+            
               },
               child: Text(
                 "Timeline",
@@ -88,7 +87,7 @@ class ProfilePage extends StatelessWidget {
             flex: 1,
             child: GestureDetector(
               onTap: () {
-                print("tapped again and again");
+         
               },
               child: Text("Badges",
                   style: Theme.of(context)

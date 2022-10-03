@@ -13,15 +13,10 @@ class ThreadsLoaded extends ThreadsState {
   final List threads;
   final List owners;
   final List comments;
-  final List commentUsers;
-  final List replies;
-  final List replyOwner;
   final List upVotes;
 
   const ThreadsLoaded(
-      {required this.replies,
-      required this.replyOwner,
-      required this.commentUsers,
+      {
       required this.upVotes,
       required this.comments,
       required this.threads,

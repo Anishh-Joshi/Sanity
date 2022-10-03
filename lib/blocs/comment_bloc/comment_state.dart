@@ -8,18 +8,30 @@ abstract class CommentState extends Equatable {
 }
 
 class CommentLoading extends CommentState {}
+class ReplyLoading extends CommentState {}
 
-class Reply extends CommentState {
-  final Comments comment;
+class CommentLoaded extends CommentState {
+  final bool isCommentMode;
+  final List comments;
+  final String? replyName;
+  final int? commentId;
 
-  Reply({required this.comment});
+  const CommentLoaded(
+      {required this.isCommentMode,
+      this.replyName,
+      this.commentId,
+       required this.comments,
+       });
 
   @override
-  List<Object> get props => [comment];
+  List<Object> get props => [commentId!, replyName!, isCommentMode, comments,];
 }
 
-class Comment extends CommentState {
+class CommentError extends CommentState {
+  final String err;
 
+  const CommentError({required this.err});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [err];
+
 }
