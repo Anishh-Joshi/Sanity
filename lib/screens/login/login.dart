@@ -40,14 +40,17 @@ class LoginScreen extends StatelessWidget {
       body: BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
           if (state is LoginError) {
-            const PlatformAADialog(
+             PlatformAADialog(
               title: 'Sign In Failed',
-              content: "Incorrect Email or Password",
+              content: state.msg,
               defaultActionText: "Ok",
             ).show(context);
-          }
-          Navigator.pushNamedAndRemoveUntil(
+          }else if (state is LoginAuthenticated ||state is LoginEmailNotVerified || state is UnRegisteredUser ) {
+            Navigator.pushNamedAndRemoveUntil(
               context, 'landing_page', (route) => false);
+
+          }
+          
         },
         child: Scaffold(
           body: SafeArea(

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
 
-
 class LoginInformation extends StatefulWidget {
   static const String routeName = 'loginInfo';
   const LoginInformation({Key? key}) : super(key: key);
@@ -16,7 +15,6 @@ class LoginInformation extends StatefulWidget {
   @override
   State<LoginInformation> createState() => _LoginInformationState();
 }
-
 
 class _LoginInformationState extends State<LoginInformation> {
   int index = 0;
@@ -46,7 +44,6 @@ class _LoginInformationState extends State<LoginInformation> {
       "repeat": true
     },
   ];
-  
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +117,8 @@ class _LoginInformationState extends State<LoginInformation> {
                         context
                             .read<LoginBloc>()
                             .add(AppInformationSkipedPressed());
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, 'login_landing', (route) => false);
                       },
                       child: Text(
                         "Skip",
@@ -139,6 +138,8 @@ class _LoginInformationState extends State<LoginInformation> {
                               context
                                   .read<LoginBloc>()
                                   .add(AppInformationSkipedPressed());
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, 'login_landing', (route) => false);
                             }
                           },
                           child: Container(

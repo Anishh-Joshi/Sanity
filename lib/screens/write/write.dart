@@ -9,8 +9,6 @@ import 'package:sanity/screens/write/write_details.dart';
 import 'package:sanity/screens/write/write_textfield.dart';
 import 'package:sanity/widgets/cards/notification_card.dart';
 import 'package:sanity/widgets/custom_appbar.dart';
-import '../../blocs/login/login_bloc.dart';
-import '../../widgets/bottom_appbar.dart';
 
 class WritePage extends StatelessWidget {
   static const String routeName = 'logs';
@@ -29,15 +27,6 @@ class WritePage extends StatelessWidget {
       statusBarColor: Theme.of(context).scaffoldBackgroundColor,
     ));
     return Scaffold(
-      bottomNavigationBar: BlocBuilder<LoginBloc, LoginState>(
-        builder: (context, state) {
-          if (state is LoginAuthenticated) {
-            userID = state.user.userId;
-            return CustomNavbar(isDoctor: state.user.isDoctor!);
-          }
-          return const SizedBox();
-        },
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(context, WriteField.routeName);

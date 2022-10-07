@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/doctor_bloc/doctor_bloc.dart';
-import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/model/doctor_model.dart';
 import 'package:sanity/screens/doctor/doctor_profile.dart';
 import 'package:sanity/widgets/cards/doctor_card.dart';
 import 'package:sanity/widgets/custom_appbar.dart';
-
-import '../../widgets/bottom_appbar.dart';
-
 class DoctorsPage extends StatelessWidget {
   static const String routeName = 'doctor_page';
   const DoctorsPage({Key? key}) : super(key: key);
@@ -24,14 +19,6 @@ class DoctorsPage extends StatelessWidget {
     final double height = MediaQuery.of(context).size.height;
     context.read<DoctorBloc>().add(RetrieveDoctorsList());
     return Scaffold(
-        bottomNavigationBar: BlocBuilder<LoginBloc, LoginState>(
-          builder: (context, state) {
-            if (state is LoginAuthenticated) {
-              return CustomNavbar(isDoctor: state.user.isDoctor!);
-            }
-            return const SizedBox();
-          },
-        ),
         appBar: MyCustomAppBar(
             elevation: 0,
             fontSize: 25,

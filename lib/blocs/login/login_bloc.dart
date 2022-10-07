@@ -118,12 +118,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else if (!tokenData) {
       print("token");
       emit(LoginUnAuthenticated());
-    
-    } else if (userModel.email!=null&& isAppInfoSeen && tokenData && userModel.isEmailVerified!) {
+    } else if (userModel.email != null &&
+        isAppInfoSeen &&
+        tokenData &&
+        userModel.isEmailVerified!) {
       final Map userInfoMap =
           await repo.registeredProfileData(id: userModel.id!);
 
-      if (userModel.email!=null&&userInfoMap['status'] == "success") {
+      if (userModel.email != null && userInfoMap['status'] == "success") {
         final UserInfoModel user =
             UserInfoModel.fromJson(userInfoMap['candidates']);
         emit(LoginAuthenticated(user: user));
@@ -133,16 +135,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             id: userModel.id!,
             isEmailVerified: userModel.isEmailVerified!));
       }
-    } else if (userModel.email!=null&& tokenData && !userModel.isEmailVerified!) {
+    } else if (userModel.email != null &&
+        tokenData &&
+        !userModel.isEmailVerified!) {
       emit(LoginEmailNotVerified(
           email: userModel.email!,
           id: userModel.id!,
           isEmailVerified: userModel.isEmailVerified!));
-    }  else if (!tokenData) {
+    } else if (!tokenData) {
       emit(LoginUnAuthenticated());
-    }else{
+    } else {
       emit(LoginTokenError());
     }
-
   }
 }

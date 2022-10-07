@@ -36,6 +36,7 @@ dependencies:
   firebase_core: ^1.24.0
   basics: ^0.9.0
   cloud_firestore: ^3.5.0
+  bottom_bar: ^2.0.2
 
 
 dev_dependencies:

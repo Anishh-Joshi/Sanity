@@ -22,6 +22,7 @@ import 'package:sanity/screens/write/write_textfield.dart';
 import 'package:sanity/screens/write/write_thread.dart';
 import 'package:sanity/widgets/token_error.dart';
 import '../screens/doctor/doctor.dart';
+import '../screens/home/navigation.dart';
 
 class AppRouter {
   static Route? onGenerateRoute(RouteSettings setting) {
@@ -46,6 +47,8 @@ class AppRouter {
         return UserInfo.route();
       case LandingPage.routeName:
         return LandingPage.route();
+            case HomeLandingPage.routeName:
+        return HomeLandingPage.route(setting);
       case Home.routeName:
         return Home.route();
       case NotificationPage.routeName:

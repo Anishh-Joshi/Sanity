@@ -77,6 +77,9 @@ class MyApp extends StatelessWidget {
               title: 'Sanity',
               debugShowCheckedModeBanner: false,
               theme: theme(isDark: state.isDark),
+              home: Scaffold(
+                
+              ),
               onGenerateRoute: AppRouter.onGenerateRoute,
               initialRoute: LandingPage.routeName,
             );

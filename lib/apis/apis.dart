@@ -1,6 +1,6 @@
 class APIs {
   get localhost => "10.0.2.2:8000";
-  //get localhost => "sanityhealth.herokuapp.com";
+  // get localhost => "sanityhealth.herokuapp.com";
 
   get getDoctorList => "http://$localhost/api/assistant/doctors/";
 

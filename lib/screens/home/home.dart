@@ -89,14 +89,6 @@ class _HomeState extends State<Home> {
           child: const Icon(Icons.edit),
         ),
         key: _scaffoldKey,
-        bottomNavigationBar: BlocBuilder<LoginBloc, LoginState>(
-          builder: (context, state) {
-            if (state is LoginAuthenticated) {
-              return CustomNavbar(isDoctor: state.user.isDoctor!);
-            }
-            return const SizedBox();
-          },
-        ),
         body: RefreshIndicator(
           onRefresh: () => _refresh(context),
           child: GestureDetector(

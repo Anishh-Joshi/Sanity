@@ -4,13 +4,8 @@ import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/blocs/notification_bloc/notification_bloc.dart';
 import 'package:sanity/model/appointment_model.dart';
 import 'package:sanity/screens/doctor/appointment_information.dart';
-import '../../widgets/bottom_appbar.dart';
 import '../../widgets/custom_appbar.dart';
 import 'package:basics/basics.dart';
-
-extension DateTimeExt on DateTime {
-  int get daysSince => this.difference(DateTime.now()).inDays;
-}
 
 class NotificationPage extends StatelessWidget {
   static const String routeName = 'notification';
@@ -31,14 +26,6 @@ class NotificationPage extends StatelessWidget {
             fontSize: 25,
             appBarTitle: '  Notifications',
             onPressed: () {}),
-        bottomNavigationBar: BlocBuilder<LoginBloc, LoginState>(
-          builder: (context, state) {
-            if (state is LoginAuthenticated) {
-              return CustomNavbar(isDoctor: state.user.isDoctor!);
-            }
-            return const SizedBox();
-          },
-        ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: BlocBuilder<LoginBloc, LoginState>(

@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
-import 'package:intl/intl.dart';
 import 'package:sanity/blocs/appointment/appointment_bloc.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
-import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/model/appointment_model.dart';
-import 'package:sanity/model/user_info_model.dart';
 import 'package:sanity/screens/doctor/appointment.dart';
-import 'package:sanity/widgets/bottom_appbar.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/circular_progress.dart';
 
@@ -33,14 +29,7 @@ class _AppointmentInformationState extends State<AppointmentInformation> {
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    return Scaffold(bottomNavigationBar: BlocBuilder<LoginBloc, LoginState>(
-      builder: (context, state) {
-        if (state is LoginAuthenticated) {
-          return CustomNavbar(isDoctor: state.user.isDoctor!);
-        }
-        return const SizedBox();
-      },
-    ), body: BlocBuilder<HomeBloc, HomeState>(
+    return Scaffold(body: BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state is HomeLoaded) {
           context
@@ -168,7 +157,6 @@ class AppointmentCard extends StatefulWidget {
   State<AppointmentCard> createState() => _AppointmentCardState();
 }
 
-
 class _AppointmentCardState extends State<AppointmentCard> {
   bool isLoading = false;
 
@@ -183,17 +171,17 @@ class _AppointmentCardState extends State<AppointmentCard> {
         ? const SizedBox()
         : InkWell(
             onTap: () {
-              if(widget.notificationView){
-                Navigator.pushNamed(context, MessagePage.routeName, arguments: widget.appointmentMOdel );
-
-              }else{
+              if (widget.notificationView) {
+                Navigator.pushNamed(context, MessagePage.routeName,
+                    arguments: widget.appointmentMOdel);
+              } else {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Appointment(
-                          patient: widget.appointmentMOdel.patient,
-                          isForDoctor: true,
-                          appointmentModel: widget.appointmentMOdel)));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Appointment(
+                            patient: widget.appointmentMOdel.patient,
+                            isForDoctor: true,
+                            appointmentModel: widget.appointmentMOdel)));
               }
             },
             child: Container(
@@ -207,7 +195,9 @@ class _AppointmentCardState extends State<AppointmentCard> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CircleAvatarCustom(
-                        url: widget.notificationView?widget.appointmentMOdel.doctor.profileImgUrl!: widget.appointmentMOdel.patient.profileImgUrl!,
+                        url: widget.notificationView
+                            ? widget.appointmentMOdel.doctor.profileImgUrl!
+                            : widget.appointmentMOdel.patient.profileImgUrl!,
                         radius: widget.height * 0.05),
                     Expanded(
                       child: Padding(
@@ -216,15 +206,23 @@ class _AppointmentCardState extends State<AppointmentCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                             widget.notificationView?widget.appointmentMOdel.doctor.fullName!:  widget.appointmentMOdel.patient.fullName!,
+                              widget.notificationView
+                                  ? widget.appointmentMOdel.doctor.fullName!
+                                  : widget.appointmentMOdel.patient.fullName!,
                               style: Theme.of(context).textTheme.headline5,
                             ),
                             Text(
-                             widget.notificationView?widget.appointmentMOdel.doctor.gender!:  widget.appointmentMOdel.patient.gender!,
+                              widget.notificationView
+                                  ? widget.appointmentMOdel.doctor.gender!
+                                  : widget.appointmentMOdel.patient.gender!,
                               style: Theme.of(context).textTheme.headline5,
                             ),
                             Text(
-                              widget.notificationView?widget.appointmentMOdel.doctor.age!.toString(): widget.appointmentMOdel.patient.age!.toString(),
+                              widget.notificationView
+                                  ? widget.appointmentMOdel.doctor.age!
+                                      .toString()
+                                  : widget.appointmentMOdel.patient.age!
+                                      .toString(),
                               style: Theme.of(context).textTheme.headline5,
                             ),
                             Row(

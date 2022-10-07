@@ -29,37 +29,43 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
+          print(state);
           if (state is LoginLoading) {
             const Center(child: CircularProgressIndicator());
           }
-          if (state is LoginUnAuthenticated) {
+          else if (state is LoginUnAuthenticated) {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'login_landing', (route) => false);
           }
-          if (state is InformationNotSeen) {
+         else if (state is InformationNotSeen) {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'loginInfo', (route) => false);
           }
-          if (state is LoginEmailNotVerified) {
+          else if (state is LoginEmailNotVerified) {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'email_verification', (route) => false);
           }
-          if (state is UnRegisteredUser) {
+          else if (state is UnRegisteredUser) {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'user_info', (route) => false);
           }
-          if (state is LoginTokenError) {
+          else if (state is LoginTokenError) {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'token_err', (route) => false);
           }
-          if (state is LoginAuthenticated) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, Home.routeName, (route) => false);
-          }
-          if (state is BackToLoginPage) {
+          else if (state is AppInformationSkipedPressed) {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'login_landing', (route) => false);
           }
+          else if (state is LoginAuthenticated) {
+            Navigator.pushNamedAndRemoveUntil(
+                context,'home_landing', (route) => false,arguments: state.user);
+          }
+          else if (state is BackToLoginPage) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'login_landing', (route) => false);
+          }
+          
         },
         child: Scaffold(
           body: Column(
