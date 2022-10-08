@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sanity/blocs/login/login_bloc.dart';
+import 'package:sanity/blocs/search_bloc/search_bloc.dart';
 import 'package:sanity/blocs/therapy/therapy_bloc.dart';
 import 'package:sanity/blocs/threads_bloc/threads_bloc.dart';
-import 'package:sanity/model/therapy_model.dart';
 import 'package:sanity/model/threads_model.dart';
-import 'package:sanity/screens/therapy/therapy.dart';
+import 'package:sanity/screens/therapy/see_all.dart';
+import 'package:sanity/screens/threads/see_all.dart';
 import 'package:sanity/screens/threads/thread_page.dart';
 import 'package:sanity/screens/write/write_thread.dart';
-import 'package:sanity/widgets/bottom_appbar.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/circular_progress.dart';
 import 'package:sanity/widgets/custom_drawer.dart';
 import 'package:sanity/widgets/custom_form.dart';
+import 'package:sanity/widgets/custom_text_buttons.dart';
 import 'package:sanity/widgets/custom_thread_card.dart';
-import 'package:sanity/widgets/home_card.dart';
-import '../../blocs/comment_bloc/comment_bloc.dart';
+import 'package:sanity/widgets/thread_builder.dart';
 import '../../blocs/home/home_bloc.dart';
 import '../../widgets/platform_aware.dart';
+import '../../widgets/search_bar.dart';
+import '../../widgets/therapy_builder.dart';
 
 class Home extends StatefulWidget {
   static const String routeName = 'main_home';
@@ -38,7 +39,6 @@ class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String greetingMessage() {
     var timeNow = DateTime.now().hour;
-
     if (timeNow <= 12) {
       return 'Good Morning';
     } else if ((timeNow > 12) && (timeNow <= 16)) {
@@ -47,39 +47,40 @@ class _HomeState extends State<Home> {
       return 'Good Evening';
     }
   }
-  // List therapy =
-
-  // List suggestions = [];
 
   Future<void> _refresh(BuildContext context) async {
     refreshKey.currentState?.show(atTop: false);
     context.read<TherapyBloc>().add(GetAllTherapy());
   }
 
-  Future<void> _confirmDelete(BuildContext context, int threadId) async {
-    final didRequest = await const PlatformAADialog(
-      title: "Confirm Delete",
-      content: "Are you sure you want to delete this thread ?",
-      cancelActionText: "Cancel",
-      defaultActionText: 'Delete',
-    ).show(context);
-    if (didRequest) {
-      context.read<ThreadsBloc>().add(DeleteThread(threadId: threadId));
-    }
+  final TextEditingController searchController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    searchController.addListener(() => {
+          context
+              .read<SearchBloc>()
+              .add(InitiateSearch(query: searchController.text))
+        });
   }
 
-
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+
     FocusManager.instance.primaryFocus?.unfocus();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Theme.of(context).scaffoldBackgroundColor,
     ));
     return Scaffold(
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: Theme.of(context).primaryColor,
           onPressed: () {
             Navigator.pushNamed(
               context,
@@ -110,7 +111,7 @@ class _HomeState extends State<Home> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "${greetingMessage()}",
+                                  greetingMessage(),
                                   style: Theme.of(context).textTheme.headline2,
                                 ),
                                 Text(
@@ -151,173 +152,36 @@ class _HomeState extends State<Home> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          BlocBuilder<TherapyBloc, TherapyState>(
-                            builder: (context, state) {
-                              if (state is TherapyLoaded) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: CustomForm(
-                                    iconDataSuffix: Icons.clear_rounded,
-                                    hintText: "Therapies Eg:Anxeity",
-                                    containerColor: Theme.of(context).cardColor,
-                                    iconColor: Theme.of(context).canvasColor,
-                                    keyboardType: TextInputType.text,
-                                    borderColor: Colors.transparent,
-                                    iconData: Icons.search,
-                                    borderRadius: 20,
-                                    onChanged: (val) {
-                                      // searchTherapy(val, state.therapyList!);
-                                    },
-                                  ),
-                                );
-                              }
-                              return const SizedBox();
+                          SearchTherapy(),
+                          const Divider(
+                            color: Colors.transparent,
+                          ),
+                          TextButtonCustom(
+                              title: 'Therapies',
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, SeeAllTherapy.routeName);
+                              }),
+                          const Divider(
+                            color: Colors.transparent,
+                          ),
+                          const TherapyBuilder(allView: false),
+                          const Divider(
+                            color: Colors.transparent,
+                          ),
+                          TextButtonCustom(
+                            title: "Threads",
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, SeeAllThreads.routeName);
                             },
                           ),
                           const Divider(
                             color: Colors.transparent,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Therapies",
-                                style: Theme.of(context).textTheme.headline2,
-                              ),
-                              TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  "See all",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline3!
-                                      .copyWith(color: Colors.pink),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            color: Colors.transparent,
-                          ),
-                          BlocBuilder<TherapyBloc, TherapyState>(
-                            builder: (context, state) {
-                              if (state is TherapyLoaded) {
-                                return SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height / 4,
-                                  child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: state.therapyList!.length,
-                                      itemBuilder: (context, index) {
-                                        final TherapyModel therapy =
-                                            TherapyModel.fromJSON(
-                                                state.therapyList![index],
-                                                state.emoteMap!,
-                                                state.byDoctor[index]);
-                                        return InkWell(
-                                          onTap: () {
-                                            context.read<TherapyBloc>().add(
-                                                GetTherapyDetails(
-                                                    byDoctor: state.byDoctor,
-                                                    therapyId:
-                                                        therapy.therapyId!,
-                                                    emoteMap: state.emoteMap,
-                                                    therapyList:
-                                                        state.therapyList));
-
-                                            Navigator.pushNamed(
-                                              context,
-                                              Therapy.routeName,
-                                              arguments: therapy,
-                                            );
-                                          },
-                                          child: TherapyCard(
-                                            therapy: therapy,
-                                          ),
-                                        );
-                                      }),
-                                );
-                              }
-                              return const SizedBox();
-                            },
-                          ),
-                          const Divider(
-                            color: Colors.transparent,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Threads",
-                                style: Theme.of(context).textTheme.headline2,
-                              ),
-                              TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  "See all",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline3!
-                                      .copyWith(color: Colors.pink),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            color: Colors.transparent,
-                          ),
-                          BlocBuilder<ThreadsBloc, ThreadsState>(
-                            builder: (context, state) {
-                              if (state is ThreadsLoaded) {
-                                return ListView.builder(
-                                  itemCount: state.threads.length > 10
-                                      ? 10
-                                      : state.threads.length,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    final ThreadsModel thread =
-                                        ThreadsModel.fromJSON(
-                                            response: state.threads[index],
-                                            userMap: state.owners[index],
-                                            comments: state.comments,
-                                            upVotingUserList: state.upVotes);
-                                    return BlocBuilder<HomeBloc, HomeState>(
-                                      builder: (context, state) {
-                                        if (state is HomeLoaded) {
-                                          return InkWell(
-                                            onLongPress: () {
-                                              thread.ownerInfo.userId ==
-                                                      state.user!.userId
-                                                  ? _confirmDelete(
-                                                      context, thread.threadId)
-                                                  : null;
-                                            },
-                                            onTap: () {
-                                              Navigator.pushNamed(context,
-                                                  ThreadsDetails.routeName,
-                                                  arguments: {
-                                                    "thread": thread,
-                                                    "userId":
-                                                        state.user!.userId!
-                                                  });
-                                            },
-                                            child: ThreadCard(
-                                              thread: thread,
-                                              userId: state.user!.userId!,
-                                            ),
-                                          );
-                                        }
-                                        return const SizedBox();
-                                      },
-                                    );
-                                  },
-                                );
-                              }
-
-                              return const CircularProgressIndicatorCustom();
-                            },
-                          ),
+                          const ThreadBuilder(
+                            allView: false,
+                          )
                         ],
                       ),
                     ))),

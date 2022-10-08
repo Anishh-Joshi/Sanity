@@ -21,9 +21,12 @@ class MyCustomAppBar extends StatelessWidget with PreferredSizeWidget {
       elevation: elevation,
       iconTheme: Theme.of(context).iconTheme,
       automaticallyImplyLeading: false,
-      title: Text(
-        appBarTitle,
-        style: Theme.of(context).textTheme.headline3!.copyWith(fontSize: fontSize),
+      title: Padding(
+        padding: const EdgeInsets.only(left:8.0),
+        child: Text(
+          appBarTitle,
+          style: Theme.of(context).textTheme.headline3!.copyWith(fontSize: fontSize),
+        ),
       ),
       actions: [
         IconButton(

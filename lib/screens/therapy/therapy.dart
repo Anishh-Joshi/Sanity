@@ -210,7 +210,7 @@ class Therapy extends StatelessWidget {
                                   Navigator.pushNamed(
                                       context, TherapyDetails.routeName);
                                 },
-                                color: Colors.pink,
+                                color: Theme.of(context).secondaryHeaderColor,
                                 buttonTitle: "Start Now"),
                           )),
                     ]),

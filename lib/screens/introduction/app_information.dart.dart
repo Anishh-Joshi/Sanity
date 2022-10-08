@@ -90,13 +90,13 @@ class _LoginInformationState extends State<LoginInformation> {
               children: [
                 Icon(Icons.circle,
                     size: 20,
-                    color: index == 0 ? Colors.amber : const Color(0xffD9D9D9)),
+                    color: index == 0 ? Theme.of(context).primaryColor : const Color(0xffD9D9D9)),
                 Icon(Icons.circle,
                     size: 20,
-                    color: index == 1 ? Colors.amber : const Color(0xffD9D9D9)),
+                    color: index == 1 ? Theme.of(context).primaryColor : const Color(0xffD9D9D9)),
                 Icon(Icons.circle,
                     size: 20,
-                    color: index == 2 ? Colors.amber : const Color(0xffD9D9D9)),
+                    color: index == 2 ? Theme.of(context).primaryColor: const Color(0xffD9D9D9)),
               ],
             )
           ],
@@ -123,7 +123,7 @@ class _LoginInformationState extends State<LoginInformation> {
                       child: Text(
                         "Skip",
                         style: Theme.of(context).textTheme.headline4!.copyWith(
-                            color: const Color(0xff787878), fontSize: 20),
+                            color: Theme.of(context).primaryColor, fontSize: 20),
                       ),
                     ),
                     BlocBuilder<LoginBloc, LoginState>(
@@ -144,7 +144,7 @@ class _LoginInformationState extends State<LoginInformation> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                                color: Colors.amber,
+                                color: Theme.of(context).primaryColor,
                                 borderRadius: BorderRadius.circular(50)),
                             height: 70,
                             width: 70,

@@ -5,11 +5,9 @@ part 'comment_event.dart';
 part 'comment_state.dart';
 
 class CommentBloc extends Bloc<CommentEvent, CommentState> {
-  final ThreadsRepo _threadRepo;
+  final ThreadsRepo threadRepo;
 
-  CommentBloc({required ThreadsRepo threadRepo})
-      : _threadRepo = threadRepo,
-        super(CommentLoading()) {
+  CommentBloc({required this.threadRepo}) : super(CommentLoading()) {
     on<FetchCommentsAndReplies>(_fetchCommentsAndReplies);
     on<Toggle>(_toggleToReply);
     on<CommentOnThread>(_onCommentOnThread);
@@ -20,16 +18,15 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
 
   void _fetchCommentsAndReplies(
       FetchCommentsAndReplies event, Emitter<CommentState> emit) async {
-
     try {
+      emit(CommentLoading());
       final Map threadComments =
-          await _threadRepo.getComments(threadId: event.threadId);
+          await threadRepo.getComments(threadId: event.threadId);
       emit(CommentLoaded(
         isCommentMode: true,
         comments: threadComments['comment'],
       ));
     } catch (e) {
-      print(e.toString());
       emit(CommentError(err: e.toString()));
     }
   }
@@ -51,7 +48,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
               isCommentMode: event.isCommentMode,
               replyName: event.replyName));
         }
-      } on Exception {
+      } catch (e) {
         emit(const CommentError(err: 'err'));
       }
     }
@@ -63,15 +60,17 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
       final state = this.state as CommentLoaded;
       emit(CommentLoading());
       try {
-        await _threadRepo.addComment(
+        await threadRepo.addComment(
             userId: event.userId,
             comment: event.comment,
             threadId: event.threadId);
+        final Map threadComments =
+            await threadRepo.getComments(threadId: event.threadId);
         emit(CommentLoaded(
-          comments: state.comments,
           isCommentMode: true,
+          comments: threadComments['comment'],
         ));
-      } on Exception {
+      } catch (e) {
         emit(const CommentError(err: 'err'));
       }
     }
@@ -82,10 +81,12 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
       final state = this.state as CommentLoaded;
       emit(CommentLoading());
       try {
-        await _threadRepo.deleteComment(commentId: event.commentId);
+        await threadRepo.deleteComment(commentId: event.commentId);
+        final Map threadComments =
+            await threadRepo.getComments(threadId: event.threadId);
         emit(CommentLoaded(
-          comments: state.comments,
           isCommentMode: true,
+          comments: threadComments['comment'],
         ));
       } on Exception {
         emit(const CommentError(err: 'err'));
@@ -98,10 +99,12 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
       final state = this.state as CommentLoaded;
       emit(CommentLoading());
       try {
-        await _threadRepo.deleteReply(replyId: event.replyId);
+        await threadRepo.deleteReply(replyId: event.replyId);
+        final Map threadComments =
+            await threadRepo.getComments(threadId: event.threadId);
         emit(CommentLoaded(
-          comments: state.comments,
           isCommentMode: true,
+          comments: threadComments['comment'],
         ));
       } on Exception {
         emit(CommentError(err: 'err'));
@@ -114,15 +117,16 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
       final state = this.state as CommentLoaded;
       emit(CommentLoading());
       try {
-        print(event.commentId);
-        await _threadRepo.addReply(
+        await threadRepo.addReply(
             reply: event.reply,
             userId: event.userId,
             threadId: event.threadId,
             commentId: event.commentId);
+        final Map threadComments =
+            await threadRepo.getComments(threadId: event.threadId);
         emit(CommentLoaded(
-          comments: state.comments,
           isCommentMode: true,
+          comments: threadComments['comment'],
         ));
       } on Exception {
         emit(CommentError(err: 'err'));

@@ -19,18 +19,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             : HomeInitial()) {
     _loginblocSubscription = _loginBloc.stream.listen((state) {
       if (state is LoginAuthenticated) {
-        add(UpdateHomeInfo(user: state.user));
+          add(UpdateHomeInfo(user: state.user));
       }
     });
-
-    on<UpdateHomeInfo>(_updateHomeInfo);
   }
 
-  void _updateHomeInfo(UpdateHomeInfo event, Emitter emit) {
-    _loginblocSubscription?.cancel();
-    emit(UpdateHomeInfo(user: user));
-  }
-
+ 
   @override
   Future<void> close() {
     _loginblocSubscription?.cancel();

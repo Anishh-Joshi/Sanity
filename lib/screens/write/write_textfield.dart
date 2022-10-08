@@ -6,6 +6,7 @@ import 'package:sanity/blocs/log_bloc/log_bloc_bloc.dart';
 import 'package:sanity/widgets/circular_progress.dart';
 import 'package:sanity/widgets/custom_elevated_button.dart';
 import 'package:sanity/widgets/custom_form.dart';
+import 'package:sanity/widgets/filead_header.dart';
 
 class WriteField extends StatefulWidget {
   static const String routeName = 'write_field';
@@ -29,8 +30,7 @@ class _WriteFieldState extends State<WriteField> {
     context
         .read<LogBlocBloc>()
         .add(LogSendButtonPressed(log: _writtenLogController.text, userId: id));
-     Navigator.pushNamedAndRemoveUntil(
-                context, 'logs', (route) => false);
+    Navigator.pop(context);
   }
 
   String formatDate(DateTime date) => DateFormat("dd MMMM yyy ").format(date);
@@ -51,56 +51,27 @@ class _WriteFieldState extends State<WriteField> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
-                    ),
-                    BlocBuilder<HomeBloc, HomeState>(
-                      builder: (context, state) {
-                        if (state is HomeLoaded) {
-                          return InkWell(
-                            onTap: () =>
-                                handleSubmit(context, state.user!.userId!),
-                            borderRadius: BorderRadius.circular(50),
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    color: Colors.deepPurpleAccent),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Icon(Icons.done),
-                                )),
-                          );
-                        }
-                        return const CircularProgressIndicator();
-                      },
-                    ),
-                  ],
-                ),
-                const Divider(
-                  color: Colors.transparent,
-                ),
-                Text(
-                  "Write Log",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline2!
-                      .copyWith(fontSize: height * 0.045),
+                BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, state) {
+                    if (state is HomeLoaded) {
+                      return AppBarInfo(
+                        margin :0 ,
+                          height: height,
+                          onPressed: () {
+                            handleSubmit(context, state.user!.userId!);
+                          },
+                          showDone: true,
+                          title: "Write Log");
+                    }
+                    return const CircularProgressIndicatorCustom();
+                  },
                 ),
                 Text(
                   formatDate(DateTime.now()),
                   style: Theme.of(context)
                       .textTheme
                       .headline3!
-                      .copyWith(fontSize: height * 0.035),
+                      .copyWith(fontSize: height * 0.030),
                 ),
                 SizedBox(
                   height: height * 0.07,
@@ -161,7 +132,7 @@ class _WriteFieldState extends State<WriteField> {
                               return ElevatedButtonCustom(
                                   action: () => handleSubmit(
                                       context, state.user!.userId!),
-                                  color: Colors.deepPurpleAccent,
+                                  color: Theme.of(context).primaryColor,
                                   buttonTitle: "Save");
                             }
                             return const CircularProgressIndicatorCustom();

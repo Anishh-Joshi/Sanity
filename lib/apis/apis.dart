@@ -1,6 +1,6 @@
 class APIs {
-  get localhost => "10.0.2.2:8000";
-  // get localhost => "sanityhealth.herokuapp.com";
+  //get localhost => "10.0.2.2:8000";
+  get localhost => "sanityhealth.herokuapp.com";
 
   get getDoctorList => "http://$localhost/api/assistant/doctors/";
 
@@ -18,7 +18,8 @@ class APIs {
     return "http://$localhost/api/user/get/profile/?id=$id";
   }
 
-  String retrieveAppointment({required int id, required int key,required String cat}) {
+  String retrieveAppointment(
+      {required int id, required int key, required String cat}) {
     return "http://$localhost/api/assistant/retrieve/appointment/?id=$id&key=$key&cat=$cat";
   }
 
@@ -71,6 +72,9 @@ class APIs {
   }
 
   get addThread => "http://$localhost/api/assistant/add/threads/";
+
+  String updateDocsInvolved({required int threadId}) =>
+      "http://$localhost/api/assistant/update/threads/?id=$threadId";
 
   get addComment => "http://$localhost/api/assistant/add/comment/";
 

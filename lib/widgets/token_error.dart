@@ -29,7 +29,7 @@ class TokenError extends StatelessWidget {
                   Navigator.pushNamedAndRemoveUntil(
                               context, 'login_landing', (route) => false);
                 },
-                child:  Text("Get back to Login Page",style: Theme.of(context).textTheme.headline4!.copyWith(color: Colors.pink),))
+                child:  Text("Get back to Login Page",style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).secondaryHeaderColor),))
           ],
         ),
       ),

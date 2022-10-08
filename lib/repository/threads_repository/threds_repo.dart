@@ -136,9 +136,9 @@ class ThreadsRepo {
     return updateThread;
   }
 
-  Future<Map> doctorInvolved() async {
+  Future<Map> doctorInvolved({required int threadId}) async {
     final http.Response response = await client
-        .put(Uri.parse(api.signInUrl), body: jsonEncode({}), headers: {
+        .put(Uri.parse(api.updateDocsInvolved(threadId: threadId)), body: jsonEncode({}), headers: {
       "Content-type": 'application/json',
       "Accept": "application/json",
       "Access-Control-Allow_origin": "*"

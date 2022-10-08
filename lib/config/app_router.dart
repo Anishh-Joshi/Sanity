@@ -13,8 +13,10 @@ import 'package:sanity/screens/message/messagePage.dart';
 import 'package:sanity/screens/notifications/notification.dart';
 import 'package:sanity/screens/profile/profile.dart';
 import 'package:sanity/screens/therapy/add_therapy.dart';
+import 'package:sanity/screens/therapy/see_all.dart';
 import 'package:sanity/screens/therapy/therapy.dart';
 import 'package:sanity/screens/therapy/therapy_details.dart';
+import 'package:sanity/screens/threads/see_all.dart';
 import 'package:sanity/screens/threads/thread_page.dart';
 import 'package:sanity/screens/write/write.dart';
 import 'package:sanity/screens/write/write_details.dart';
@@ -23,7 +25,7 @@ import 'package:sanity/screens/write/write_thread.dart';
 import 'package:sanity/widgets/token_error.dart';
 import '../screens/doctor/doctor.dart';
 import '../screens/home/navigation.dart';
-
+  
 class AppRouter {
   static Route? onGenerateRoute(RouteSettings setting) {
     print("Route chosen ${setting.name}");
@@ -47,7 +49,7 @@ class AppRouter {
         return UserInfo.route();
       case LandingPage.routeName:
         return LandingPage.route();
-            case HomeLandingPage.routeName:
+      case HomeLandingPage.routeName:
         return HomeLandingPage.route(setting);
       case Home.routeName:
         return Home.route();
@@ -67,6 +69,8 @@ class AppRouter {
         return Therapy.route(setting);
       case TherapyDetails.routeName:
         return TherapyDetails.route(setting);
+      case SeeAllTherapy.routeName:
+        return SeeAllTherapy.route(setting);
       case WriteDetails.routeName:
         return WriteDetails.route(setting);
       case AddTherapy.routeName:
@@ -77,6 +81,8 @@ class AppRouter {
         return WriteThread.route(setting);
       case ThreadsDetails.routeName:
         return ThreadsDetails.route(setting);
+      case SeeAllThreads.routeName:
+        return SeeAllThreads.route(setting);
       default:
         _errorRoute();
     }

@@ -77,41 +77,22 @@ class ForgotPassword extends StatelessWidget {
               height: MediaQuery.of(context).size.height / 30,
             ),
             Center(
-              child: Container(
-                height: 50,
-                width: MediaQuery.of(context).size.width / 1.5,
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(25.0),
-                    ),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color.fromARGB(255, 39, 39, 39),
-                        spreadRadius: 0,
-                        blurRadius: 6,
-                        offset: Offset(
-                          2,
-                          5,
-                        ),
-                      )
-                    ]),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12))),
-                  onPressed: () {
-                    _handleSubmit(context);
-                  },
-                  child: Center(
-                    child: Text(
-                      "Send Reset Link",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline3!
-                          .copyWith(color: Colors.white),
-                    ),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Theme.of(context).primaryColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10))),
+                onPressed: () {
+                  _handleSubmit(context);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    "Send Reset Link",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline3!
+                        .copyWith(color: Colors.white),
                   ),
                 ),
               ),

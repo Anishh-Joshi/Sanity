@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:sanity/blocs/comment_bloc/comment_bloc.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
+import 'package:sanity/blocs/threads_bloc/threads_bloc.dart';
 import 'package:sanity/model/comments_model.dart';
 import 'package:sanity/model/replies_model.dart';
+import 'package:sanity/model/user_info_model.dart';
 import 'package:sanity/widgets/circular_progress.dart';
 import 'package:sanity/widgets/custom_form.dart';
 import 'package:sanity/widgets/platform_aware.dart';
@@ -31,7 +33,7 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
 
   int? highlight;
 
-  Future<void> _confirmDelete(BuildContext context, int commentId) async {
+  Future<void> _confirmDelete(BuildContext context, int commentId,int threadId) async {
     final didRequest = await const PlatformAADialog(
       title: "Confirm Delete",
       content: "Are you sure you want to delete this comment ?",
@@ -39,22 +41,20 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
       defaultActionText: 'Delete',
     ).show(context);
     if (didRequest) {
-      context.read<CommentBloc>().add(RemoveComment(commentId: commentId));
+      context.read<CommentBloc>().add(RemoveComment(commentId: commentId,threadId: threadId));
     }
     setState(() {
       highlight = null;
     });
   }
 
-  Future<void> sendComment({required int threadId, required int userId}) async {
+  Future<void> sendComment({required bool isDoctor, required int threadId, required int userId}) async {
     context.read<CommentBloc>().add(CommentOnThread(
           comment: _comment.text,
           userId: userId,
           threadId: threadId,
         ));
-    context
-        .read<CommentBloc>()
-        .add(FetchCommentsAndReplies(threadId: threadId));
+
   }
 
   @override
@@ -63,10 +63,7 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
     final double width = MediaQuery.of(context).size.width;
     final Map threadMap = ModalRoute.of(context)!.settings.arguments as Map;
     final ThreadsModel thread = threadMap['thread'];
-    final int userId = threadMap['userId'];
-    context
-        .read<CommentBloc>()
-        .add(FetchCommentsAndReplies(threadId: thread.threadId));
+    final UserInfoModel user = threadMap['user'];
 
     return Scaffold(
       body: SafeArea(
@@ -124,7 +121,8 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
                               Expanded(
                                 child: Text(
                                   Converter.utf8convert(thread.title),
-                                  style: Theme.of(context).textTheme.headline3,
+                                  style:
+                                      Theme.of(context).textTheme.headline3,
                                 ),
                               ),
                             ],
@@ -150,7 +148,8 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 40.0),
                                 child: ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
+                                  physics:
+                                      const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: state.comments.length,
                                   itemBuilder: (context, index) {
@@ -159,9 +158,10 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
                                             response: state.comments[index]);
                                     return GestureDetector(
                                         onLongPress: () {
-                                          comment.commentOwner!.userId == userId
+                                          comment.commentOwner!.userId ==
+                                                  user.userId!
                                               ? _confirmDelete(
-                                                  context, comment.commentId)
+                                                  context, comment.commentId,thread.threadId)
                                               : null;
                                         },
                                         child: CommentBox(
@@ -169,7 +169,7 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
                                           color: Colors.transparent,
                                           comment: comment,
                                           height: height,
-                                          userId: userId,
+                                          userId: user.userId!,
                                         ));
                                   },
                                 ),
@@ -194,7 +194,8 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
                           builder: (context, state) {
                             if (state is HomeLoaded) {
                               return CircleAvatarCustom(
-                                  url: state.user!.profileImgUrl!, radius: 20);
+                                  url: state.user!.profileImgUrl!,
+                                  radius: 20);
                             }
                             return const SizedBox();
                           },
@@ -209,8 +210,9 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
                               return Expanded(
                                 child: CustomForm(
                                     maxLines: null,
-                                    controller:
-                                        state.isCommentMode ? _comment : _reply,
+                                    controller: state.isCommentMode
+                                        ? _comment
+                                        : _reply,
                                     borderColor: Colors.transparent,
                                     borderRadius: 10,
                                     hintText: state.isCommentMode
@@ -229,14 +231,12 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
 
                             if (state is CommentLoaded) {
                               return TextButton(
-                                  onPressed: () async {
+                                  onPressed: () {
                                     if (state.isCommentMode) {
-                                      await sendComment(
+                                      sendComment(
+                                        isDoctor: user.isDoctor!,
                                           threadId: thread.threadId,
-                                          userId: userId);
-
-                                      print("Sent");
-                                      setState(() {});
+                                          userId: user.userId!);
 
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
@@ -248,7 +248,7 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
                                           ReplyOnThread(
                                               commentId: state.commentId!,
                                               reply: _reply.text,
-                                              userId: userId,
+                                              userId: user.userId!,
                                               threadId: thread.threadId));
                                       setState(() {});
                                       ScaffoldMessenger.of(context)
@@ -274,8 +274,8 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
                                                                 true));
                                                   });
                                                 },
-                                                icon:
-                                                    const Icon(Fontisto.close))
+                                                icon: const Icon(
+                                                    Fontisto.close))
                                           ],
                                         ));
                             }
@@ -326,7 +326,7 @@ class _CommentBoxState extends State<CommentBox> {
   bool expand = false;
   int? highlight;
 
-  Future<void> _confirmDelete(BuildContext context, int replyId) async {
+  Future<void> _confirmDelete(BuildContext context, int replyId,int threadId) async {
     final didRequest = await const PlatformAADialog(
       title: "Confirm Delete",
       content: "Are you sure you want to delete this reply ?",
@@ -334,7 +334,7 @@ class _CommentBoxState extends State<CommentBox> {
       defaultActionText: 'Delete',
     ).show(context);
     if (didRequest) {
-      context.read<CommentBloc>().add(RemoveReply(replyId: replyId));
+      context.read<CommentBloc>().add(RemoveReply(replyId: replyId,threadId: threadId));
     }
     setState(() {
       highlight = null;
@@ -419,7 +419,7 @@ class _CommentBoxState extends State<CommentBox> {
                                         reply.replyOwner!.userId ==
                                                 widget.userId
                                             ? _confirmDelete(
-                                                context, reply.replyId!)
+                                                context, reply.replyId!,widget.thread.threadId)
                                             : null;
                                       },
                                       child: ReplyCard(

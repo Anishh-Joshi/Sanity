@@ -7,6 +7,7 @@ import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/blocs/log_bloc/log_bloc_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/blocs/notification_bloc/notification_bloc.dart';
+import 'package:sanity/blocs/search_bloc/search_bloc.dart';
 import 'package:sanity/blocs/theme/theme_bloc_bloc.dart';
 import 'package:sanity/blocs/therapy/therapy_bloc.dart';
 import 'package:sanity/blocs/threads_bloc/threads_bloc.dart';
@@ -37,19 +38,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(
-              lazy: true,
-              create: (context) => CommentBloc(threadRepo: ThreadsRepo())),
-
            BlocProvider(
-              lazy: true,
+              create: (context) => SearchBloc()),
+          BlocProvider(
+              create: (context) => CommentBloc(threadRepo: ThreadsRepo())),
+           BlocProvider(
               create: (context) => NotificationBloc(repo: AppointmentRepository())),
           BlocProvider(
-              lazy: true,
               create: (context) => ThreadsBloc(threadRepo: ThreadsRepo())
                 ..add(FetchAllThreads())),
           BlocProvider(
-              lazy: true,
               create: (context) =>
                   AppointmentBloc(repo: AppointmentRepository())),
           BlocProvider(create: (context) => ThemeBloc()..add(LoadTheme())),
@@ -77,9 +75,6 @@ class MyApp extends StatelessWidget {
               title: 'Sanity',
               debugShowCheckedModeBanner: false,
               theme: theme(isDark: state.isDark),
-              home: Scaffold(
-                
-              ),
               onGenerateRoute: AppRouter.onGenerateRoute,
               initialRoute: LandingPage.routeName,
             );

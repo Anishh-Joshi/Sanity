@@ -4,6 +4,7 @@ class CustomForm extends StatelessWidget {
   final String? hintText;
   final Color? containerColor;
   final TextInputType? keyboardType;
+  final String? initialValue;
   final Function(String)? onChanged;
   final Color? iconColor;
   final Color? borderColor;
@@ -19,6 +20,7 @@ class CustomForm extends StatelessWidget {
   const CustomForm(
       {Key? key,
       this.hintText,
+      this.initialValue,
       this.controller,
       this.expands = false,
       this.maxLines = 1,
@@ -47,7 +49,7 @@ class CustomForm extends StatelessWidget {
           expands: expands!,
           controller: controller,
           maxLines: maxLines,
-          
+          initialValue: initialValue,
           enabled: enabled,
           keyboardType: keyboardType,
           onChanged: onChanged,

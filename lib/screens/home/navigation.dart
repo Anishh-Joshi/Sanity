@@ -23,59 +23,96 @@ class HomeLandingPage extends StatefulWidget {
 class _HomeLandingPageState extends State<HomeLandingPage> {
   int _currentPage = 0;
   final _pageController = PageController();
+  void onPageChanged(int pageIndex) {
+    setState(() {
+      _currentPage = pageIndex;
+    });
+  }
+
+  void onTap(int pageIndex) {
+    setState(() {});
+    _pageController.jumpToPage(pageIndex);
+  }
 
   @override
   Widget build(BuildContext context) {
     final UserInfoModel user =
         ModalRoute.of(context)!.settings.arguments as UserInfoModel;
-    return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        children: [
-          const Home(),
-          const NotificationPage(),
-          WritePage(),
-          user.isDoctor! ? const AppointmentInformation() : const DoctorsPage()
-        ],
-        onPageChanged: (index) {
-          setState(() => _currentPage = index);
-        },
-      ),
-      bottomNavigationBar: BottomBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        selectedIndex: _currentPage,
-        onTap: (int index) {
-          _pageController.jumpToPage(index);
-          setState(() => _currentPage = index);
-        },
-        items: <BottomBarItem>[
-          const BottomBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
-            activeColor: Colors.blue,
-          ),
-          const BottomBarItem(
-            icon: Icon(MaterialIcons.notifications),
-            title: Text('Notification'),
-            activeColor: Colors.red,
-          ),
-          BottomBarItem(
-            icon: Icon(MaterialCommunityIcons.plus_circle),
-            title: Text('Add Log'),
-            activeColor: Colors.greenAccent.shade700,
-          ),
-          user.isDoctor!
-              ? const BottomBarItem(
-                  icon: Icon(MaterialIcons.perm_contact_calendar),
-                  title: Text('Appointments'),
-                  activeColor: Colors.orange,
-                )
-              : const BottomBarItem(
-                  icon: Icon(Fontisto.doctor),
-                  title: Text('Doctors'),
-                  activeColor: Colors.orange,
-                ),
-        ],
+    return WillPopScope(
+      onWillPop: () async {
+        if (_currentPage == 0) {
+          return true;
+        }
+        onTap(0);
+        setState(() {});
+        return false;
+      },
+      child: Scaffold(
+        body: PageView(
+          controller: _pageController,
+          children:[
+            const Home(),
+            const NotificationPage(),
+            WritePage(),
+            user.isDoctor!
+                ? const AppointmentInformation()
+                : const DoctorsPage()
+          ],
+          onPageChanged: onPageChanged,
+        ),
+        bottomNavigationBar: BottomBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          selectedIndex: _currentPage,
+          onTap: (index) {
+            onTap(index);
+          },
+          items: <BottomBarItem>[
+            BottomBarItem(
+              icon: Icon(Icons.home),
+              title: Text('Home',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4!
+                      .copyWith(color: Theme.of(context).secondaryHeaderColor)),
+              activeColor: Theme.of(context).primaryColor,
+            ),
+            BottomBarItem(
+              icon: Icon(MaterialIcons.notifications),
+              title: Text('Notification',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4!
+                      .copyWith(color: Theme.of(context).secondaryHeaderColor)),
+              activeColor: Theme.of(context).primaryColor,
+            ),
+            BottomBarItem(
+              icon: Icon(MaterialCommunityIcons.plus_circle),
+              title: Text('Add Log',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4!
+                      .copyWith(color: Theme.of(context).secondaryHeaderColor)),
+              activeColor: Theme.of(context).primaryColor,
+            ),
+            user.isDoctor!
+                ? BottomBarItem(
+                    icon: Icon(MaterialIcons.perm_contact_calendar),
+                    title: Text('Appointments',
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                            color: Theme.of(context).secondaryHeaderColor)),
+                    activeColor: Theme.of(context).primaryColor,
+                  )
+                : BottomBarItem(
+                    icon: Icon(Fontisto.doctor),
+                    title: Text(
+                      'Doctors',
+                      style: Theme.of(context).textTheme.headline4!.copyWith(
+                          color: Theme.of(context).secondaryHeaderColor),
+                    ),
+                    activeColor: Theme.of(context).primaryColor,
+                  ),
+          ],
+        ),
       ),
     );
   }

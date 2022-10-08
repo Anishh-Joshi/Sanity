@@ -4,6 +4,7 @@ import 'package:sanity/blocs/therapy/therapy_bloc.dart';
 import 'package:sanity/blocs/threads_bloc/threads_bloc.dart';
 
 import '../../blocs/home/home_bloc.dart';
+import '../../widgets/circular_progress.dart';
 import '../../widgets/custom_form.dart';
 
 class WriteThread extends StatefulWidget {
@@ -86,7 +87,7 @@ class _WriteThreadState extends State<WriteThread> {
                               child: Container(
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(50),
-                                      color: Colors.deepPurpleAccent),
+                                      color: Theme.of(context).primaryColor),
                                   child: const Padding(
                                     padding: EdgeInsets.all(8.0),
                                     child: Icon(
@@ -96,7 +97,7 @@ class _WriteThreadState extends State<WriteThread> {
                                   )),
                             );
                           }
-                          return const CircularProgressIndicator();
+                          return const CircularProgressIndicatorCustom();
                         },
                       ),
                     ],

@@ -16,7 +16,6 @@ class FetchCommentsAndReplies extends CommentEvent {
   List<Object> get props => [threadId, commentId!];
 }
 
-
 class Reload extends CommentEvent {
   final int threadId;
 
@@ -28,18 +27,17 @@ class Reload extends CommentEvent {
 class Toggle extends CommentEvent {
   final bool isCommentMode;
   final String? replyName;
-  final int?commentId; 
+  final int? commentId;
 
   Toggle({this.commentId, required this.isCommentMode, this.replyName});
   @override
-  List<Object> get props => [commentId!,replyName!, isCommentMode];
+  List<Object> get props => [commentId!, replyName!, isCommentMode];
 }
 
 class CommentOnThread extends CommentEvent {
   final String comment;
   final int userId;
   final int threadId;
-
   const CommentOnThread(
       {required this.comment, required this.userId, required this.threadId});
 
@@ -65,18 +63,19 @@ class ReplyOnThread extends CommentEvent {
 
 class RemoveComment extends CommentEvent {
   final int commentId;
+  final int threadId;
 
-  const RemoveComment({required this.commentId});
+  const RemoveComment({required this.threadId, required this.commentId});
   @override
-  List<Object> get props => [commentId];
+  List<Object> get props => [commentId, threadId];
 }
 
 class RemoveReply extends CommentEvent {
   final int replyId;
+  final int threadId;
 
-
-  const RemoveReply({required this.replyId});
+  const RemoveReply({required this.replyId, required this.threadId});
 
   @override
-  List<Object> get props => [replyId];
+  List<Object> get props => [replyId, threadId];
 }

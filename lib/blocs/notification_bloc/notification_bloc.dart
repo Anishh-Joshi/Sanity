@@ -15,7 +15,6 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
   void _fetcNotifications(
       FetchNotifications event, Emitter<NotificationState> emit) async {
-    print("trigered");
     try {
       emit(NotificationLoading());
       final Map notification = await repo.retrieveAppointmentsNotification(
@@ -26,7 +25,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
             .compareTo(DateTime.parse(b["at_time"]));
       });
       emit(NotificationLoaded(notification: notification['notification']));
-      print("itte");
+
     } on Exception {
       emit(NotificationError());
     }

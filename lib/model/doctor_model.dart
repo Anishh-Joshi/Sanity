@@ -18,7 +18,7 @@ class DoctorModel {
   factory DoctorModel.fromJson(Map response) {
     return DoctorModel(
         name: response['full_name'],
-        doctorId: response['user'],
+        doctorId: response['id'],
         gender: response['gender'],
         location: response['location'],
         nmcId: response['nmcId'],

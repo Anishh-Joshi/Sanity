@@ -4,6 +4,7 @@ import 'package:sanity/blocs/doctor_bloc/doctor_bloc.dart';
 import 'package:sanity/model/doctor_model.dart';
 import 'package:sanity/screens/doctor/doctor_profile.dart';
 import 'package:sanity/widgets/cards/doctor_card.dart';
+import 'package:sanity/widgets/circular_progress.dart';
 import 'package:sanity/widgets/custom_appbar.dart';
 class DoctorsPage extends StatelessWidget {
   static const String routeName = 'doctor_page';
@@ -61,11 +62,11 @@ class DoctorsPage extends StatelessWidget {
                 );
               } else if (state is DoctorLoading) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicatorCustom(),
                 );
               }
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicatorCustom(),
               );
             }),
           ),

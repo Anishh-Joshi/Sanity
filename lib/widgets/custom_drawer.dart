@@ -82,7 +82,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   },
                   leading: Icon(
                     widget.isDoctor?MaterialIcons.add: Entypo.line_graph,
-                    color: Theme.of(context).indicatorColor,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                   title: Text(
                     widget.isDoctor?'Add Therapy':'Progress Report',
@@ -98,7 +98,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   },
                   leading: Icon(
                     Ionicons.settings_outline,
-                    color: Theme.of(context).indicatorColor,
+                                 color: Theme.of(context).iconTheme.color,
                   ),
                   title: Text(
                     'Settings',
@@ -121,18 +121,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           });
                         },
                         activeTrackColor:
-                            Theme.of(context).colorScheme.secondary,
+                            Theme.of(context).secondaryHeaderColor,
                         activeColor: Theme.of(context).primaryColor,
                       );
                     }),
                     leading: Icon(
                       MaterialCommunityIcons.theme_light_dark,
-                      color: Theme.of(context).indicatorColor,
+                                          color: Theme.of(context).iconTheme.color,
                     )),
                 ListTile(
                   leading: Icon(
                     Ionicons.ios_document_text_outline,
-                    color: Theme.of(context).indicatorColor,
+                                      color: Theme.of(context).iconTheme.color,
                   ),
                   title: Text(
                     'Privacy Policy',
@@ -142,7 +142,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ListTile(
                   leading: Icon(
                     Entypo.documents,
-                    color: Theme.of(context).indicatorColor,
+                                       color: Theme.of(context).iconTheme.color,
                   ),
                   title: Text(
                     'About us',
@@ -160,7 +160,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       margin: EdgeInsets.only(
                           bottom: MediaQuery.of(context).size.height / 80),
                       child: ElevatedButtonCustom(
-                        color: Color.fromARGB(255, 233, 11, 104),
+                        color: Theme.of(context).primaryColor,
                         buttonTitle: "Logout",
                         action: () {
                           context.read<LoginBloc>().add(LogoutButtonPressed());

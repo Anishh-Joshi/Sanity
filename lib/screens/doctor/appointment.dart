@@ -94,6 +94,7 @@ class _AppointmentState extends State<Appointment> {
           } else if (state is AppointmentLoaded && widget.isForDoctor) {
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Appointment Verified")));
+                
             context.read<AppointmentBloc>().add(RetrieveAppointmentDoctor(
                 doctorId: widget.appointmentModel!.doctor.userId!));
           }
@@ -122,7 +123,7 @@ class _AppointmentState extends State<Appointment> {
                       builder: (context, state) {
                         if (state is AppointmentLoadng) {
                           return const Center(
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicatorCustom(),
                           );
                         }
                         return InkWell(
@@ -156,7 +157,7 @@ class _AppointmentState extends State<Appointment> {
                           child: Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(50),
-                                  color: Colors.deepPurpleAccent),
+                                  color: Theme.of(context).primaryColor),
                               child: const Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Icon(
@@ -267,7 +268,7 @@ class _AppointmentState extends State<Appointment> {
                                               });
                                             }
                                           },
-                                          color: Theme.of(context).cardColor,
+                                          color: Theme.of(context).primaryColor,
                                           buttonTitle:
                                               months[_pickedDate!.month - 1]
                                                       .toString()
@@ -290,6 +291,7 @@ class _AppointmentState extends State<Appointment> {
                                   child: SizedBox(
                                      
                                       child: ElevatedButtonCustom(
+                                        
                                           action: () async {
                                             TimeOfDay? t = await showTimePicker(
                                                 context: context,
@@ -300,7 +302,7 @@ class _AppointmentState extends State<Appointment> {
                                               });
                                             }
                                           },
-                                          color: Theme.of(context).cardColor,
+                                          color: Theme.of(context).primaryColor,
                                           buttonTitle: timeOfDay!.hour.toString() +
                                               ":" +
                                               timeOfDay!.minute.toString())),

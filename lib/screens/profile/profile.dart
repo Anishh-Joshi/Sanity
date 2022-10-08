@@ -4,6 +4,8 @@ import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/custom_appbar.dart';
 
+import '../../widgets/circular_progress.dart';
+
 class ProfilePage extends StatelessWidget {
   static const String routeName = 'profile_page';
   const ProfilePage({Key? key}) : super(key: key);
@@ -28,7 +30,7 @@ class ProfilePage extends StatelessWidget {
               );
             }
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicatorCustom(),
             );
           },
         ),
@@ -118,7 +120,7 @@ class ProfilePage extends StatelessWidget {
               }
               // yelai chai pacchi shimmer effect le replace handiney
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicatorCustom(),
               );
             },
           ),
@@ -142,7 +144,7 @@ class ProfilePage extends StatelessWidget {
                       ]);
                 }
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicatorCustom(),
                 );
               },
             ),
@@ -178,7 +180,7 @@ class ProfilePage extends StatelessWidget {
                     }
 
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicatorCustom(),
                     );
                   },
                 ),

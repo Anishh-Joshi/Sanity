@@ -204,7 +204,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
       child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
-              color: Colors.deepPurpleAccent),
+              color: Theme.of(context).primaryColor),
           child: Padding(
               padding: const EdgeInsets.all(8.0), child: Icon(isPlaying?Entypo.controller_stop: Icons.music_note))),
     );

@@ -20,11 +20,6 @@ class AppointmentRetrieved extends AppointmentState {
 }
 
 class AppointmentRequested extends AppointmentState {
-  final AppointmentModel appointmentModel;
-
-  const AppointmentRequested({required this.appointmentModel});
-  @override
-  List<Object> get props => [appointmentModel];
 }
 
 class AppointmentUpdated extends AppointmentState {}

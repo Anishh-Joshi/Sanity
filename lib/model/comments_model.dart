@@ -19,6 +19,7 @@ class Comments {
 
   factory Comments.fromJSON({required Map response}) {
     return Comments(
+      commentOwner: UserInfoModel.fromJson(response['by_user']),
         commentId: response['thread_comment_id'],
         fk: response['thread_comment_fk']['thread_id'],
         comment: response['comment'],

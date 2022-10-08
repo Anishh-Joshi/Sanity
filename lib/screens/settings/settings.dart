@@ -5,6 +5,7 @@ import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/screens/settings/account.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
+import 'package:sanity/widgets/filead_header.dart';
 import '../../blocs/theme/theme_bloc_bloc.dart';
 import '../../widgets/arrow_forward_icon.dart';
 
@@ -25,25 +26,7 @@ class Settings extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        },
-                      icon:Icon(
-                  Icons.arrow_back_ios,
-                  color: Theme.of(context).iconTheme.color,
-                ),),
-                const Divider(color: Colors.transparent,),
-                Text(
-                  "Settings",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline2!
-                      .copyWith(fontSize: height * 0.045),
-                ),
-                SizedBox(
-                  height: height * 0.04,
-                ),
+                AppBarInfo(height: height, onPressed: (){}, showDone: false, title: "Settings"),
                 Text(
                   "Account",
                   style: Theme.of(context)
@@ -156,19 +139,19 @@ class Settings extends StatelessWidget {
                 ),
                 Options(
                   height: height,
-                  icon: const Icon(Ionicons.moon,
-                      size: 20, color: Colors.deepPurple),
+                  icon:  Icon(Ionicons.moon,
+                      size: 20, color: Theme.of(context).primaryColor),
                   text: "Dark Mode",
                   callback: () {},
-                  accentColor: Colors.deepPurple.withAlpha(95),
+                  accentColor: Theme.of(context).primaryColor.withAlpha(95),
                 ),
                 Options(
                   height: height,
-                  icon: const Icon(Ionicons.help_buoy,
-                      size: 20, color: Colors.pink),
+                  icon:  Icon(Ionicons.help_buoy,
+                      size: 20, color: Theme.of(context).secondaryHeaderColor),
                   text: "Help",
                   callback: () {},
-                  accentColor: Colors.pink.withAlpha(99),
+                  accentColor: Theme.of(context).secondaryHeaderColor.withAlpha(99),
                 ),
                 Options(
                   height: height,

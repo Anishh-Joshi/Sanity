@@ -47,18 +47,17 @@ class UserInfoBloc extends Bloc<UserInfoEvent, UserInfoState> {
     Emitter<UserInfoState> emit,
   ) async {
     _signupSubscription?.cancel();
-    if (state is UserInfoLoaded) {
-      try {
-        final int resp =
-            await _signUpRepo.addUserInfo(event.userInfo, id: event.id);
-        if (resp == 201) {
-          emit(SignupFormFilled());
-        } else if (resp == 404) {
-          emit(const UserInfoError(
-              msg: "Something Went Wrong! Please Try Again."));
-        }
-      } catch (_) {}
-    }
+    emit(UserInfoLoading());
+    try {
+      final int resp =
+          await _signUpRepo.addUserInfo(event.userInfo, id: event.id);
+      if (resp == 201) {
+        emit(SignupFormFilled());
+      } else if (resp == 404) {
+        emit(const UserInfoError(
+            msg: "Something Went Wrong! Please Try Again."));
+      }
+    } catch (_) {}
   }
 
   @override

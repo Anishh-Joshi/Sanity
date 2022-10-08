@@ -42,7 +42,7 @@ class LoginLanding extends StatelessWidget {
                     child: Text(
                       "Sanity",
                       style: Theme.of(context).textTheme.headline3!.copyWith(
-                          color: Color.fromARGB(255, 216, 151, 228),
+                          color: Theme.of(context).primaryColor,
                           fontSize: height * 0.05),
                     ),
                   )),
@@ -51,7 +51,7 @@ class LoginLanding extends StatelessWidget {
               const Expanded(child: Text("")),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Colors.purple,
+                      primary: Theme.of(context).primaryColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
                   onPressed: () {

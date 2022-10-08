@@ -23,9 +23,9 @@ class NotificationCard extends StatelessWidget {
 
   List<Color> colorList = [
     Colors.red,
-    Colors.pink,
     Colors.deepOrange,
     Colors.teal,
+    Colors.pink,
     Colors.green,
     Colors.amber,
   ];

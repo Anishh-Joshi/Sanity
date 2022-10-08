@@ -17,16 +17,17 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
       RequestAppointment event, Emitter<AppointmentState> emit) async {
     emit(AppointmentLoadng());
     try {
+
       final Map response = await repo.requestAppointment(event.userId,
           event.doctorId, event.previousMedicine, event.emergencyContact);
       if (response['status'] == 'success') {
-        final AppointmentModel appointModel =
-            AppointmentModel.fromJSON(response['appointment_data']);
-        emit(AppointmentRequested(appointmentModel: appointModel));
+        emit(AppointmentRequested());
+        emit(AppointmentLoaded());
+
       } else {
         emit(const AppointmentError(err: "Something went wrong"));
       }
-      emit(AppointmentLoaded());
+      
     } catch (e) {
       emit(AppointmentError(err: e.toString()));
     }
@@ -52,6 +53,7 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
       RetrieveAppointmentDoctor event, Emitter<AppointmentState> emit) async {
     emit(AppointmentLoadng());
     try {
+      print("IS TRIGGERED");
       final Map response =
           await repo.retrieveAppointments(userId: event.doctorId,cat: 'doc');
       if (response['status'] == 'success') {

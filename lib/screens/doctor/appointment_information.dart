@@ -8,6 +8,7 @@ import 'package:sanity/screens/doctor/appointment.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/circular_progress.dart';
 
+import '../../widgets/custom_appbar.dart';
 import '../message/messagePage.dart';
 
 class AppointmentInformation extends StatefulWidget {
@@ -29,7 +30,13 @@ class _AppointmentInformationState extends State<AppointmentInformation> {
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    return Scaffold(body: BlocBuilder<HomeBloc, HomeState>(
+    return Scaffold(
+       appBar: MyCustomAppBar(
+          elevation: 0,
+          fontSize: 25,
+          appBarTitle: 'Appointments',
+          onPressed: () {}),
+      body: BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state is HomeLoaded) {
           context
@@ -41,16 +48,6 @@ class _AppointmentInformationState extends State<AppointmentInformation> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Appointments",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline2!
-                        .copyWith(fontSize: height * 0.045),
-                  ),
-                  SizedBox(
-                    height: height * 0.03,
-                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -117,6 +114,7 @@ class VerifiedAppointments extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final AppointmentModel appointModel =
                       AppointmentModel.fromJSON(state.appointmentList[index]);
+                      print("Failure point check");
                   return !isPendingScreen
                       ? appointModel.pending!
                           ? const SizedBox()
@@ -248,9 +246,9 @@ class _AppointmentCardState extends State<AppointmentCard> {
                     widget.appointmentMOdel.pending!
                         ? Column(
                             children: [
-                              const Icon(
+                               Icon(
                                 MaterialIcons.pending,
-                                color: Colors.pink,
+                                color: Theme.of(context).secondaryHeaderColor,
                               ),
                               Text(
                                 "Pending",

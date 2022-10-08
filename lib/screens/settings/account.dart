@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
+import 'package:sanity/widgets/filead_header.dart';
 
 class Account extends StatelessWidget {
   const Account({Key? key}) : super(key: key);
@@ -19,41 +20,7 @@ class Account extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
-                    ),
-                    Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: Colors.deepPurpleAccent),
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.done),
-                        )),
-                  ],
-                ),
-                const Divider(
-                  color: Colors.transparent,
-                ),
-                Text(
-                  "Account",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline2!
-                      .copyWith(fontSize: height * 0.045),
-                ),
-                SizedBox(
-                  height: height * 0.07,
-                ),
+                AppBarInfo(showDone: true, height: height, onPressed: (){}, title: "Account"),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +135,7 @@ class GenderBox extends StatelessWidget {
                   width: 50,
                   decoration: BoxDecoration(
                       color: gender == "Male"
-                          ? Colors.deepPurpleAccent
+                          ? Theme.of(context).primaryColor
                           : Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(50)),
                   child: Icon(
@@ -197,7 +164,7 @@ class GenderBox extends StatelessWidget {
                   width: 50,
                   decoration: BoxDecoration(
                       color: gender == "Female"
-                          ? Colors.deepPurpleAccent
+                          ? Theme.of(context).primaryColor
                           : Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(50)),
                   child: Icon(
@@ -226,7 +193,7 @@ class GenderBox extends StatelessWidget {
                   width: 50,
                   decoration: BoxDecoration(
                       color: gender != "Female" && gender != "Male"
-                          ? Colors.deepPurpleAccent
+                          ? Theme.of(context).primaryColor
                           : Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(50)),
                   child: Icon(

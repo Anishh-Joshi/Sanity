@@ -35,7 +35,7 @@ class WriteDetails extends StatelessWidget {
                     Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
-                            color: Colors.deepPurpleAccent),
+                            color: Theme.of(context).primaryColor),
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Icon(Icons.done),

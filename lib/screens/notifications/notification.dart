@@ -24,7 +24,7 @@ class NotificationPage extends StatelessWidget {
         appBar: MyCustomAppBar(
             elevation: 0,
             fontSize: 25,
-            appBarTitle: '  Notifications',
+            appBarTitle: 'Notifications',
             onPressed: () {}),
         body: Padding(
           padding: const EdgeInsets.all(20.0),

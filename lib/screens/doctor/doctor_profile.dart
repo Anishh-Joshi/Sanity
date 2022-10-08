@@ -6,6 +6,8 @@ import 'package:sanity/widgets/cards/normal_card.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/custom_elevated_button.dart';
 
+import '../../widgets/circular_progress.dart';
+
 class DoctorProfile extends StatelessWidget {
   final String url;
   final String name;
@@ -178,7 +180,7 @@ class DoctorProfile extends StatelessWidget {
                                                   "Book an Appointment");
                                         }
                                         return const Center(
-                                          child: CircularProgressIndicator(),
+                                          child: CircularProgressIndicatorCustom(),
                                         );
                                       },
                                     ),

@@ -7,7 +7,6 @@ class ThreadsModel {
   final int threadId;
   final int threadOwnerId;
   final String title;
-  final int docInvolved;
   final String contents;
   final DateTime createdAt;
   final UserInfoModel ownerInfo;
@@ -21,7 +20,6 @@ class ThreadsModel {
       required this.threadOwnerId,
       required this.title,
       required this.createdAt,
-      required this.docInvolved,
       required this.contents,
       required this.ownerInfo});
 
@@ -49,7 +47,6 @@ class ThreadsModel {
         threadOwnerId: response['added_by_user'],
         title: response['title'],
         createdAt: DateTime.parse(response['created_at']),
-        docInvolved: response['docs_involved'],
         contents: response['content'],
         ownerInfo: UserInfoModel.fromJson(userMap));
   }

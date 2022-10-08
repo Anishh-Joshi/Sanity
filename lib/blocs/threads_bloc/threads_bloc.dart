@@ -24,16 +24,13 @@ class ThreadsBloc extends Bloc<ThreadsEvent, ThreadsState> {
   ) async {
     emit(ThreadsLoading());
     try {
-      print("deleted");
       final Map response = await _threadRepo.getThreads();
       emit(ThreadsLoaded(
           threads: response['threads'],
           owners: response['user_info'],
           upVotes: response['up_votes'],
           comments: response['comments']));
-                print("deleted conform");
     } catch (e) {
-      print("error");
       emit(ThreadsError(err: e.toString()));
     }
   }
@@ -45,7 +42,7 @@ class ThreadsBloc extends Bloc<ThreadsEvent, ThreadsState> {
     try {
       await _threadRepo.upVote(threadId: event.threadId, userId: event.userId);
     } catch (e) {
-      print("error");
+
     }
   }
 
@@ -57,7 +54,7 @@ class ThreadsBloc extends Bloc<ThreadsEvent, ThreadsState> {
       await _threadRepo.downVote(
           threadId: event.threadId, userId: event.userId);
     } catch (e) {
-      print("error");
+
     }
   }
 
@@ -72,8 +69,13 @@ class ThreadsBloc extends Bloc<ThreadsEvent, ThreadsState> {
     try {
       await _threadRepo.addThread(
           userId: event.userId, title: event.title, content: event.content);
+      final Map response = await _threadRepo.getThreads();
+      emit(ThreadsLoaded(
+          threads: response['threads'],
+          owners: response['user_info'],
+          upVotes: response['up_votes'],
+          comments: response['comments']));
     } catch (e) {
-      print(e.toString());
     }
   }
 
@@ -91,6 +93,12 @@ class ThreadsBloc extends Bloc<ThreadsEvent, ThreadsState> {
       try {
         emit(ThreadsLoading());
         await _threadRepo.deleteThread(threadId: event.threadId);
+        final Map response = await _threadRepo.getThreads();
+        emit(ThreadsLoaded(
+            threads: response['threads'],
+            owners: response['user_info'],
+            upVotes: response['up_votes'],
+            comments: response['comments']));
       } catch (e) {
         emit(ThreadsError(err: e.toString()));
       }

@@ -30,72 +30,57 @@ class _ImagePickPopUpState extends State<ImagePickPopUp> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 3,
-            blurRadius: 3,
-            offset: const Offset(0, 3),
-            // changes position of shadow
-          ),
-        ],
-      ),
-      child: BlocBuilder<UserInfoBloc, UserInfoState>(
-        builder: (context, state) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Theme.of(context).primaryColor),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ))),
-                  onPressed: () => getImageFromCamera(context),
-                  child: SizedBox(
-                      width: MediaQuery.of(context).size.width / 1.8,
-                      child: Row(
+    return BlocBuilder<UserInfoBloc, UserInfoState>(
+      builder: (context, state) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).primaryColor),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ))),
+                onPressed: () => getImageFromCamera(context),
+                child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 1.8,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Icon(Icons.camera_alt),
+                        Text("Take From Camera"),
+                        Opacity(
+                          opacity: 0,
+                          child: Icon(Icons.camera_alt),
+                        )
+                      ],
+                    ))),
+            ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.black),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ))),
+                onPressed: () => getImageFromGallery(context),
+                child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 1.8,
+                    child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: const [
-                          Icon(Icons.camera_alt),
-                          Text("Take From Camera"),
+                          Icon(Icons.image),
+                          Text("Gallery"),
                           Opacity(
                             opacity: 0,
                             child: Icon(Icons.camera_alt),
                           )
-                        ],
-                      ))),
-              ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ))),
-                  onPressed: () => getImageFromGallery(context),
-                  child: SizedBox(
-                      width: MediaQuery.of(context).size.width / 1.8,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Icon(Icons.image),
-                            Text("Gallery"),
-                            Opacity(
-                              opacity: 0,
-                              child: Icon(Icons.camera_alt),
-                            )
-                          ])))
-            ],
-          );
-        },
-      ),
+                        ])))
+          ],
+        );
+      },
     );
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/user_info_bloc/user_info_bloc.dart';
 
+import 'circular_progress.dart';
+
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField(
       {Key? key, required this.hintText, this.onChanged, this.controller})
@@ -137,7 +139,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
         child: BlocBuilder<UserInfoBloc, UserInfoState>(
           builder: (context, state) {
             if (state is UserInfoLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicatorCustom());
             }
             if (state is UserInfoLoaded) {
               context.read<UserInfoBloc>().add(UpdateUserInfo(gender: gender));

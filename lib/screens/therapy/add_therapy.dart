@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/therapy/therapy_bloc.dart';
 
 import '../../blocs/home/home_bloc.dart';
+import '../../widgets/circular_progress.dart';
 import '../../widgets/custom_form.dart';
 
 class AddTherapy extends StatefulWidget {
@@ -100,7 +101,7 @@ class _AddTherapyState extends State<AddTherapy> {
                               child: Container(
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(50),
-                                      color: Colors.deepPurpleAccent),
+                                      color: Theme.of(context).primaryColor),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Icon(
@@ -111,7 +112,7 @@ class _AddTherapyState extends State<AddTherapy> {
                                   )),
                             );
                           }
-                          return const CircularProgressIndicator();
+                          return const CircularProgressIndicatorCustom();
                         },
                       ),
                     ],

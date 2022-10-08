@@ -10,6 +10,8 @@ import 'package:sanity/screens/write/write_textfield.dart';
 import 'package:sanity/widgets/cards/notification_card.dart';
 import 'package:sanity/widgets/custom_appbar.dart';
 
+import '../../widgets/circular_progress.dart';
+
 class WritePage extends StatelessWidget {
   static const String routeName = 'logs';
   WritePage({Key? key}) : super(key: key);
@@ -31,13 +33,13 @@ class WritePage extends StatelessWidget {
         onPressed: () {
           Navigator.pushNamed(context, WriteField.routeName);
         },
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(Icons.edit),
       ),
       appBar: MyCustomAppBar(
           elevation: 0,
           fontSize: 25,
-          appBarTitle: '  Daily Logs',
+          appBarTitle: 'Daily Logs',
           onPressed: () {}),
       body: BlocListener<LogBlocBloc, LogBlocState>(
         listener: (context, state) {
@@ -88,7 +90,7 @@ class WritePage extends StatelessWidget {
                     );
                   } else if (state is LogBlocLoading) {
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicatorCustom(),
                     );
                   }
 

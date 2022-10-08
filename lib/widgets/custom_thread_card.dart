@@ -42,7 +42,17 @@ class _ThreadCardState extends State<ThreadCard> {
     return filtered;
   }
 
+  bool isLoading = false;
+
+  List getDocsInvolved() {
+    var filtered = widget.thread.comments
+        .where((content) => content.commentOwner!.isDoctor == true)
+        .toList();
+    return filtered;
+  }
+
   List? comment;
+  List? docsInvolved;
   List<UpvotesModel>? total;
 
   @override
@@ -50,6 +60,7 @@ class _ThreadCardState extends State<ThreadCard> {
     setState(() {
       comment = getComments();
       isLiked = totalVotes();
+      docsInvolved = getDocsInvolved();
     });
 
     super.initState();
@@ -134,7 +145,7 @@ class _ThreadCardState extends State<ThreadCard> {
                     width: 4,
                   ),
                   Text(
-                    widget.thread.docInvolved.toString(),
+                    isLoading ? "-" : docsInvolved!.length.toString(),
                     style: Theme.of(context).textTheme.headline5,
                   ),
                   const SizedBox(
@@ -147,7 +158,9 @@ class _ThreadCardState extends State<ThreadCard> {
                     child: Icon(
                       FontAwesome.arrow_circle_up,
                       size: 23,
-                      color: !isLiked ? Colors.grey : Colors.greenAccent,
+                      color: !isLiked
+                          ? Colors.grey
+                          : Theme.of(context).primaryColor,
                     ),
                   ),
                   Text(

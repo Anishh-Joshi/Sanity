@@ -1,5 +1,4 @@
 import 'package:sanity/model/user_info_model.dart';
-import 'package:sanity/screens/login/user_info.dart';
 
 class AppointmentModel {
   final int? appointmentId;
@@ -11,6 +10,7 @@ class AppointmentModel {
   final UserInfoModel patient;
   final UserInfoModel doctor;
   
+  final DateTime dummyDate = DateTime.now();
 
   AppointmentModel(
       {required this.pending,
@@ -21,13 +21,12 @@ class AppointmentModel {
       this.atTime,
       required this.emergencyContact,
       this.previousMedications});
-
   factory AppointmentModel.fromJSON(Map response) {
     return AppointmentModel(
       doctor: UserInfoModel.fromJson(response['appointed_to']),
       patient: UserInfoModel.fromJson(response['user']),
       appointmentId: response['id'],
-      atTime: DateTime.parse(response['at_time']),
+      atTime:response['at_time'] ==null?null:DateTime.parse(response['at_time']),
       createdAt: DateTime.parse(response['created_at']),
       emergencyContact: response['emergency_contact'],
       previousMedications: response['previous_medication'],

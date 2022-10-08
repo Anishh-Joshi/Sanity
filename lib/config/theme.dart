@@ -3,15 +3,7 @@ import 'package:flutter/material.dart';
 ThemeData theme({required bool isDark}) {
   return ThemeData(
       primaryColor: primaryColor(isDark),
-      // timePickerTheme: TimePickerThemeData(
-      //   entryModeIconColor:Colors.red,
-
-      //     dialBackgroundColor: isDark
-      //         ? Color.fromARGB(255, 26, 25, 25)
-      //         : Color.fromARGB(255, 250, 250, 250),
-      //     dayPeriodColor: canvasColor(isDark),
-      //     dialHandColor: canvasColor(isDark),
-      //     backgroundColor: bottomAppBarColor(isDark)),
+      secondaryHeaderColor: Color.fromARGB(255, 195, 128, 204),
       appBarTheme:
           AppBarTheme(color: isDark ? const Color(0xff000000) : Colors.white),
       colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -19,7 +11,7 @@ ThemeData theme({required bool isDark}) {
       ),
       scaffoldBackgroundColor: !isDark ? Colors.white : const Color(0xff000000),
       fontFamily: 'Nunito',
-      shadowColor: shadowColor(isDark),
+    shadowColor: shadowColor(isDark),
       canvasColor: canvasColor(isDark),
       cardColor: isDark
           ? Color.fromARGB(255, 26, 25, 25)
@@ -35,7 +27,7 @@ ThemeData theme({required bool isDark}) {
 }
 
 Color indicatorColor(bool isDark) {
-  return isDark ? Colors.white : const Color(0xff000000);
+  return Colors.pink;
 }
 
 Color shadowColor(bool isDark) {
@@ -43,7 +35,8 @@ Color shadowColor(bool isDark) {
 }
 
 Color primaryColor(bool isDark) {
-  return Colors.deepPurpleAccent;
+  return Color.fromARGB(255, 181, 94, 238);
+
 }
 
 Color canvasColor(bool isDark) {

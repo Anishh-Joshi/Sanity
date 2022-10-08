@@ -16,18 +16,15 @@ class LogBlocBloc extends Bloc<LogBlocEvent, LogBlocState> {
     emit(LogSending());
     try {
       await repo.sendLog(event.log, event.userId);
+      final Map receivedMap = await repo.retrieveLog(event.userId);
+      emit(LogRetrieved(log: receivedMap['candidates']));
     } catch (e) {
-      emit(LogSent());
     }
-    emit(LogSent());
   }
-
 
   void _retrieveLog(RetrieveLog event, Emitter<LogBlocState> emit) async {
     emit(LogBlocLoading());
     final Map receivedMap = await repo.retrieveLog(event.id);
     emit(LogRetrieved(log: receivedMap['candidates']));
-
   }
-
 }

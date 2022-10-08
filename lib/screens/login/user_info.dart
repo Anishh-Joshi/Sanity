@@ -1,14 +1,17 @@
+import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/blocs/user_info_bloc/user_info_bloc.dart';
+import 'package:sanity/widgets/circular_progress.dart';
 import 'package:sanity/widgets/custom_forms.dart';
 import 'package:sanity/widgets/floatingbutton.dart';
 import 'package:sanity/widgets/login_signup_header.dart';
 import 'package:sanity/widgets/popup_image_picker.dart';
 
+import '../../widgets/platform_aware.dart';
 
 class UserInfo extends StatefulWidget {
   static const String routeName = 'user_info';
@@ -39,15 +42,20 @@ class _UserInfoState extends State<UserInfo> {
 
   final ScrollController _scrollController = ScrollController();
   bool isPopUpOpen = false;
+  bool showImagePicker = false;
 
   void handlePopUp() {
     setState(() {
+      if (isPopUpOpen) {
+        showImagePicker = false;
+      }
       isPopUpOpen = !isPopUpOpen;
-      _scrollController.animateTo(
-        isPopUpOpen ? 100 : -100,
-        duration: const Duration(seconds: 1),
-        curve: Curves.ease,
-      );
+    });
+
+    Timer(Duration(milliseconds: !showImagePicker ? 200 : 0), () {
+      setState(() {
+        showImagePicker = isPopUpOpen;
+      });
     });
   }
 
@@ -82,7 +90,7 @@ class _UserInfoState extends State<UserInfo> {
                               const SnackBar(
                                   content:
                                       Text("Address field can't be empty!")));
-                        } else if (state.userInfoModel.isDoctor! &&
+                        } else if (isChecked &&
                             state.userInfoModel.nmcId == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -124,24 +132,19 @@ class _UserInfoState extends State<UserInfo> {
                     return FloatingButon(callback: () {});
                   });
                 } else {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicatorCustom());
                 }
               },
             ),
-      body: BlocListener<UserInfoBloc, UserInfoState>(
-        listener: (context, state) {
-          if (state is SignupFormFilled) {
-            context.read<LoginBloc>().add(LoginCheck());
-            Navigator.pushNamedAndRemoveUntil(
-                context, 'landing_page', (route) => false);
-            context.read<UserInfoBloc>().add(SignUpLoading());
-          }
-        },
-        child: GestureDetector(
-          onTap: () {
-            setState(() {
-              isPopUpOpen = false;
-            });
+      body: Stack(children: [
+        BlocListener<UserInfoBloc, UserInfoState>(
+          listener: (context, state) {
+            if (state is SignupFormFilled) {
+              context.read<LoginBloc>().add(LoginCheck());
+              Navigator.pushNamedAndRemoveUntil(
+                  context, 'landing_page', (route) => false);
+              context.read<UserInfoBloc>().add(SignUpLoading());
+            }
           },
           child: BlocListener<UserInfoBloc, UserInfoState>(
             listener: (context, state) {
@@ -158,10 +161,6 @@ class _UserInfoState extends State<UserInfo> {
                     children: [
                       BlocBuilder<UserInfoBloc, UserInfoState>(
                         builder: (context, state) {
-                          if (state is UserInfoLoading) {
-                            return const CircularProgressIndicator();
-                          }
-
                           if (state is UserInfoLoaded) {
                             return Stack(
                                 alignment: Alignment.bottomCenter,
@@ -207,11 +206,12 @@ class _UserInfoState extends State<UserInfo> {
                                                   width: 40,
                                                   decoration: BoxDecoration(
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              50),
+                                                          BorderRadius
+                                                              .circular(50),
                                                       color: const Color(
                                                           0xff787878)),
-                                                  child: const Icon(Icons.edit,
+                                                  child: const Icon(
+                                                      Icons.edit,
                                                       size: 25,
                                                       color: Colors.white)),
                                             )),
@@ -234,7 +234,8 @@ class _UserInfoState extends State<UserInfo> {
                                                 },
                                               ),
                                               Align(
-                                                alignment: Alignment.centerLeft,
+                                                alignment:
+                                                    Alignment.centerLeft,
                                                 child:
                                                     CustomTextFormFieldInteger(
                                                   hintText: "Age",
@@ -249,8 +250,9 @@ class _UserInfoState extends State<UserInfo> {
                                               ),
                                               const CustomDropDown(),
                                               Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8),
+                                                padding:
+                                                    const EdgeInsets.only(
+                                                        left: 8),
                                                 child: Row(
                                                   children: [
                                                     Text(
@@ -259,28 +261,28 @@ class _UserInfoState extends State<UserInfo> {
                                                           .textTheme
                                                           .bodyText1!
                                                           .copyWith(
-                                                             
                                                               fontSize: 16),
                                                     ),
                                                     Checkbox(
                                                         checkColor:
-                                                            Theme.of(context).colorScheme.secondary,
+                                                            Theme.of(context)
+                                                                .colorScheme
+                                                                .secondary,
                                                         fillColor:
                                                             MaterialStateProperty
                                                                 .resolveWith(
                                                                     getColor),
                                                         value: isChecked,
                                                         onChanged: (val) {
+                                                          setState(() {
+                                                            isChecked = val!;
+                                                          });
                                                           context
                                                               .read<
                                                                   UserInfoBloc>()
                                                               .add(UpdateUserInfo(
                                                                   isDoctor:
-                                                                      val));
-                                                          setState(() {
-                                                            isChecked = val!;
-                                                          });
-                                                          
+                                                                      isChecked));
                                                         }),
                                                   ],
                                                 ),
@@ -323,21 +325,12 @@ class _UserInfoState extends State<UserInfo> {
                                 ]);
                           } else {
                             return const Center(
-                              child:
-                                  Text("Something went wrong inside userinfo"),
+                              child: Text(
+                                  "Something went wrong inside userinfo"),
                             );
                           }
                         },
                       ),
-                      isPopUpOpen
-                          ? GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isPopUpOpen = false;
-                                });
-                              },
-                              child: const ImagePickPopUp())
-                          : const SizedBox(),
                     ],
                   ),
                 ),
@@ -345,7 +338,36 @@ class _UserInfoState extends State<UserInfo> {
             ),
           ),
         ),
-      ),
+
+                isPopUpOpen
+            ? GestureDetector(
+                onTap: () {
+                  handlePopUp();
+                },
+                child: Opacity(
+                  opacity: 0.2,
+                  child: Container(
+                    color: Colors.black,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                  ),
+                ))
+            : const SizedBox(),
+        Positioned(
+          bottom: 0,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16))),
+            height: isPopUpOpen ? MediaQuery.of(context).size.height * 0.20 : 0,
+            width: MediaQuery.of(context).size.width,
+            child: showImagePicker ? const ImagePickPopUp() : null,
+          ),
+        ),
+      ]),
     );
   }
 }

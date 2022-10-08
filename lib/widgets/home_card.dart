@@ -21,7 +21,7 @@ String utf8convert(String text) {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 5),
+      padding: const EdgeInsets.all(5),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
@@ -83,7 +83,7 @@ String utf8convert(String text) {
                         style: Theme.of(context)
                             .textTheme
                             .headline3!
-                            .copyWith(color: Colors.pink, fontSize: 30),
+                            .copyWith(color: Theme.of(context).indicatorColor, fontSize: 30),
                       ),
                     ],
                   ),
@@ -94,11 +94,11 @@ String utf8convert(String text) {
                         style: Theme.of(context)
                             .textTheme
                             .headline3!
-                            .copyWith(color: Colors.pink),
+                            .copyWith(color: Theme.of(context).indicatorColor),
                       ),
                       Text(
                         " involved",
-                        style: Theme.of(context).textTheme.headline5,
+                        style: Theme.of(context).textTheme.headline5!.copyWith(color: Theme.of(context).indicatorColor),
                       ),
                     ],
                   )

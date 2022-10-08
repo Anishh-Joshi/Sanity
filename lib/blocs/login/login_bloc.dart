@@ -30,7 +30,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginLoading());
       bool tokenData = await repo.hasToken();
       final authData = await repo.login(event.email, event.password);
-      if (authData["token"] != null) {
+
+      if (authData.containsKey('errors')) {
+        emit(const LoginError(msg: "Invalid Email or Password."));
+      } else if (authData.containsKey('token')) {
         await repo.persistToken((authData["token"]['access']));
         final Map profileData = await repo.getProfileData();
         final User userModel = User.fromJson(profileData);
@@ -112,11 +115,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     final bool isAppInfoSeen = await repo.hasAppInformation();
     final User userModel = User.fromJson(profileData);
-    print(userModel);
     if (!isAppInfoSeen) {
       emit(InformationNotSeen());
     } else if (!tokenData) {
-      print("token");
       emit(LoginUnAuthenticated());
     } else if (userModel.email != null &&
         isAppInfoSeen &&

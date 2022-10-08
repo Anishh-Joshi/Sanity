@@ -32,7 +32,7 @@ class UserInfoModel extends Equatable {
       isDoctor: response['isDoctor'],
       nmcId: response['nmcId'],
       profileImgUrl: response['profileImage'],
-      userId: response['user']
+      userId: response['id']
     );
   }
 
