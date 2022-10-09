@@ -29,9 +29,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginLoading());
       print(" STATE");
       bool tokenData = await repo.hasToken();
-      final authData = await repo.changePassword(event.email, event.password,
-          event.confirmPassword,);
-      await repo.persistToken((authData["token"]['access']));
+      await repo.changePassword(
+        event.email,
+        event.password,
+        event.confirmPassword,
+      );
+      final loginData = await repo.login(event.email, event.password);
+
+      await repo.persistToken((loginData["token"]['access']));
       final Map profileData = await repo.getProfileData();
       final User userModel = User.fromJson(profileData);
       final Map userInfoMap =
@@ -49,7 +54,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     } catch (e) {
       emit(LoginError(msg: e.toString()));
-  }
+    }
   }
 
   void _onLoginPressed(
