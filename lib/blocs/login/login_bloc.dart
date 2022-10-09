@@ -15,13 +15,41 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LogoutButtonPressed>(_onLogoutPressed);
     on<SignupButtonPressed>(_onSignupPressed);
     on<AppInformationSkipedPressed>(_onAppinformationSeen);
-    on<BackToLoginPage>(_backToLoginPage);
+    on<ChangePassword>(_onChangePassword);
   }
 
   void _onLoginCheck(LoginCheck event, Emitter<LoginState> emit) async {
     emit(LoginLoading());
     bool tokenData = await repo.hasToken();
     await loginCheck(emit, tokenData);
+  }
+
+  void _onChangePassword(ChangePassword event, Emitter<LoginState> emit) async {
+    try {
+      emit(LoginLoading());
+      print(" STATE");
+      bool tokenData = await repo.hasToken();
+      final authData = await repo.changePassword(event.email, event.password,
+          event.confirmPassword,);
+      await repo.persistToken((authData["token"]['access']));
+      final Map profileData = await repo.getProfileData();
+      final User userModel = User.fromJson(profileData);
+      final Map userInfoMap =
+          await repo.registeredProfileData(id: userModel.id!);
+      if (userInfoMap['status'] == "success") {
+        print("AUTH AUTHAUTHAUTHAUTHAUTHSTATE");
+        final UserInfoModel user =
+            UserInfoModel.fromJson(userInfoMap['candidates']);
+        print("AUTH STATE");
+        emit(LoginAuthenticated(user: user, userBase: userModel));
+      } else if (profileData['errors']["details"] != null) {
+        emit(LoginTokenError());
+      } else if (!tokenData) {
+        emit(LoginUnAuthenticated());
+      }
+    } catch (e) {
+      emit(LoginError(msg: e.toString()));
+  }
   }
 
   void _onLoginPressed(
@@ -43,7 +71,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           if (userInfoMap['status'] == "success") {
             final UserInfoModel user =
                 UserInfoModel.fromJson(userInfoMap['candidates']);
-            emit(LoginAuthenticated(user: user));
+            emit(LoginAuthenticated(user: user, userBase: userModel));
           } else {
             emit(UnRegisteredUser(
                 email: userModel.email!,
@@ -129,7 +157,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (userModel.email != null && userInfoMap['status'] == "success") {
         final UserInfoModel user =
             UserInfoModel.fromJson(userInfoMap['candidates']);
-        emit(LoginAuthenticated(user: user));
+        emit(LoginAuthenticated(user: user, userBase: userModel));
       } else {
         emit(UnRegisteredUser(
             email: userModel.email!,

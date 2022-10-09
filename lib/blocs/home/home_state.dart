@@ -11,9 +11,10 @@ class HomeInitial extends HomeState {}
 
 class HomeLoaded extends HomeState {
   final UserInfoModel? user;
+  final User? baseUser ;
 
-  const HomeLoaded({this.user});
+  const HomeLoaded({this.user, this.baseUser});
 
   @override
-  List<Object> get props => [user!];
+  List<Object> get props => [user!,baseUser!];
 }

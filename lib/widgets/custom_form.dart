@@ -5,15 +5,17 @@ class CustomForm extends StatelessWidget {
   final Color? containerColor;
   final TextInputType? keyboardType;
   final String? initialValue;
+  final bool? obscureText;
   final Function(String)? onChanged;
+  final String? Function(String?)? validator;
   final Color? iconColor;
   final Color? borderColor;
   final IconData? iconData;
   final VoidCallback? suffixIconPressed;
   final IconData? iconDataSuffix;
   final bool? enabled;
-  final bool?expands;
-  final int?maxLines;
+  final bool? expands;
+  final int? maxLines;
   final TextEditingController? controller;
 
   final double? borderRadius;
@@ -21,12 +23,14 @@ class CustomForm extends StatelessWidget {
       {Key? key,
       this.hintText,
       this.initialValue,
+      this.obscureText = false,
       this.controller,
       this.expands = false,
       this.maxLines = 1,
       this.borderRadius,
       this.enabled,
       this.iconData,
+      this.validator,
       this.iconDataSuffix,
       this.suffixIconPressed,
       this.containerColor,
@@ -49,8 +53,10 @@ class CustomForm extends StatelessWidget {
           expands: expands!,
           controller: controller,
           maxLines: maxLines,
+          obscureText: obscureText!,
           initialValue: initialValue,
           enabled: enabled,
+          validator: validator,
           keyboardType: keyboardType,
           onChanged: onChanged,
           style: Theme.of(context).textTheme.headline5,
@@ -58,7 +64,10 @@ class CustomForm extends StatelessWidget {
             enabled: true,
             hintText: hintText,
             border: InputBorder.none,
-            hintStyle: Theme.of(context).textTheme.headline5!.copyWith(color: Colors.grey),
+            hintStyle: Theme.of(context)
+                .textTheme
+                .headline5!
+                .copyWith(color: Colors.grey),
             prefixIcon: iconData == null
                 ? null
                 : Icon(

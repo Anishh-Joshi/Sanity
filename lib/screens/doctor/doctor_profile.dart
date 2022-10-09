@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sanity/blocs/doctor_bloc/doctor_bloc.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/screens/doctor/appointment.dart';
 import 'package:sanity/widgets/cards/normal_card.dart';
@@ -108,24 +109,32 @@ class DoctorProfile extends StatelessWidget {
                                         flex: 1,
                                         child: SizedBox(
                                           height: height * 0.15,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "6",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline1,
-                                              ),
-                                              Text(
-                                                  "Top 0.9% of all professional help available in Sanity",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline5),
-                                            ],
+                                          child: BlocBuilder<DoctorBloc,
+                                              DoctorState>(
+                                            builder: (context, state) {
+                                             if(state is DoctorListLoaded){
+                                               return Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "0",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline1,
+                                                  ),
+                                                  Text(
+                                                      "Top 0.9% of all professional help available in Sanity",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline5),
+                                                ],
+                                              );
+                                             }
+                                             return const SizedBox();
+                                            },
                                           ),
                                         ),
                                       )
@@ -165,8 +174,9 @@ class DoctorProfile extends StatelessWidget {
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             Appointment(
-                                                              doctorName:name ,
-                                                              isForDoctor: false,
+                                                              doctorName: name,
+                                                              isForDoctor:
+                                                                  false,
                                                               patientId: state
                                                                   .user!
                                                                   .userId!,
@@ -180,7 +190,8 @@ class DoctorProfile extends StatelessWidget {
                                                   "Book an Appointment");
                                         }
                                         return const Center(
-                                          child: CircularProgressIndicatorCustom(),
+                                          child:
+                                              CircularProgressIndicatorCustom(),
                                         );
                                       },
                                     ),

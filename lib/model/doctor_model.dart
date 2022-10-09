@@ -1,10 +1,10 @@
 class DoctorModel {
-  final String name;
-  final String gender;
-  final int doctorId;
-  final String location;
-  final int nmcId;
-  final String profileUrl;
+  final String? name;
+  final String? gender;
+  final int? doctorId;
+  final String? location;
+  final int? nmcId;
+  final String? profileUrl;
 
   DoctorModel(
       {required this.profileUrl,

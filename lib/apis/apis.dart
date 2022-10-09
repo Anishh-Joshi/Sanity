@@ -1,10 +1,18 @@
 class APIs {
-  //get localhost => "10.0.2.2:8000";
-  get localhost => "sanityhealth.herokuapp.com";
+  get localhost => "10.0.2.2:8000";
+  //get localhost => "sanityhealth.herokuapp.com";
 
   get getDoctorList => "http://$localhost/api/assistant/doctors/";
 
+  String getDocInfo({required int profileId}) =>
+      "http://$localhost/api/user/get/info/?id=$profileId";
+  String setDocInfo() =>
+      "http://$localhost/api/user/set/info";
+  String updateDocInfo({required int profileId}) =>
+      "http://$localhost/api/user/update/info/?id=$profileId";
+
   get loginUrl => "http://$localhost/api/user/login/";
+    get changePassword => "http://$localhost/api/user/changepassword/";
   get signInUrl => "http://$localhost/api/user/register/";
   get user => "http://$localhost/api/user/profile/";
   get setProfile => "http://$localhost/api/user/setprofile/";

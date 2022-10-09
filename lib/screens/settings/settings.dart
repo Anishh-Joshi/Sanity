@@ -4,8 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/screens/settings/account.dart';
+import 'package:sanity/screens/settings/doc.dart';
+import 'package:sanity/screens/settings/security.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
 import 'package:sanity/widgets/filead_header.dart';
+import '../../blocs/doctor_bloc/doctor_bloc.dart';
 import '../../blocs/theme/theme_bloc_bloc.dart';
 import '../../widgets/arrow_forward_icon.dart';
 
@@ -17,7 +20,6 @@ class Settings extends StatelessWidget {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
     return Scaffold(
-
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -26,7 +28,11 @@ class Settings extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppBarInfo(height: height, onPressed: (){}, showDone: false, title: "Settings"),
+                AppBarInfo(
+                    height: height,
+                    onPressed: () {},
+                    showDone: false,
+                    title: "Settings"),
                 Text(
                   "Account",
                   style: Theme.of(context)
@@ -107,6 +113,74 @@ class Settings extends StatelessWidget {
                 const Divider(
                   color: Colors.transparent,
                 ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, Security.routeName);
+                  },
+                  child: Options(
+                    height: height,
+                    icon: const Icon(
+                      MaterialIcons.lock,
+                      size: 20,
+                      color: Colors.blueAccent,
+                    ),
+                    text: "Security",
+                    callback: () {
+                      Navigator.pushNamed(context, Security.routeName);
+                    },
+                    accentColor: Colors.blue.withAlpha(85),
+                  ),
+                ),
+                BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, state) {
+                    if (state is HomeLoaded) {
+                      return state.user!.isDoctor!
+                          ? InkWell(
+                              onTap: () {
+                                // context.read<DoctorBloc>().add(
+                                //     RetrieveDoctorsInfo(
+                                //         profileId: state.user!.userId!));
+                                Navigator.pushNamed(
+                                  context,
+                                  Doc.routeName,
+                                  arguments: {
+                                    'user': state.user,
+                                    "isNewuser": false
+                                  },
+                                );
+                              },
+                              child: Options(
+                                height: height,
+                                icon: const Icon(
+                                  Fontisto.doctor,
+                                  size: 20,
+                                  color: Colors.green,
+                                ),
+                                text: "Doctor Info",
+                                callback: () {
+                                  // context.read<DoctorBloc>().add(
+                                  //     RetrieveDoctorsInfo(
+                                  //         profileId: state.user!.userId!));
+                                  Navigator.pushNamed(
+                                    context,
+                                    Doc.routeName,
+                                    arguments: {
+                                      'user': state.user,
+                                      "isNewuser": true
+                                    },
+                                  );
+                                },
+                                accentColor: Colors.greenAccent.withAlpha(85),
+                              ),
+                            )
+                          : const SizedBox();
+                    }
+                    return const SizedBox();
+                  },
+                ),
+                const Divider(
+                  color: Colors.transparent,
+                ),
                 Text(
                   "Settings",
                   style: Theme.of(context)
@@ -139,7 +213,7 @@ class Settings extends StatelessWidget {
                 ),
                 Options(
                   height: height,
-                  icon:  Icon(Ionicons.moon,
+                  icon: Icon(Ionicons.moon,
                       size: 20, color: Theme.of(context).primaryColor),
                   text: "Dark Mode",
                   callback: () {},
@@ -147,11 +221,12 @@ class Settings extends StatelessWidget {
                 ),
                 Options(
                   height: height,
-                  icon:  Icon(Ionicons.help_buoy,
+                  icon: Icon(Ionicons.help_buoy,
                       size: 20, color: Theme.of(context).secondaryHeaderColor),
                   text: "Help",
                   callback: () {},
-                  accentColor: Theme.of(context).secondaryHeaderColor.withAlpha(99),
+                  accentColor:
+                      Theme.of(context).secondaryHeaderColor.withAlpha(99),
                 ),
                 Options(
                   height: height,

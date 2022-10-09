@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:equatable/equatable.dart';
+import 'package:sanity/model/user_class.dart';
 
 class UserInfoModel extends Equatable {
   final String? fullName;

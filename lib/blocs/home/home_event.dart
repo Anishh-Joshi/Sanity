@@ -9,8 +9,9 @@ abstract class HomeEvent extends Equatable {
 
 class UpdateHomeInfo extends HomeEvent {
   final UserInfoModel? user;
+  final User? baseUser;
 
-  const UpdateHomeInfo({this.user});
+  const UpdateHomeInfo({this.user,this.baseUser});
 
   @override
   List<Object> get props => [user!];

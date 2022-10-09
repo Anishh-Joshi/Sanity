@@ -10,7 +10,6 @@ import 'package:sanity/widgets/custom_forms.dart';
 import 'package:sanity/widgets/floatingbutton.dart';
 import 'package:sanity/widgets/login_signup_header.dart';
 import 'package:sanity/widgets/popup_image_picker.dart';
-
 import '../../widgets/platform_aware.dart';
 
 class UserInfo extends StatefulWidget {

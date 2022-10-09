@@ -51,6 +51,23 @@ class AuthRepository {
     return loginResponse;
   }
 
+  Future<Map> changePassword(
+      String email, password, confirmPassword,) async {
+
+    final prefs = await SharedPreferences.getInstance();
+    final client = http.Client();
+    final String? token = prefs.getString('token');
+    final http.Response response = await client.post(Uri.parse(api.changePassword),
+        body: jsonEncode({"email": email, "password": password,"confirm_password":confirmPassword }),
+        headers: {
+          "Content-type": 'application/json',
+          "Accept": "application/json",
+          'Authorization': 'Bearer $token',
+        });
+    final loginResponse = json.decode(response.body);
+    return loginResponse;
+  }
+
   Future<Map> signIn(String email, password, confirmPassword) async {
     final client = http.Client();
     final http.Response response = await client.post(Uri.parse(api.signInUrl),

@@ -30,6 +30,7 @@ class AppBarInfo extends StatelessWidget {
               },
               child: Icon(
                 Icons.arrow_back_ios,
+                
                 color: Theme.of(context).iconTheme.color,
               ),
             ),
@@ -48,7 +49,7 @@ class AppBarInfo extends StatelessWidget {
                               color: Theme.of(context).primaryColor),
                           child: const Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Icon(Icons.done),
+                            child: Icon(Icons.done,color: Colors.white,),
                           )),
                     ),
                   )

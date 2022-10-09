@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sanity/blocs/doctor_bloc/doctor_bloc.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/screens/home/home.dart';
 import 'package:sanity/widgets/circular_progress.dart';
@@ -29,43 +30,40 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
-  
+          print(state);
           if (state is LoginLoading) {
             const Center(child: CircularProgressIndicatorCustom());
-          }
-          else if (state is LoginUnAuthenticated) {
+          } else if (state is LoginUnAuthenticated) {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'login_landing', (route) => false);
-          }
-         else if (state is InformationNotSeen) {
+          } else if (state is InformationNotSeen) {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'loginInfo', (route) => false);
-          }
-          else if (state is LoginEmailNotVerified) {
+          } else if (state is LoginEmailNotVerified) {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'email_verification', (route) => false);
-          }
-          else if (state is UnRegisteredUser) {
+          } else if (state is UnRegisteredUser) {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'user_info', (route) => false);
-          }
-          else if (state is LoginTokenError) {
+          } else if (state is LoginTokenError) {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'token_err', (route) => false);
-          }
-          else if (state is AppInformationSkipedPressed) {
+          } else if (state is AppInformationSkipedPressed) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'login_landing', (route) => false);
+          } else if (state is LoginAuthenticated) {
+            state.user.isDoctor!
+                ? context
+                    .read<DoctorBloc>()
+                    .add(CheckDocInfo(profileId: state.user.userId!))
+                : null;
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'home_landing', (route) => false,
+                arguments: state.user);
+          } else if (state is BackToLoginPage) {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'login_landing', (route) => false);
           }
-          else if (state is LoginAuthenticated) {
-            Navigator.pushNamedAndRemoveUntil(
-                context,'home_landing', (route) => false,arguments: state.user);
-          }
-          else if (state is BackToLoginPage) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, 'login_landing', (route) => false);
-          }
-          
         },
         child: Scaffold(
           body: Column(

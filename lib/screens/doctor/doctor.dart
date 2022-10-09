@@ -34,29 +34,29 @@ class DoctorsPage extends StatelessWidget {
                 return ListView.builder(
                   shrinkWrap: true,
                   reverse: false,
-                  itemCount: state.docList.length,
+                  itemCount: state.docList!.length,
                   itemBuilder: (context, index) {
                     DoctorModel doc =
-                        DoctorModel.fromJson(state.docList[index]);
+                        DoctorModel.fromJson(state.docList![index]);
                     return GestureDetector(
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => DoctorProfile(
-                                        url: doc.profileUrl,
-                                        nmcId: doc.nmcId,
+                                        url: doc.profileUrl!,
+                                        nmcId: doc.nmcId!,
                                         profile: "General Doctor",
-                                        name: doc.name,
-                                        doctorId: doc.doctorId,
+                                        name: doc.name!,
+                                        doctorId: doc.doctorId!,
                                       )));
                         },
                         child: DoctorCard(
-                            doctorName: doc.name,
-                            gender: doc.gender,
-                            location: doc.location,
-                            profileUrl: doc.profileUrl,
-                            nmcId: doc.nmcId,
+                            doctorName: doc.name!,
+                            gender: doc.gender!,
+                            location: doc.location!,
+                            profileUrl: doc.profileUrl!,
+                            nmcId: doc.nmcId!,
                             hospitalName: "KMC"));
                   },
                 );

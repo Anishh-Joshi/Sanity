@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
                     repo: AuthRepository(),
                   )..add(LoginCheck())),
           BlocProvider(
-            create: (context) => UserInfoBloc(signUpRepo: SignUpRepository())
+          create: (context) => UserInfoBloc(signUpRepo: SignUpRepository())
               ..add(SignUpLoading()),
           ),
           BlocProvider(
