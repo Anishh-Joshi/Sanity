@@ -189,6 +189,7 @@ class _UserInfoState extends State<UserInfo> {
                                                 fit: BoxFit.cover,
                                               )
                                             : CircleAvatar(
+                                              
                                                 radius: MediaQuery.of(context)
                                                         .size
                                                         .height /

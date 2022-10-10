@@ -1,5 +1,5 @@
 class APIs {
-  get localhost => "10.0.2.2:8000";
+get localhost => "10.0.2.2:8000";
   //get localhost => "sanityhealth.herokuapp.com";
 
   get getDoctorList => "http://$localhost/api/assistant/doctors/";
@@ -22,6 +22,10 @@ class APIs {
     return "http://$localhost/api/assistant/get/dailylog/?id=$id";
   }
 
+
+  String updateProfile({required int id}){
+    return "http://$localhost/api/user/update/profile/?id=$id";
+  }
   String userProfile({required int id}) {
     return "http://$localhost/api/user/get/profile/?id=$id";
   }

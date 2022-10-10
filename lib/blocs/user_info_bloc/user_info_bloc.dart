@@ -16,12 +16,22 @@ class UserInfoBloc extends Bloc<UserInfoEvent, UserInfoState> {
     on<UpdateUserInfo>(_onUpdateUserinfo);
     on<SignUpLoading>(_onSignUpLoading);
     on<SignUpPressed>(_onSignUpButtonPressed);
+    on<ClearUserInfo>(_clearUserInfo);
   }
 
   void _onSignUpLoading(
     SignUpLoading event,
     Emitter<UserInfoState> emit,
   ) {
+     print("got userInfo");
+    emit(UserInfoLoaded());
+  }
+
+   void _clearUserInfo(
+    ClearUserInfo event,
+    Emitter<UserInfoState> emit,
+  ) {
+    print("Trigged");
     emit(UserInfoLoaded());
   }
 
@@ -29,6 +39,7 @@ class UserInfoBloc extends Bloc<UserInfoEvent, UserInfoState> {
     UpdateUserInfo event,
     Emitter<UserInfoState> emit,
   ) {
+    print("got userInfo");
     if (state is UserInfoLoaded) {
       final state = this.state as UserInfoLoaded;
       emit(UserInfoLoaded(

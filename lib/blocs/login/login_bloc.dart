@@ -27,7 +27,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void _onChangePassword(ChangePassword event, Emitter<LoginState> emit) async {
     try {
       emit(LoginLoading());
-      print(" STATE");
       bool tokenData = await repo.hasToken();
       await repo.changePassword(
         event.email,
@@ -42,10 +41,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final Map userInfoMap =
           await repo.registeredProfileData(id: userModel.id!);
       if (userInfoMap['status'] == "success") {
-        print("AUTH AUTHAUTHAUTHAUTHAUTHSTATE");
         final UserInfoModel user =
             UserInfoModel.fromJson(userInfoMap['candidates']);
-        print("AUTH STATE");
         emit(LoginAuthenticated(user: user, userBase: userModel));
       } else if (profileData['errors']["details"] != null) {
         emit(LoginTokenError());
@@ -145,7 +142,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future<void> loginCheck(Emitter<LoginState> emit, bool tokenData) async {
     final Map profileData = await repo.getProfileData();
-
+print("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
     final bool isAppInfoSeen = await repo.hasAppInformation();
     final User userModel = User.fromJson(profileData);
     if (!isAppInfoSeen) {
@@ -162,6 +159,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (userModel.email != null && userInfoMap['status'] == "success") {
         final UserInfoModel user =
             UserInfoModel.fromJson(userInfoMap['candidates']);
+
+            print("AUTHENTICATEDSTATE");
         emit(LoginAuthenticated(user: user, userBase: userModel));
       } else {
         emit(UnRegisteredUser(

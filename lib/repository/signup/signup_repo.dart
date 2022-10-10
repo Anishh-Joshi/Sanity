@@ -33,4 +33,29 @@ class SignUpRepository extends BaseSignupRepository {
       return e.response!.statusCode!;
     }
   }
+
+  Future<int> updateUserInfo(UserInfoModel checkout, {required int id,required int profileId}) async {
+    try {
+      FormData formData = FormData.fromMap({
+        'gender': checkout.gender,
+        'isDoctor': checkout.isDoctor,
+        'nmcId': checkout.nmcId,
+        "profileImage": checkout.profileImage == null
+            ? null
+            : await MultipartFile.fromFile(
+                checkout.profileImage!.path,
+              ),
+        'location': checkout.address,
+        'age': checkout.age,
+        'full_name': checkout.fullName
+      });
+      Response response = await Dio().put(
+          api.updateProfile(id:profileId),
+          data: formData,
+          options: Options(headers: {}));
+      return response.statusCode!;
+    } on DioError catch (e) {
+      return e.response!.statusCode!;
+    }
+  }
 }

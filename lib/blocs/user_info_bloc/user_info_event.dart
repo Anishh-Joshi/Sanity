@@ -41,3 +41,7 @@ class SignUpPressed extends UserInfoEvent {
   @override
   List<Object?> get props => [userInfo];
 }
+
+
+class ClearUserInfo extends UserInfoEvent {
+}

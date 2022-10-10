@@ -94,7 +94,7 @@ class _AppointmentState extends State<Appointment> {
           } else if (state is AppointmentLoaded && widget.isForDoctor) {
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Appointment Verified")));
-                
+
             context.read<AppointmentBloc>().add(RetrieveAppointmentDoctor(
                 doctorId: widget.appointmentModel!.doctor.userId!));
           }
@@ -205,12 +205,17 @@ class _AppointmentState extends State<Appointment> {
                   color: Colors.transparent,
                 ),
                 widget.isForDoctor
-                    ? GenderBox(gender: widget.patient!.gender!, height: height)
+                    ? GenderBox(
+                        isAccountView: false,
+                        gender: widget.patient!.gender!,
+                        height: height)
                     : BlocBuilder<HomeBloc, HomeState>(
                         builder: (context, state) {
-                          if(state is HomeLoaded){
+                          if (state is HomeLoaded) {
                             return GenderBox(
-                              gender: state.user!.gender!, height: height);
+                                isAccountView: false,
+                                gender: state.user!.gender!,
+                                height: height);
                           }
                           return const SizedBox();
                         },
@@ -250,7 +255,7 @@ class _AppointmentState extends State<Appointment> {
                               ),
                               Flexible(
                                 child: Padding(
-                                  padding:  EdgeInsets.only(left:width*0.20),
+                                  padding: EdgeInsets.only(left: width * 0.20),
                                   child: SizedBox(
                                       child: ElevatedButtonCustom(
                                           action: () async {
@@ -261,7 +266,8 @@ class _AppointmentState extends State<Appointment> {
                                                     firstDate: DateTime(
                                                         DateTime.now().year),
                                                     lastDate: DateTime(
-                                                        DateTime.now().year + 100));
+                                                        DateTime.now().year +
+                                                            100));
                                             if (dateTime != null) {
                                               setState(() {
                                                 _pickedDate = dateTime;
@@ -287,11 +293,9 @@ class _AppointmentState extends State<Appointment> {
                               ),
                               Flexible(
                                 child: Padding(
-                                  padding:  EdgeInsets.only(left:width*0.20),
+                                  padding: EdgeInsets.only(left: width * 0.20),
                                   child: SizedBox(
-                                     
                                       child: ElevatedButtonCustom(
-                                        
                                           action: () async {
                                             TimeOfDay? t = await showTimePicker(
                                                 context: context,
@@ -303,7 +307,8 @@ class _AppointmentState extends State<Appointment> {
                                             }
                                           },
                                           color: Theme.of(context).primaryColor,
-                                          buttonTitle: timeOfDay!.hour.toString() +
+                                          buttonTitle: timeOfDay!.hour
+                                                  .toString() +
                                               ":" +
                                               timeOfDay!.minute.toString())),
                                 ),
@@ -360,9 +365,7 @@ class _AppointmentState extends State<Appointment> {
                         color: Colors.transparent,
                       )
                     : const SizedBox(),
-                  
-               
-                        (isChecked || widget.isForDoctor)
+                (isChecked || widget.isForDoctor)
                     ? Row(
                         children: [
                           Text(

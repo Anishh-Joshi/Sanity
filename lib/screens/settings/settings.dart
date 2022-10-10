@@ -51,7 +51,10 @@ class Settings extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const Account()));
+                                  builder: (context) => Account(
+                                     userBase: state.baseUser!,
+                                        user: state.user!,
+                                      )));
                         },
                         child: Row(
                           children: [
@@ -85,24 +88,36 @@ class Settings extends StatelessWidget {
                                     ],
                                   ),
                                 )),
-                            Container(
-                                height: height * 0.055,
-                                width: height * 0.055,
-                                decoration: BoxDecoration(
-                                    color: Theme.of(context).cardColor,
-                                    borderRadius: BorderRadius.circular(60)),
-                                child: SettingsIcon(
-                                    icon: Icon(Icons.arrow_forward_ios,
-                                        size: 18,
-                                        color:
-                                            Theme.of(context).iconTheme.color),
-                                    callback: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const Account()));
-                                    }))
+                            BlocBuilder<HomeBloc, HomeState>(
+                              builder: (context, state) {
+                                if (state is HomeLoaded) {
+                                  return Container(
+                                      height: height * 0.055,
+                                      width: height * 0.055,
+                                      decoration: BoxDecoration(
+                                          color: Theme.of(context).cardColor,
+                                          borderRadius:
+                                              BorderRadius.circular(60)),
+                                      child: SettingsIcon(
+                                          icon: Icon(Icons.arrow_forward_ios,
+                                              size: 18,
+                                              color: Theme.of(context)
+                                                  .iconTheme
+                                                  .color),
+                                          callback: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Account(
+                                                          userBase: state.baseUser!,
+                                                          user: state.user!,
+                                                        )));
+                                          }));
+                                }
+                                return const SizedBox();
+                              },
+                            )
                           ],
                         ),
                       );

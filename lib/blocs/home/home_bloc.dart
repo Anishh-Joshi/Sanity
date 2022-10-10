@@ -11,7 +11,6 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final LoginBloc _loginBloc;
   StreamSubscription? _loginblocSubscription;
-  UserInfoModel? user;
 
   HomeBloc({required LoginBloc loginBloc})
       : _loginBloc = loginBloc,
@@ -20,14 +19,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                 baseUser: (loginBloc.state as LoginAuthenticated).userBase,
                 user: (loginBloc.state as LoginAuthenticated).user)
             : HomeInitial()) {
-    on<UpdateHomeInfo>((event, emit) {
-      HomeLoaded(user: event.user,baseUser: event.baseUser);
-    });
-    _loginblocSubscription = _loginBloc.stream.listen((state) {
-      if (state is LoginAuthenticated) {
-        add(UpdateHomeInfo(user: state.user, baseUser: state.userBase));
-      }
-    });
+    on<UpdateHomeInfo>(_updateHomeInfo);
+  }
+
+  void _updateHomeInfo(UpdateHomeInfo event, Emitter emit) async {
+    final Map received = await _loginBloc.repo.getProfileData();
+    User userBase = User.fromJson(received);
+    final Map userData =
+        await _loginBloc.repo.registeredProfileData(id:userBase.id!);
+    UserInfoModel user = UserInfoModel.fromJson(userData['candidates']);
+    emit(HomeLoaded(user: user, baseUser: userBase));
+    _loginblocSubscription?.cancel();
   }
 
   @override
