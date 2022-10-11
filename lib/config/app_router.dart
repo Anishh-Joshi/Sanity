@@ -14,6 +14,7 @@ import 'package:sanity/screens/notifications/notification.dart';
 import 'package:sanity/screens/profile/profile.dart';
 import 'package:sanity/screens/settings/doc.dart';
 import 'package:sanity/screens/settings/security.dart';
+import 'package:sanity/screens/test/test_page.dart';
 import 'package:sanity/screens/therapy/add_therapy.dart';
 import 'package:sanity/screens/therapy/see_all.dart';
 import 'package:sanity/screens/therapy/therapy.dart';
@@ -89,8 +90,10 @@ class AppRouter {
         return SeeAllThreads.route(setting);
       case Security.routeName:
         return Security.route(setting);
-              case Doc.routeName:
+      case Doc.routeName:
         return Doc.route(setting);
+      case Dass41.routeName:
+        return Dass41.route(setting);
       default:
         _errorRoute();
     }

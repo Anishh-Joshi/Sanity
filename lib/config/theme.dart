@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 ThemeData theme({required bool isDark}) {
   return ThemeData(
       primaryColor: primaryColor(isDark),
-      secondaryHeaderColor: Color.fromARGB(255, 195, 128, 204),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: primaryColor(isDark)),
+      secondaryHeaderColor: const Color.fromARGB(255, 195, 128, 204),
       appBarTheme:
           AppBarTheme(color: isDark ? const Color(0xff000000) : Colors.white),
       colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -14,8 +15,8 @@ ThemeData theme({required bool isDark}) {
     shadowColor: shadowColor(isDark),
       canvasColor: canvasColor(isDark),
       cardColor: isDark
-          ? Color.fromARGB(255, 26, 25, 25)
-          : Color.fromARGB(255, 250, 250, 250),
+          ? const Color.fromARGB(255, 26, 25, 25)
+          : const Color.fromARGB(255, 250, 250, 250),
       bottomAppBarColor: bottomAppBarColor(isDark),
       indicatorColor: indicatorColor(isDark),
       pageTransitionsTheme: const PageTransitionsTheme(builders: {

@@ -1,5 +1,5 @@
 class APIs {
-get localhost => "10.0.2.2:8000";
+  get localhost => "10.0.2.2:8000";
   //get localhost => "sanityhealth.herokuapp.com";
 
   get getDoctorList => "http://$localhost/api/assistant/doctors/";
@@ -17,7 +17,7 @@ get localhost => "10.0.2.2:8000";
   get user => "http://$localhost/api/user/profile/";
   get setProfile => "http://$localhost/api/user/setprofile/";
   get sendDailyLog => "http://$localhost/api/assistant/set/dailylog/";
-
+  get getDass => "http://$localhost/api/assistant/get/das/";
   String retrieveLog({int? id}) {
     return "http://$localhost/api/assistant/get/dailylog/?id=$id";
   }
