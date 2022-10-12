@@ -17,12 +17,14 @@ import 'package:sanity/config/theme.dart';
 import 'package:sanity/landingpage.dart';
 import 'package:sanity/repository/appointment_repository/appointment_repo.dart';
 import 'package:sanity/repository/auth_repo.dart';
+import 'package:sanity/repository/das_repository/das_repo.dart';
 import 'package:sanity/repository/doctor_repository/doc_repo.dart';
 import 'package:sanity/repository/log_repository/log_repo.dart';
 import 'package:sanity/repository/signup/signup_repo.dart';
 import 'package:sanity/repository/therapy_repository/therapy_repo.dart';
 import 'package:sanity/repository/threads_repository/threds_repo.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'blocs/dass_bloc/dass41_bloc.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -38,12 +40,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-           BlocProvider(
-              create: (context) => SearchBloc()),
+          BlocProvider(
+            create: (context) =>
+                Dass41Bloc(repo: DasRepo())..add(const GetDas(check: false)),
+          ),
+          BlocProvider(create: (context) => SearchBloc()),
           BlocProvider(
               create: (context) => CommentBloc(threadRepo: ThreadsRepo())),
-           BlocProvider(
-              create: (context) => NotificationBloc(repo: AppointmentRepository())),
+          BlocProvider(
+              create: (context) =>
+                  NotificationBloc(repo: AppointmentRepository())),
           BlocProvider(
               create: (context) => ThreadsBloc(threadRepo: ThreadsRepo())
                 ..add(FetchAllThreads())),
@@ -62,7 +68,7 @@ class MyApp extends StatelessWidget {
                     repo: AuthRepository(),
                   )..add(LoginCheck())),
           BlocProvider(
-          create: (context) => UserInfoBloc(signUpRepo: SignUpRepository())
+            create: (context) => UserInfoBloc(signUpRepo: SignUpRepository())
               ..add(SignUpLoading()),
           ),
           BlocProvider(

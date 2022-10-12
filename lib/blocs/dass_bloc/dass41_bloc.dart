@@ -9,8 +9,10 @@ class Dass41Bloc extends Bloc<Dass41Event, Dass41State> {
   final DasRepo repo;
   Dass41Bloc({required this.repo}) : super(Dass41Initial()) {
     on<GetDas>(_getDas);
-    on<UpdateDas>(_updateDas);
+    on<SendDas>(_sendDas);
   }
+
+  List responseSheet = [];
 
   void _getDas(GetDas event, Emitter<Dass41State> emit) async {
     try {
@@ -24,16 +26,29 @@ class Dass41Bloc extends Bloc<Dass41Event, Dass41State> {
     }
   }
 
-  void _updateDas(UpdateDas event, Emitter<Dass41State> emit) async {
-    print("UPDATED");
+  void _sendDas(SendDas event, Emitter<Dass41State> emit) async {
+    List answers = [];
+
+    var sortedByKeyMap = Map.fromEntries(event.responseSheet.entries.toList()
+      ..sort((e1, e2) => e1.key.compareTo(e2.key)));
+    var sortedByKeyMap2 = Map.fromEntries(event.anotherrespone.entries.toList()
+      ..sort((e1, e2) => e1.key.compareTo(e2.key)));
     try {
-      if (this.state is Dass41Loaded) {
+      sortedByKeyMap.forEach((key, value) {
+        answers.add(value);
+      });
+      sortedByKeyMap2.forEach((key, value) {
+        answers.add(value);
+      });
+
+      if (state is Dass41Loaded) {
         final state = this.state as Dass41Loaded;
-        state.responseSheet!.insert(0, 1);
+        emit(Dass41Initial());
+        final Map response = await repo.setAnswer(event.profileId, answers);
         emit(Dass41Loaded(
-          termsAndConditions: state.termsAndConditions,
-          questions: state.questions,
-        ));
+            questions: state.questions,
+            termsAndConditions: state.termsAndConditions,
+            category: response['answers']['category'].toString()));
       }
     } catch (e) {
       print(e.toString());

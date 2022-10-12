@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/dass_bloc/dass41_bloc.dart';
+import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/model/das_model.dart';
 import 'package:sanity/repository/das_repository/das_repo.dart';
-import 'package:sanity/widgets/custom_elevated_button.dart';
+import 'package:sanity/screens/test/response.dart';
 import 'package:sanity/widgets/filead_header.dart';
 import 'package:sanity/apis/utf_converter.dart';
+
+import '../../widgets/options.dart';
 
 class Dass41 extends StatefulWidget {
   static const String routeName = 'dass41';
@@ -23,13 +26,28 @@ class Dass41 extends StatefulWidget {
 class _Dass41State extends State<Dass41> {
   bool showTestScreen = false;
   int outerIndex = 0;
+  Map sheet = {};
+  int low = 0;
+  int? hight;
+
+  bool check() {
+    for (int i = 1; i <= hight!; i++) {
+      if (!sheet.containsKey(i)) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Question $i is missing.")));
+        return false;
+      }
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     return BlocProvider(
-      create: (context) =>
+      create: (_) =>
           Dass41Bloc(repo: DasRepo())..add(const GetDas(check: false)),
-      child: Scaffold(
+     child: Scaffold(
         floatingActionButton: BlocBuilder<Dass41Bloc, Dass41State>(
           builder: (context, state) {
             if (state is Dass41Loaded) {
@@ -65,8 +83,10 @@ class _Dass41State extends State<Dass41> {
                             reverse: false,
                             itemCount: state.questions.length,
                             itemBuilder: (context, index) {
+                              hight = state.questions.length;
                               final DasModel das = DasModel.fromJSON(
                                   resposne: state.questions[index]);
+
                               return outerIndex != index
                                   ? const SizedBox()
                                   : Stack(
@@ -96,31 +116,33 @@ class _Dass41State extends State<Dass41> {
                                                           .textTheme
                                                           .headline4!
                                                           .copyWith(
-                                                              fontSize:
-                                                                  height * 0.025),
+                                                              fontSize: height *
+                                                                  0.025),
                                                     ),
                                                   ),
                                                   TextButton(
-                                                    onPressed: (){
+                                                    onPressed: () {
                                                       Navigator.pop(context);
                                                     },
-                                                    child: Text("Cancel",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline4!
-                                                        .copyWith(
-                                                            fontSize:
-                                                                height * 0.025),
-                                                  ),)
-
+                                                    child: Text(
+                                                      "Cancel",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline4!
+                                                          .copyWith(
+                                                              fontSize: height *
+                                                                  0.025),
+                                                    ),
+                                                  )
                                                 ],
                                               ),
                                               const Divider(
                                                 color: Colors.transparent,
                                               ),
                                               Text(
-                                                Converter.utf8convert(
-                                                    das.question),
+                                                Converter.utf8convert(das.check
+                                                    ? das.question
+                                                    : 'I find myself ${das.question}'),
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .headline5!
@@ -128,103 +150,87 @@ class _Dass41State extends State<Dass41> {
                                                         fontSize:
                                                             height * 0.025),
                                               ),
-                                              Row(
-                                                children: [
-                                                  Checkbox(
-                                                    checkColor: Colors.white,
-                                                    activeColor:
-                                                        Theme.of(context)
-                                                            .primaryColor,
-                                                    value: false,
-                                                    shape: const CircleBorder(),
-                                                    onChanged: (bool? value) {
-                                                      setState(() {});
-                                                    },
-                                                  ),
-                                                  Text(
-                                                    "I Feel it Daily",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline5!
-                                                        .copyWith(
-                                                            fontSize:
-                                                                height * 0.020),
-                                                  ),
-                                                ],
+                                              const Divider(
+                                                color: Colors.transparent,
                                               ),
-                                              Row(
-                                                children: [
-                                                  Checkbox(
-                                                    checkColor: Colors.white,
-                                                    activeColor:
-                                                        Theme.of(context)
-                                                            .primaryColor,
-                                                    value: false,
-                                                    shape: const CircleBorder(),
-                                                    onChanged: (bool? value) {
-                                                      
-                                                      setState(() {});
-                                                    },
-                                                  ),
-                                                  Text(
-                                                    "I Feel it Daily",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline5!
-                                                        .copyWith(
-                                                            fontSize:
-                                                                height * 0.020),
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Checkbox(
-                                                    checkColor: Colors.white,
-                                                    activeColor:
-                                                        Theme.of(context)
-                                                            .primaryColor,
-                                                    value: false,
-                                                    shape: const CircleBorder(),
-                                                    onChanged: (bool? value) {
-                                                      setState(() {});
-                                                    },
-                                                  ),
-                                                  Text(
-                                                    "I Feel it Daily",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline5!
-                                                        .copyWith(
-                                                            fontSize:
-                                                                height * 0.020),
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Checkbox(
-                                                    checkColor: Colors.white,
-                                                    activeColor:
-                                                        Theme.of(context)
-                                                            .primaryColor,
-                                                    value: false,
-                                                    shape: const CircleBorder(),
-                                                    onChanged: (bool? value) {
-                                                      setState(() {});
-                                                    },
-                                                  ),
-                                                  Text(
-                                                    "I Feel it Daily",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline5!
-                                                        .copyWith(
-                                                            fontSize:
-                                                                height * 0.020),
-                                                  ),
-                                                ],
-                                              ),
+                                              Options(
+                                                  title: !das.check
+                                                      ? "Disagree strongly."
+                                                      : "Did not apply to me at all.",
+                                                  onChanged: (bool? value) {
+                                                    setState(() {
+                                                      sheet[index + 1] = 1;
+                                                    });
+                                                  },
+                                                  condition:
+                                                      sheet[index + 1] == 1),
+                                              Options(
+                                                  title: !das.check
+                                                      ? "Disagree moderately."
+                                                      : "Applied to me to some degree, or some of the time.",
+                                                  onChanged: (bool? value) {
+                                                    setState(() {
+                                                      sheet[index + 1] = 2;
+                                                    });
+                                                  },
+                                                  condition:
+                                                      sheet[index + 1] == 2),
+                                              Options(
+                                                  title: !das.check
+                                                      ? "Disagree a little."
+                                                      : "Applied to me to a considerable degree, or a good part of time.",
+                                                  onChanged: (bool? value) {
+                                                    setState(() {
+                                                      sheet[index + 1] = 3;
+                                                    });
+                                                  },
+                                                  condition:
+                                                      sheet[index + 1] == 3),
+                                              Options(
+                                                  title: !das.check
+                                                      ? "Neither agree nor disagree."
+                                                      : "Applied to me very much, or most of the time.",
+                                                  onChanged: (bool? value) {
+                                                    setState(() {
+                                                      sheet[index + 1] = 4;
+                                                    });
+                                                  },
+                                                  condition:
+                                                      sheet[index + 1] == 4),
+                                              !das.check
+                                                  ? Options(
+                                                      title: "Agree a little.",
+                                                      onChanged: (bool? value) {
+                                                        setState(() {
+                                                          sheet[index + 1] = 5;
+                                                        });
+                                                      },
+                                                      condition:
+                                                          sheet[index + 1] == 5)
+                                                  : SizedBox(),
+                                              !das.check
+                                                  ? Options(
+                                                      title:
+                                                          "Agree moderately.",
+                                                      onChanged: (bool? value) {
+                                                        setState(() {
+                                                          sheet[index + 1] = 6;
+                                                        });
+                                                      },
+                                                      condition:
+                                                          sheet[index + 1] == 6)
+                                                  : const SizedBox(),
+                                              !das.check
+                                                  ? Options(
+                                                      title: "Agree strongly",
+                                                      onChanged: (bool? value) {
+                                                        setState(() {
+                                                          sheet[index + 1] = 7;
+                                                        });
+                                                      },
+                                                      condition:
+                                                          sheet[index + 1] == 7)
+                                                  : const SizedBox(),
                                               const Divider(
                                                 color: Colors.transparent,
                                               ),
@@ -233,7 +239,7 @@ class _Dass41State extends State<Dass41> {
                                         ),
                                         Positioned(
                                           bottom: 0,
-                                          child: Container(
+                                          child: SizedBox(
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width *
@@ -245,10 +251,10 @@ class _Dass41State extends State<Dass41> {
                                               children: [
                                                 TextButton(
                                                     onPressed: () {
-                                                      if(index!=0){
-                                                     setState(() {
-                                                      outerIndex--;
-                                                    });
+                                                      if (index != 0) {
+                                                        setState(() {
+                                                          outerIndex--;
+                                                        });
                                                       }
                                                     },
                                                     child: Text(
@@ -263,16 +269,29 @@ class _Dass41State extends State<Dass41> {
                                                     )),
                                                 RawMaterialButton(
                                                   onPressed: () {
-                                                   if(index+1<state.questions.length){
-                                                     setState(() {
-                                                      outerIndex++;
-                                                    });
-                                                   }else{
-                                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("POSTED")));
-                                                   }
+                                                    if (index + 1 <
+                                                        state
+                                                            .questions.length) {
+                                                      setState(() {
+                                                        outerIndex++;
+                                                      });
+                                                    } else {
+                                                      if (check()) {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        ResponsePage(
+                                                                          resposne:
+                                                                              sheet,
+                                                                        )));
+                                                      }
+                                                    }
                                                   },
                                                   elevation: 2.0,
-                                                  padding: const EdgeInsets.all(10),
+                                                  padding:
+                                                      const EdgeInsets.all(10),
                                                   fillColor: Theme.of(context)
                                                       .primaryColor,
                                                   shape: const CircleBorder(),
@@ -280,7 +299,7 @@ class _Dass41State extends State<Dass41> {
                                                       Icons.arrow_forward,
                                                       size: 25.0,
                                                       color: Colors.white),
-                                                ),
+                                                )
                                               ],
                                             ),
                                           ),
@@ -326,7 +345,7 @@ class _Dass41State extends State<Dass41> {
                                     onChanged: (bool? value) {
                                       context
                                           .read<Dass41Bloc>()
-                                          .add(const GetDas(check: true));
+                                          .add(GetDas(check: value!));
                                     }),
                                 Flexible(
                                   child: Text(

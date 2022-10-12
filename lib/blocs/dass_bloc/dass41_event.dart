@@ -17,10 +17,15 @@ class GetDas extends Dass41Event {
   List<Object> get props => [check];
 }
 
-class UpdateDas extends Dass41Event {
-  final List? responseSheet;
-  final  int index;
-  const UpdateDas({this.responseSheet,required this.index});
+class SendDas extends Dass41Event {
+  final Map responseSheet;
+  final int profileId;
+  final Map anotherrespone;
+
+  const SendDas(
+      {required this.anotherrespone,
+      required this.responseSheet,
+      required this.profileId});
   @override
-  List<Object> get props => [responseSheet!,index];
+  List<Object> get props => [anotherrespone, responseSheet, profileId];
 }
