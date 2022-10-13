@@ -5,12 +5,14 @@ class AppBarInfo extends StatelessWidget {
   final String title;
   final VoidCallback onPressed;
   final bool showDone;
+  final bool? showBack;
   final double? margin;
 
   const AppBarInfo(
       {required this.height,
       this.margin = 0.03,
       required this.onPressed,
+      this.showBack = true,
       required this.showDone,
       required this.title,
       Key? key})
@@ -24,16 +26,17 @@ class AppBarInfo extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Icon(
-                Icons.arrow_back_ios,
-                
-                color: Theme.of(context).iconTheme.color,
-              ),
-            ),
+            showBack!
+                ? GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                  )
+                : const SizedBox(),
             showDone
                 ? InkWell(
                     highlightColor: Theme.of(context).cardColor,
@@ -49,7 +52,10 @@ class AppBarInfo extends StatelessWidget {
                               color: Theme.of(context).primaryColor),
                           child: const Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Icon(Icons.done,color: Colors.white,),
+                            child: Icon(
+                              Icons.done,
+                              color: Colors.white,
+                            ),
                           )),
                     ),
                   )

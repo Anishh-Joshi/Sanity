@@ -29,3 +29,11 @@ class SendDas extends Dass41Event {
   @override
   List<Object> get props => [anotherrespone, responseSheet, profileId];
 }
+
+class GetDasResponse extends Dass41Event {
+  final int profileId;
+
+  const GetDasResponse({required this.profileId});
+  @override
+  List<Object> get props => [profileId];
+}

@@ -34,7 +34,8 @@ class DasRepo {
         body: jsonEncode({
           "user": profileId,
           "response": sheet,
-          "category":1
+          //pachi yo hataune
+          "category":"hakuna matata"
         }),
         headers: {
           "Content-type": 'application/json',

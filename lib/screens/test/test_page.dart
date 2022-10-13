@@ -31,6 +31,7 @@ class _Dass41State extends State<Dass41> {
   int? hight;
 
   bool check() {
+    print("trigged");
     for (int i = 1; i <= hight!; i++) {
       if (!sheet.containsKey(i)) {
         ScaffoldMessenger.of(context)
@@ -47,11 +48,11 @@ class _Dass41State extends State<Dass41> {
     return BlocProvider(
       create: (_) =>
           Dass41Bloc(repo: DasRepo())..add(const GetDas(check: false)),
-     child: Scaffold(
+      child: Scaffold(
         floatingActionButton: BlocBuilder<Dass41Bloc, Dass41State>(
           builder: (context, state) {
             if (state is Dass41Loaded) {
-              return state.termsAndConditions && !showTestScreen
+              return state.termsAndConditions! && !showTestScreen
                   ? FloatingActionButton(
                       onPressed: () {
                         setState(() {
@@ -68,250 +69,395 @@ class _Dass41State extends State<Dass41> {
             ? SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Container(
-                    height: height * 0.9,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
-                        borderRadius: BorderRadius.circular(14)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: BlocBuilder<Dass41Bloc, Dass41State>(
-                          builder: (context, state) {
-                        if (state is Dass41Loaded) {
-                          return ListView.builder(
-                            reverse: false,
-                            itemCount: state.questions.length,
-                            itemBuilder: (context, index) {
-                              hight = state.questions.length;
-                              final DasModel das = DasModel.fromJSON(
-                                  resposne: state.questions[index]);
+                  child: Column(
+                    children: [
+                      SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                            activeTrackColor:
+                                Theme.of(context).secondaryHeaderColor,
+                            inactiveTrackColor: Theme.of(context).cardColor,
+                            trackShape: const RectangularSliderTrackShape(),
+                            trackHeight: 1.5,
+                            thumbColor: Theme.of(context).primaryColor,
+                            thumbShape: const RoundSliderThumbShape(
+                                enabledThumbRadius: 4.0),
+                            overlayColor: Colors.pink.withAlpha(50),
+                            overlayShape: const RoundSliderOverlayShape(
+                                overlayRadius: 16.0),
+                          ),
+                          child: BlocBuilder<Dass41Bloc, Dass41State>(
+                            builder: (context, state) {
+                              if (state is Dass41Loaded) {
+                                return Slider(
+                                  min: 0,
+                                  max: state.questions!.length.toDouble(),
+                                  value: outerIndex.toDouble(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (mounted) {
+                                        if (value < state.questions!.length) {
+                                          outerIndex = value.toInt();
+                                        }
+                                      }
+                                    });
+                                  },
+                                );
+                              }
+                              return const SizedBox();
+                            },
+                          )),
+                      SizedBox(
+                        height: height * 0.850,
+                        width: MediaQuery.of(context).size.width,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: BlocBuilder<Dass41Bloc, Dass41State>(
+                              builder: (context, state) {
+                            if (state is Dass41Loaded) {
+                              return ListView.builder(
+                                reverse: false,
+                                itemCount: state.questions!.length,
+                                itemBuilder: (context, index) {
+                                  hight = state.questions!.length;
+                                  final DasModel das = DasModel.fromJSON(
+                                      resposne: state.questions![index]);
 
-                              return outerIndex != index
-                                  ? const SizedBox()
-                                  : Stack(
-                                      children: [
-                                        Container(
-                                          height: height * 0.86,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Row(
+                                  return outerIndex != index
+                                      ? const SizedBox()
+                                      : Stack(
+                                          children: [
+                                            SizedBox(
+                                              height: height * 0.80,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
                                                 children: [
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "Question ${index + 1}",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .headline2!
+                                                            .copyWith(
+                                                                fontSize:
+                                                                    height *
+                                                                        0.025),
+                                                      ),
+                                                      Expanded(
+                                                        child: Text(
+                                                          " of ${state.questions!.length}",
+                                                          style: Theme.of(
+                                                                  context)
+                                                              .textTheme
+                                                              .headline4!
+                                                              .copyWith(
+                                                                  fontSize:
+                                                                      height *
+                                                                          0.025),
+                                                        ),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Text(
+                                                          "Quit",
+                                                          style: Theme.of(
+                                                                  context)
+                                                              .textTheme
+                                                              .headline6!
+                                                              .copyWith(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .secondaryHeaderColor,
+                                                                  fontSize:
+                                                                      height *
+                                                                          0.025),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  const Divider(
+                                                    color: Colors.transparent,
+                                                  ),
                                                   Text(
-                                                    "Question ${index + 1}",
+                                                    Converter.utf8convert(das
+                                                            .check
+                                                        ? das.question
+                                                        : 'I find myself ${das.question}'),
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline2!
+                                                        .headline5!
                                                         .copyWith(
                                                             fontSize:
                                                                 height * 0.025),
                                                   ),
-                                                  Expanded(
-                                                    child: Text(
-                                                      " of ${state.questions.length}",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline4!
-                                                          .copyWith(
-                                                              fontSize: height *
-                                                                  0.025),
-                                                    ),
+                                                  const Divider(
+                                                    color: Colors.transparent,
                                                   ),
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
+                                                  InkWell(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                    onTap: () {
+                                                      setState(() {
+                                                        sheet[index + 1] = 1;
+                                                      });
                                                     },
-                                                    child: Text(
-                                                      "Cancel",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline4!
-                                                          .copyWith(
-                                                              fontSize: height *
-                                                                  0.025),
-                                                    ),
-                                                  )
+                                                    child: Options(
+                                                        title: !das.check
+                                                            ? "Disagree strongly."
+                                                            : "Did not apply to me at all.",
+                                                        onChanged:
+                                                            (bool? value) {
+                                                          setState(() {
+                                                            sheet[index + 1] =
+                                                                1;
+                                                          });
+                                                        },
+                                                        condition:
+                                                            sheet[index + 1] ==
+                                                                1),
+                                                  ),
+                                                  InkWell(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                    onTap: () {
+                                                      setState(() {
+                                                        sheet[index + 1] = 2;
+                                                      });
+                                                    },
+                                                    child: Options(
+                                                        title: !das.check
+                                                            ? "Disagree moderately."
+                                                            : "Applied to me to some degree, or some of the time.",
+                                                        onChanged:
+                                                            (bool? value) {
+                                                          setState(() {
+                                                            sheet[index + 1] =
+                                                                2;
+                                                          });
+                                                        },
+                                                        condition:
+                                                            sheet[index + 1] ==
+                                                                2),
+                                                  ),
+                                                  InkWell(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                    onTap: () {
+                                                      setState(() {
+                                                        sheet[index + 1] = 3;
+                                                      });
+                                                    },
+                                                    child: Options(
+                                                        title: !das.check
+                                                            ? "Disagree a little."
+                                                            : "Applied to me to a considerable degree, or a good part of time.",
+                                                        onChanged:
+                                                            (bool? value) {
+                                                          setState(() {
+                                                            sheet[index + 1] =
+                                                                3;
+                                                          });
+                                                        },
+                                                        condition:
+                                                            sheet[index + 1] ==
+                                                                3),
+                                                  ),
+                                                  InkWell(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                    onTap: () {
+                                                      setState(() {
+                                                        sheet[index + 1] = 4;
+                                                      });
+                                                    },
+                                                    child: Options(
+                                                        title: !das.check
+                                                            ? "Neither agree nor disagree."
+                                                            : "Applied to me very much, or most of the time.",
+                                                        onChanged:
+                                                            (bool? value) {
+                                                          setState(() {
+                                                            sheet[index + 1] =
+                                                                4;
+                                                          });
+                                                        },
+                                                        condition:
+                                                            sheet[index + 1] ==
+                                                                4),
+                                                  ),
+                                                  !das.check
+                                                      ? InkWell(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          onTap: () {
+                                                            setState(() {
+                                                              sheet[index + 1] =
+                                                                  5;
+                                                            });
+                                                          },
+                                                          child: Options(
+                                                              title:
+                                                                  "Agree a little.",
+                                                              onChanged: (bool?
+                                                                  value) {
+                                                                setState(() {
+                                                                  sheet[index +
+                                                                      1] = 5;
+                                                                });
+                                                              },
+                                                              condition: sheet[
+                                                                      index +
+                                                                          1] ==
+                                                                  5))
+                                                      : SizedBox(),
+                                                  !das.check
+                                                      ? InkWell(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          onTap: () {
+                                                            setState(() {
+                                                              sheet[index + 1] =
+                                                                  6;
+                                                            });
+                                                          },
+                                                          child: Options(
+                                                              title:
+                                                                  "Agree moderately.",
+                                                              onChanged: (bool?
+                                                                  value) {
+                                                                setState(() {
+                                                                  sheet[index +
+                                                                      1] = 6;
+                                                                });
+                                                              },
+                                                              condition: sheet[
+                                                                      index +
+                                                                          1] ==
+                                                                  6))
+                                                      : const SizedBox(),
+                                                  !das.check
+                                                      ? InkWell(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          onTap: () {
+                                                            setState(() {
+                                                              sheet[index + 1] =
+                                                                  7;
+                                                            });
+                                                          },
+                                                          child: Options(
+                                                              title:
+                                                                  "Agree strongly.",
+                                                              onChanged: (bool?
+                                                                  value) {
+                                                                setState(() {
+                                                                  sheet[index +
+                                                                      1] = 7;
+                                                                });
+                                                              },
+                                                              condition: sheet[
+                                                                      index +
+                                                                          1] ==
+                                                                  7))
+                                                      : const SizedBox(),
+                                                  const Divider(
+                                                    color: Colors.transparent,
+                                                  ),
                                                 ],
                                               ),
-                                              const Divider(
-                                                color: Colors.transparent,
-                                              ),
-                                              Text(
-                                                Converter.utf8convert(das.check
-                                                    ? das.question
-                                                    : 'I find myself ${das.question}'),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline5!
-                                                    .copyWith(
-                                                        fontSize:
-                                                            height * 0.025),
-                                              ),
-                                              const Divider(
-                                                color: Colors.transparent,
-                                              ),
-                                              Options(
-                                                  title: !das.check
-                                                      ? "Disagree strongly."
-                                                      : "Did not apply to me at all.",
-                                                  onChanged: (bool? value) {
-                                                    setState(() {
-                                                      sheet[index + 1] = 1;
-                                                    });
-                                                  },
-                                                  condition:
-                                                      sheet[index + 1] == 1),
-                                              Options(
-                                                  title: !das.check
-                                                      ? "Disagree moderately."
-                                                      : "Applied to me to some degree, or some of the time.",
-                                                  onChanged: (bool? value) {
-                                                    setState(() {
-                                                      sheet[index + 1] = 2;
-                                                    });
-                                                  },
-                                                  condition:
-                                                      sheet[index + 1] == 2),
-                                              Options(
-                                                  title: !das.check
-                                                      ? "Disagree a little."
-                                                      : "Applied to me to a considerable degree, or a good part of time.",
-                                                  onChanged: (bool? value) {
-                                                    setState(() {
-                                                      sheet[index + 1] = 3;
-                                                    });
-                                                  },
-                                                  condition:
-                                                      sheet[index + 1] == 3),
-                                              Options(
-                                                  title: !das.check
-                                                      ? "Neither agree nor disagree."
-                                                      : "Applied to me very much, or most of the time.",
-                                                  onChanged: (bool? value) {
-                                                    setState(() {
-                                                      sheet[index + 1] = 4;
-                                                    });
-                                                  },
-                                                  condition:
-                                                      sheet[index + 1] == 4),
-                                              !das.check
-                                                  ? Options(
-                                                      title: "Agree a little.",
-                                                      onChanged: (bool? value) {
-                                                        setState(() {
-                                                          sheet[index + 1] = 5;
-                                                        });
-                                                      },
-                                                      condition:
-                                                          sheet[index + 1] == 5)
-                                                  : SizedBox(),
-                                              !das.check
-                                                  ? Options(
-                                                      title:
-                                                          "Agree moderately.",
-                                                      onChanged: (bool? value) {
-                                                        setState(() {
-                                                          sheet[index + 1] = 6;
-                                                        });
-                                                      },
-                                                      condition:
-                                                          sheet[index + 1] == 6)
-                                                  : const SizedBox(),
-                                              !das.check
-                                                  ? Options(
-                                                      title: "Agree strongly",
-                                                      onChanged: (bool? value) {
-                                                        setState(() {
-                                                          sheet[index + 1] = 7;
-                                                        });
-                                                      },
-                                                      condition:
-                                                          sheet[index + 1] == 7)
-                                                  : const SizedBox(),
-                                              const Divider(
-                                                color: Colors.transparent,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Positioned(
-                                          bottom: 0,
-                                          child: SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.9,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                TextButton(
-                                                    onPressed: () {
-                                                      if (index != 0) {
-                                                        setState(() {
-                                                          outerIndex--;
-                                                        });
-                                                      }
-                                                    },
-                                                    child: Text(
-                                                      "Previous",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline5!
-                                                          .copyWith(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor),
-                                                    )),
-                                                RawMaterialButton(
-                                                  onPressed: () {
-                                                    if (index + 1 <
-                                                        state
-                                                            .questions.length) {
-                                                      setState(() {
-                                                        outerIndex++;
-                                                      });
-                                                    } else {
-                                                      if (check()) {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        ResponsePage(
-                                                                          resposne:
-                                                                              sheet,
-                                                                        )));
-                                                      }
-                                                    }
-                                                  },
-                                                  elevation: 2.0,
-                                                  padding:
-                                                      const EdgeInsets.all(10),
-                                                  fillColor: Theme.of(context)
-                                                      .primaryColor,
-                                                  shape: const CircleBorder(),
-                                                  child: const Icon(
-                                                      Icons.arrow_forward,
-                                                      size: 25.0,
-                                                      color: Colors.white),
-                                                )
-                                              ],
                                             ),
-                                          ),
-                                        )
-                                      ],
-                                    );
-                            },
-                          );
-                        }
-                        return const SizedBox();
-                      }),
-                    ),
+                                            Positioned(
+                                              bottom: 0,
+                                              child: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.9,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    TextButton(
+                                                        onPressed: () {
+                                                          if (index != 0) {
+                                                            setState(() {
+                                                              outerIndex--;
+                                                            });
+                                                          }
+                                                        },
+                                                        child: Text(
+                                                          "Previous",
+                                                          style: Theme.of(
+                                                                  context)
+                                                              .textTheme
+                                                              .headline5!
+                                                              .copyWith(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .primaryColor),
+                                                        )),
+                                                    RawMaterialButton(
+                                                      onPressed: () {
+                                                        if (index + 1 <
+                                                            state.questions!
+                                                                .length) {
+                                                          setState(() {
+                                                            outerIndex++;
+                                                          });
+                                                        } else {
+                                                          if (check()) {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            ResponsePage(
+                                                                              resposne: sheet,
+                                                                            )));
+                                                          }
+                                                        }
+                                                      },
+                                                      elevation: 2.0,
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10),
+                                                      fillColor:
+                                                          Theme.of(context)
+                                                              .primaryColor,
+                                                      shape:
+                                                          const CircleBorder(),
+                                                      child: const Icon(
+                                                          Icons.arrow_forward,
+                                                          size: 25.0,
+                                                          color: Colors.white),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                },
+                              );
+                            }
+                            return const SizedBox();
+                          }),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               )

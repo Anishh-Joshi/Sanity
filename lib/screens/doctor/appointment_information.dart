@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:sanity/blocs/appointment/appointment_bloc.dart';
+import 'package:sanity/blocs/dass_bloc/dass41_bloc.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/model/appointment_model.dart';
 import 'package:sanity/screens/doctor/appointment.dart';
@@ -31,65 +32,64 @@ class _AppointmentInformationState extends State<AppointmentInformation> {
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-       appBar: MyCustomAppBar(
-          elevation: 0,
-          fontSize: 25,
-          appBarTitle: 'Appointments',
-          onPressed: () {}),
-      body: BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        if (state is HomeLoaded) {
-          context
-              .read<AppointmentBloc>()
-              .add(RetrieveAppointmentDoctor(doctorId: state.user!.userId!));
-          return SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        appBar: MyCustomAppBar(
+            elevation: 0,
+            fontSize: 25,
+            appBarTitle: 'Appointments',
+            onPressed: () {}),
+        body: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            if (state is HomeLoaded) {
+              context.read<AppointmentBloc>().add(
+                  RetrieveAppointmentDoctor(doctorId: state.user!.userId!));
+              return SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Options(
-                        title: "Appointments",
-                        action: () {
-                          setState(() {
-                            isPendingScreen = false;
-                          });
-                        },
-                        color: isPendingScreen
-                            ? Theme.of(context).cardColor
-                            : Colors.deepOrangeAccent,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Options(
+                            title: "Appointments",
+                            action: () {
+                              setState(() {
+                                isPendingScreen = false;
+                              });
+                            },
+                            color: isPendingScreen
+                                ? Theme.of(context).cardColor
+                                : Colors.deepOrangeAccent,
+                          ),
+                          Options(
+                            color: !isPendingScreen
+                                ? Theme.of(context).cardColor
+                                : Colors.deepOrangeAccent,
+                            title: "Pending",
+                            action: () {
+                              setState(() {
+                                isPendingScreen = true;
+                              });
+                            },
+                          ),
+                        ],
                       ),
-                      Options(
-                        color: !isPendingScreen
-                            ? Theme.of(context).cardColor
-                            : Colors.deepOrangeAccent,
-                        title: "Pending",
-                        action: () {
-                          setState(() {
-                            isPendingScreen = true;
-                          });
-                        },
+                      SizedBox(
+                        height: height * 0.03,
                       ),
+                      VerifiedAppointments(
+                        height: height,
+                        isPendingScreen: isPendingScreen,
+                      )
                     ],
                   ),
-                  SizedBox(
-                    height: height * 0.03,
-                  ),
-                  VerifiedAppointments(
-                    height: height,
-                    isPendingScreen: isPendingScreen,
-                  )
-                ],
-              ),
-            ),
-          );
-        }
-        return const CircularProgressIndicatorCustom();
-      },
-    ));
+                ),
+              );
+            }
+            return const CircularProgressIndicatorCustom();
+          },
+        ));
   }
 }
 
@@ -114,7 +114,7 @@ class VerifiedAppointments extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final AppointmentModel appointModel =
                       AppointmentModel.fromJSON(state.appointmentList[index]);
-                      print("Failure point check");
+                  print("Failure point check");
                   return !isPendingScreen
                       ? appointModel.pending!
                           ? const SizedBox()
@@ -170,6 +170,9 @@ class _AppointmentCardState extends State<AppointmentCard> {
         : InkWell(
             onTap: () {
               if (widget.notificationView) {
+                print(widget.appointmentMOdel.patient.userId!);
+                context.read<Dass41Bloc>().add(GetDasResponse(
+                    profileId: widget.appointmentMOdel.patient.userId!));
                 Navigator.pushNamed(context, MessagePage.routeName,
                     arguments: widget.appointmentMOdel);
               } else {
@@ -246,7 +249,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                     widget.appointmentMOdel.pending!
                         ? Column(
                             children: [
-                               Icon(
+                              Icon(
                                 MaterialIcons.pending,
                                 color: Theme.of(context).secondaryHeaderColor,
                               ),

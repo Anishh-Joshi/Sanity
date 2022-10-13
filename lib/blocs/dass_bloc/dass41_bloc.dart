@@ -10,6 +10,7 @@ class Dass41Bloc extends Bloc<Dass41Event, Dass41State> {
   Dass41Bloc({required this.repo}) : super(Dass41Initial()) {
     on<GetDas>(_getDas);
     on<SendDas>(_sendDas);
+    on<GetDasResponse>(_getDasResponse);
   }
 
   List responseSheet = [];
@@ -22,6 +23,22 @@ class Dass41Bloc extends Bloc<Dass41Event, Dass41State> {
       emit(Dass41Loaded(
           termsAndConditions: event.check, questions: response['dass']));
     } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void _getDasResponse(GetDasResponse event, Emitter<Dass41State> emit) async {
+    try {
+      emit(Dass41Initial());
+      final Map response = await repo.getAnswers(profileId: event.profileId);
+      final Map ques = await repo.getDass();
+      emit(PdfRequested(
+          questionsPdf: ques['dass'],
+          created_at: response['answers'][0]['created_at'],
+          answers: response['answers'][0]['response'],
+          category: response['answers'][0]['category']));
+    } catch (e) {
+      print('error hahahha');
       print(e.toString());
     }
   }
@@ -48,6 +65,7 @@ class Dass41Bloc extends Bloc<Dass41Event, Dass41State> {
         emit(Dass41Loaded(
             questions: state.questions,
             termsAndConditions: state.termsAndConditions,
+            
             category: response['answers']['category'].toString()));
       }
     } catch (e) {
