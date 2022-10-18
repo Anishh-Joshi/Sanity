@@ -23,15 +23,13 @@ class UserInfoBloc extends Bloc<UserInfoEvent, UserInfoState> {
     SignUpLoading event,
     Emitter<UserInfoState> emit,
   ) {
-     print("got userInfo");
     emit(UserInfoLoaded());
   }
 
-   void _clearUserInfo(
+  void _clearUserInfo(
     ClearUserInfo event,
     Emitter<UserInfoState> emit,
   ) {
-    print("Trigged");
     emit(UserInfoLoaded());
   }
 
@@ -39,7 +37,6 @@ class UserInfoBloc extends Bloc<UserInfoEvent, UserInfoState> {
     UpdateUserInfo event,
     Emitter<UserInfoState> emit,
   ) {
-    print("got userInfo");
     if (state is UserInfoLoaded) {
       final state = this.state as UserInfoLoaded;
       emit(UserInfoLoaded(
@@ -48,6 +45,7 @@ class UserInfoBloc extends Bloc<UserInfoEvent, UserInfoState> {
           age: event.age ?? state.age,
           isDoctor: event.isDoctor ?? state.isDoctor,
           gender: event.gender ?? state.gender,
+          bio: event.bio??state.bio,
           profileImage: event.profileImage ?? state.profileImage,
           nmcId: event.nmcId ?? state.nmcId));
     }

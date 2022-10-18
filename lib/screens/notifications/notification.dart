@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:sanity/blocs/login/login_bloc.dart';
 import 'package:sanity/blocs/notification_bloc/notification_bloc.dart';
 import 'package:sanity/model/appointment_model.dart';
@@ -41,25 +42,32 @@ class NotificationPage extends StatelessWidget {
                           itemCount: st.notification.length,
                           itemBuilder: (context, index) {
                             AppointmentModel notification =
-                                AppointmentModel.fromJSON(st.notification[index]);
+                                AppointmentModel.fromJSON(
+                                    st.notification[index]);
 
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(14),
-                                    color: Theme.of(context).cardColor
-                                  ),
+                                      borderRadius: BorderRadius.circular(14),
+                                      color: Theme.of(context).cardColor),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "Appointment in ${(notification.atTime! - DateTime.now()).inDays} days",
-                                      style: Theme.of(context).textTheme.headline5,
-                                  )
-                                  ),
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        (notification.atTime! - DateTime.now())
+                                                    .inDays ==
+                                                0
+                                            ? 'Today is Your Appointment at ${DateFormat.yMMMMd().format(DateTime.parse(notification.atTime.toString()))}'
+                                            : "${(notification.atTime! - DateTime.now()).inDays<0?'Appointment Complete. ':'Appointment in${(notification.atTime! - DateTime.now()).inDays} days'} ",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5,
+                                      )),
                                 ),
-                               const SizedBox(height: 2,),
+                                const SizedBox(
+                                  height: 2,
+                                ),
                                 AppointmentCard(
                                     notificationView: true,
                                     height: height,

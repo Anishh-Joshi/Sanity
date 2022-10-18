@@ -17,10 +17,12 @@ class UpdateUserInfo extends UserInfoEvent {
   final bool? isDoctor;
   final int? nmcId;
   final File? profileImage;
+  final String? bio;
 
   const UpdateUserInfo(
       {this.fullName,
       this.address,
+      this.bio,
       this.age,
       this.gender,
       this.isDoctor,
@@ -29,7 +31,7 @@ class UpdateUserInfo extends UserInfoEvent {
 
   @override
   List<Object?> get props =>
-      [fullName, address, gender, age, isDoctor, profileImage];
+      [fullName, address, gender,bio, age, isDoctor, profileImage];
 }
 
 class SignUpPressed extends UserInfoEvent {

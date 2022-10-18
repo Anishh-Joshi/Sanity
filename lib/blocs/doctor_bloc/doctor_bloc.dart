@@ -30,18 +30,13 @@ class DoctorBloc extends Bloc<DoctorEvent, DoctorState> {
   //   final Map receivedMap =
   //       await docRepo.getDocInfo(profileId: event.profileId);
   //   if (this.state is DoctorListLoaded) {
-  //     print("yaha samma aaigilas");
   //     final state = this.state as DoctorListLoaded;
   //     if (receivedMap['status'] == 'success') {
-  //       print("idharko");
   //       final DoctorInfoModel doc =
   //           DoctorInfoModel.fromJson(receivedMap['info']);
-  //       print(doc.degree);
   //       emit(
   //         DoctorListLoaded(doctorInfo: doc),
   //       );
-
-  //       print("YAHA SAMMA NI");
   //     } else {
   //       emit(DoctorListLoaded(docList: state.docList));
   //     }

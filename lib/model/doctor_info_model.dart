@@ -14,10 +14,8 @@ class DoctorInfoModel {
     required this.degree,
     required this.tenure,
   });
-  // final String worksIn;
 
   factory DoctorInfoModel.fromJson(Map response) {
-    print(response);
     return DoctorInfoModel(
         major: response['major_in'],
         infoId: response['id'],

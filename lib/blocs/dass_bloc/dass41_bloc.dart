@@ -23,7 +23,7 @@ class Dass41Bloc extends Bloc<Dass41Event, Dass41State> {
       emit(Dass41Loaded(
           termsAndConditions: event.check, questions: response['dass']));
     } catch (e) {
-      print(e.toString());
+      emit(Dass41Error());
     }
   }
 
@@ -38,8 +38,7 @@ class Dass41Bloc extends Bloc<Dass41Event, Dass41State> {
           answers: response['answers'][0]['response'],
           category: response['answers'][0]['category']));
     } catch (e) {
-      print('error hahahha');
-      print(e.toString());
+      emit(Dass41Error());
     }
   }
 
@@ -65,11 +64,10 @@ class Dass41Bloc extends Bloc<Dass41Event, Dass41State> {
         emit(Dass41Loaded(
             questions: state.questions,
             termsAndConditions: state.termsAndConditions,
-            
             category: response['answers']['category'].toString()));
       }
     } catch (e) {
-      print(e.toString());
+      emit(Dass41Error());
     }
   }
 }

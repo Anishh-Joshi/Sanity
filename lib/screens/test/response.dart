@@ -65,6 +65,7 @@ class _ResponsePageState extends State<ResponsePage> {
       body: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16),
         child: SingleChildScrollView(
+             physics:const BouncingScrollPhysics(),
           child: SafeArea(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

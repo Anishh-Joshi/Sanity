@@ -3,6 +3,7 @@ import 'package:sanity/landingpage.dart';
 import 'package:sanity/screens/doctor/appointment_information.dart';
 import 'package:sanity/screens/home/home.dart';
 import 'package:sanity/screens/introduction/app_information.dart.dart';
+import 'package:sanity/screens/login/doc_info.dart';
 import 'package:sanity/screens/login/email_verification.dart';
 import 'package:sanity/screens/login/forgot_password.dart';
 import 'package:sanity/screens/login/login.dart';
@@ -31,8 +32,6 @@ import '../screens/home/navigation.dart';
 
 class AppRouter {
   static Route? onGenerateRoute(RouteSettings setting) {
-    print("Route chosen ${setting.name}");
-
     switch (setting.name) {
       case LoginInformation.routeName:
         return LoginInformation.route();
@@ -45,7 +44,7 @@ class AppRouter {
       case WriteField.routeName:
         return WriteField.route();
       case EmailVerification.routeName:
-        return EmailVerification.route();
+        return EmailVerification.route(setting);
       case ForgotPassword.routeName:
         return ForgotPassword.route();
       case UserInfo.routeName:
@@ -69,7 +68,7 @@ class AppRouter {
       case MessagePage.routeName:
         return MessagePage.route(setting);
       case ProfilePage.routeName:
-        return ProfilePage.route();
+        return ProfilePage.route(setting);
       case Therapy.routeName:
         return Therapy.route(setting);
       case TherapyDetails.routeName:

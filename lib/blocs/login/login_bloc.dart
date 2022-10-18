@@ -142,7 +142,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future<void> loginCheck(Emitter<LoginState> emit, bool tokenData) async {
     final Map profileData = await repo.getProfileData();
-print("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
     final bool isAppInfoSeen = await repo.hasAppInformation();
     final User userModel = User.fromJson(profileData);
     if (!isAppInfoSeen) {
@@ -160,7 +159,6 @@ print("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
         final UserInfoModel user =
             UserInfoModel.fromJson(userInfoMap['candidates']);
 
-            print("AUTHENTICATEDSTATE");
         emit(LoginAuthenticated(user: user, userBase: userModel));
       } else {
         emit(UnRegisteredUser(

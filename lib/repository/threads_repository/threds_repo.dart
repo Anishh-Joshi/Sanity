@@ -28,6 +28,18 @@ class ThreadsRepo {
     return threads;
   }
 
+   Future<Map> getThreadUser(int id) async {
+    final http.Response response =
+        await client.get(Uri.parse(api.getuserThread(id)), headers: {
+      "Content-type": 'application/json',
+      "Accept": "application/json",
+      "Access-Control-Allow_origin": "*"
+    });
+    final threads = json.decode(response.body);
+    return threads;
+  }
+
+
   Future<Map> upVote({required int threadId, required int userId}) async {
     final http.Response response = await client.post(Uri.parse(api.upVote),
         body: jsonEncode({"thread_upvote_fk": threadId, "by_user": userId}),

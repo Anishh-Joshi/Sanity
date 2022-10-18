@@ -40,6 +40,7 @@ class SignUpRepository extends BaseSignupRepository {
         'gender': checkout.gender,
         'isDoctor': checkout.isDoctor,
         'nmcId': checkout.nmcId,
+        'bio':checkout.bio,
         "profileImage": checkout.profileImage == null
             ? null
             : await MultipartFile.fromFile(

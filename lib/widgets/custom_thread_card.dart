@@ -46,7 +46,9 @@ class _ThreadCardState extends State<ThreadCard> {
 
   List getDocsInvolved() {
     var filtered = widget.thread.comments
-        .where((content) => content.commentOwner!.isDoctor == true)
+        .where((content) =>
+            content.commentOwner!.isDoctor == true &&
+            widget.thread.threadId == content.fk)
         .toList();
     return filtered;
   }
@@ -91,87 +93,90 @@ class _ThreadCardState extends State<ThreadCard> {
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(10)),
       width: double.infinity,
-      child: Column(
-        children: [
-          ListTile(
-            leading: CircleAvatarCustom(
-              radius: 30,
-              url: widget.thread.ownerInfo.profileImgUrl!,
-            ),
-            title: Text(
-              Converter.utf8convert(widget.thread.title),
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            trailing: Text(
-              timeago.format(widget.thread.createdAt, locale: 'en_short'),
-            ),
-            subtitle: Text(
-              widget.thread.contents.length > 50
-                  ? widget.thread.contents.substring(0, 50) + "..."
-                  : widget.thread.contents,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Icon(
-                    FontAwesome5.comment_alt,
-                    size: 21,
-                    color: Color(0xff787878),
-                  ),
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    comment!.length.toString(),
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const Icon(
-                    Fontisto.doctor,
-                    size: 20,
-                    color: Color(0xff787878),
-                  ),
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    isLoading ? "-" : docsInvolved!.length.toString(),
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  InkWell(
-                    onTap: () => handleUpvote(
-                        threadId: widget.thread.threadId,
-                        userId: widget.userId),
-                    child: Icon(
-                      FontAwesome.arrow_circle_up,
-                      size: 23,
-                      color: !isLiked
-                          ? Colors.grey
-                          : Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  Text(
-                    upVote.toString(),
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ],
+      child: Padding(
+        padding: const EdgeInsets.only(top:10.0),
+        child: Column(
+          children: [
+            ListTile(
+              leading: CircleAvatarCustom(
+                radius: 30,
+                url: widget.thread.ownerInfo.profileImgUrl!,
+              ),
+              title: Text(
+                Converter.utf8convert(widget.thread.title),
+                style: Theme.of(context).textTheme.headline4,
+              ),
+              trailing: Text(
+                timeago.format(widget.thread.createdAt, locale: 'en_short'),
+              ),
+              subtitle: Text(
+                widget.thread.contents.length > 50
+                    ? widget.thread.contents.substring(0, 50) + "..."
+                    : widget.thread.contents,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.headline6,
               ),
             ),
-          ),
-        ],
+            SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      FontAwesome5.comment_alt,
+                      size: 21,
+                      color: Color(0xff787878),
+                    ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      comment!.length.toString(),
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const Icon(
+                      Fontisto.doctor,
+                      size: 20,
+                      color: Color(0xff787878),
+                    ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      isLoading ? "-" : docsInvolved!.length.toString(),
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    InkWell(
+                      onTap: () => handleUpvote(
+                          threadId: widget.thread.threadId,
+                          userId: widget.userId),
+                      child: Icon(
+                        FontAwesome.arrow_circle_up,
+                        size: 23,
+                        color: !isLiked
+                            ? Colors.grey
+                            : Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    Text(
+                      upVote.toString(),
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

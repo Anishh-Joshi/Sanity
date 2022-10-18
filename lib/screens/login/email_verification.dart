@@ -1,17 +1,22 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_verification_code/flutter_verification_code.dart';
+import 'package:sanity/blocs/login/login_bloc.dart';
+import '../../apis/apis.dart';
 import '../../widgets/login_signup_header.dart';
 
 class EmailVerification extends StatefulWidget {
   static const String routeName = 'email_verification';
   const EmailVerification({Key? key}) : super(key: key);
-  static Route route() {
+  static Route route(RouteSettings settings) {
     return MaterialPageRoute(
-        builder: (context) => const EmailVerification(),
-        settings: const RouteSettings(name: routeName));
+        builder: (context) => const EmailVerification(), settings: settings);
   }
 
   @override
@@ -24,12 +29,67 @@ class _EmailVerificationState extends State<EmailVerification> {
   String? _code;
   Timer? _timer;
   int _start = 123;
+  Map? arg;
+  int? randomCode;
+  bool isNameAvailable = false;
 
   @override
   void initState() {
-    super.initState();
     getAnimationTime();
+
+    sendVerificationCode();
     startTimer();
+    super.initState();
+  }
+
+  sendVerificationCode() async {
+    await Future.delayed(Duration.zero, () {
+      setState(() {
+        arg = ModalRoute.of(context)!.settings.arguments as Map;
+      });
+    });
+    setState(() {
+      isNameAvailable = true;
+    });
+    await send(arg!['email']);
+  }
+
+  Future<Map> send(String email) async {
+    var rng = Random();
+    var code = rng.nextInt(90000) + 10000;
+    setState(() {
+      randomCode = code;
+    });
+    final APIs api = APIs();
+    final client = http.Client();
+    final http.Response response = await client.post(
+        Uri.parse(api.sendVerification),
+        body: jsonEncode({"email": email, "code": randomCode}),
+        headers: {
+          "Content-type": 'application/json',
+          "Accept": "application/json",
+          "Access-Control-Allow_origin": "*"
+        });
+    final loginResponse = json.decode(response.body);
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text("Verification code sent!")));
+    return loginResponse;
+  }
+
+  Future<bool> setTick() async {
+    final APIs api = APIs();
+    final client = http.Client();
+    final http.Response response = await client
+        .put(Uri.parse(api.setEmailVerified(id: arg!['id'])), headers: {
+      "Content-type": 'application/json',
+      "Accept": "application/json",
+      "Access-Control-Allow_origin": "*"
+    });
+    final loginResponse = json.decode(response.body);
+    if (loginResponse["status"] == "success") {
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -46,6 +106,9 @@ class _EmailVerificationState extends State<EmailVerification> {
         if (_start == 0) {
           if (mounted) {
             setState(() {
+              randomCode = null;
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Verification timeout!")));
               timer.cancel();
             });
           }
@@ -78,7 +141,6 @@ class _EmailVerificationState extends State<EmailVerification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: !isAnimated
           ? SafeArea(
               child: Padding(
@@ -90,16 +152,21 @@ class _EmailVerificationState extends State<EmailVerification> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height / 10,
                     ),
-                    const LoginSiginUpHeader(
+                    LoginSiginUpHeader(
                         mainHeader: "Email Verification",
                         subheader:
-                            "A verification code has been sent to your email. "),
+                            "A verification code has been sent to ${isNameAvailable ? arg!['email'] : ''}. "),
                     Align(
                       alignment: Alignment.centerRight,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              _start = 123;
+                              startTimer();
+                            });
+                          },
                           child: Text(
                             "Resend Verification Code",
                             style: Theme.of(context)
@@ -129,12 +196,25 @@ class _EmailVerificationState extends State<EmailVerification> {
                                 .copyWith(fontSize: 14),
                           ),
                         ),
-                        onCompleted: (String value) {
+                        onCompleted: (String value) async {
                           setState(() {
                             _code = value;
                           });
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, 'user_info', (route) => false);
+                          if (_code == randomCode.toString()) {
+                            bool val = await setTick();
+                            if (val) {
+                              if (mounted) {
+                                context.read<LoginBloc>().add(LoginCheck());
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, 'landing_page', (route) => false);
+                              }
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        "Verification code did not match!")));
+                          }
                         },
                         onEditing: (bool value) {
                           setState(() {
@@ -182,7 +262,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                       "$_start",
                       style: Theme.of(context).textTheme.headline6!.copyWith(
                           fontSize: 20, color: const Color(0xff787878)),
-                    ))
+                    )),
                   ],
                 ),
               ),

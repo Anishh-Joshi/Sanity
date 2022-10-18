@@ -57,4 +57,39 @@ class AppointmentRepository {
     final Map logResponse = json.decode(response.body);
     return logResponse;
   }
+
+  Future<Map> sendReport(int appointmentId, List medicines, int doctorId,
+      int patientId, String diaognosis) async {
+    final client = http.Client();
+    final http.Response response =
+        await client.post(Uri.parse(api.sendReport),
+            body: jsonEncode({
+              'appointment': appointmentId,
+              'by_doctor': doctorId,
+              'for_user': patientId,
+              'diagnosis': diaognosis,
+              'medicines': medicines,
+            }),
+            headers: {
+          "Content-type": 'application/json',
+          "Accept": "application/json",
+          "Access-Control-Allow_origin": "*"
+        });
+    final reportResponse = json.decode(response.body);
+    return reportResponse;
+  }
+
+
+  Future<Map> getReport( int id,String cat) async {
+    final client = http.Client();
+    final http.Response response =
+        await client.get(Uri.parse(api.sendReport+"?id=$id&cat=$cat"),
+            headers: {
+          "Content-type": 'application/json',
+          "Accept": "application/json",
+          "Access-Control-Allow_origin": "*"
+        });
+    final reportResponse = json.decode(response.body);
+    return reportResponse;
+  }
 }

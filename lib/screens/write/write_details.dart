@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sanity/model/log_model.dart';
+import 'package:sanity/widgets/filead_header.dart';
+
 class WriteDetails extends StatelessWidget {
   static const String routeName = 'log_details';
   const WriteDetails({Key? key}) : super(key: key);
@@ -16,49 +18,33 @@ class WriteDetails extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
+             physics:const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
-                    ),
-                    Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: Theme.of(context).primaryColor),
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.done),
-                        )),
-                  ],
-                ),
-                const Divider(
-                  color: Colors.transparent,
-                ),
+                AppBarInfo(
+                    margin: 0,
+                    height: height,
+                    onPressed: () {},
+                    showDone: false,
+                    title: ''),
                 Text(
-                DateFormat.yMMMMd()
-                              .format(DateTime.parse(log.createdAt)),
+                  DateFormat.yMMMMd().format(DateTime.parse(log.createdAt)),
                   style: Theme.of(context)
                       .textTheme
                       .headline2!
                       .copyWith(fontSize: height * 0.045),
                 ),
-                                const Divider(
+                const Divider(
                   color: Colors.transparent,
                 ),
                 Text(
                   log.text,
-                  style: Theme.of(context).textTheme.headline5!.copyWith(fontSize: height*0.02),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline5!
+                      .copyWith(fontSize: height * 0.02),
                 ),
               ],
             ),

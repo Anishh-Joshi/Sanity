@@ -53,7 +53,6 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
       RetrieveAppointmentDoctor event, Emitter<AppointmentState> emit) async {
     emit(AppointmentLoadng());
     try {
-      print("IS TRIGGERED");
       final Map response =
           await repo.retrieveAppointments(userId: event.doctorId,cat: 'doc');
       if (response['status'] == 'success') {

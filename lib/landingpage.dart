@@ -30,7 +30,6 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
-          print(state);
           if (state is LoginLoading) {
             const Center(child: CircularProgressIndicatorCustom());
           } else if (state is LoginUnAuthenticated) {
@@ -41,7 +40,11 @@ class _LandingPageState extends State<LandingPage> {
                 context, 'loginInfo', (route) => false);
           } else if (state is LoginEmailNotVerified) {
             Navigator.pushNamedAndRemoveUntil(
-                context, 'email_verification', (route) => false);
+              context,
+              'email_verification',
+              arguments: {'email': state.email, 'id': state.id},
+              (route) => false,
+            );
           } else if (state is UnRegisteredUser) {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'user_info', (route) => false);

@@ -28,51 +28,45 @@ class DoctorRepository {
       String? degree,
       String? tenure,
       String? from}) async {
-          print("3");
-    final http.Response response = await client.post(Uri.parse(api.updateDocInfo(profileId: profileId)),
-    
-        body: jsonEncode({
-          'user': profileId,
-          'degree': degree,
-          'major_in': major,
-          'tenure': tenure,
-          'education': from,
-        }),
-        headers: {
+    final http.Response response =
+        await client.post(Uri.parse(api.updateDocInfo(profileId: profileId)),
+            body: jsonEncode({
+              'user': profileId,
+              'degree': degree,
+              'major_in': major,
+              'tenure': tenure,
+              'education': from,
+            }),
+            headers: {
           "Content-type": 'application/json',
           "Accept": "application/json",
           "Access-Control-Allow_origin": "*"
         });
-          print("4");
     final info = json.decode(response.body);
-    print(info);
     return info;
   }
 
-    Future<Map> updateDocInfoSettings(
+  Future<Map> updateDocInfoSettings(
       {required int profileId,
       String? major,
       String? degree,
       String? tenure,
       String? from}) async {
-          print("3");
-    final http.Response response = await client.put(Uri.parse(api.updateDocInfo(profileId: profileId)),
-    
-        body: jsonEncode({
-          'user': profileId,
-          'degree': degree,
-          'major_in': major,
-          'tenure': tenure,
-          'education': from,
-        }),
-        headers: {
+    final http.Response response =
+        await client.put(Uri.parse(api.updateDocInfo(profileId: profileId)),
+            body: jsonEncode({
+              'user': profileId,
+              'degree': degree,
+              'major_in': major,
+              'tenure': tenure,
+              'education': from,
+            }),
+            headers: {
           "Content-type": 'application/json',
           "Accept": "application/json",
           "Access-Control-Allow_origin": "*"
         });
-          print("4");
     final info = json.decode(response.body);
-    print(info);
     return info;
   }
   //   Future<Map> setDocInfo({}) async {

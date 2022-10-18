@@ -15,6 +15,7 @@ class UserInfoLoaded extends UserInfoState {
   final int? age;
   final String? gender;
   final bool? isDoctor;
+  final String?bio;
   final int? nmcId;
   final File? profileImage;
   final UserInfoModel userInfoModel;
@@ -25,10 +26,12 @@ class UserInfoLoaded extends UserInfoState {
       this.age,
       this.gender,
       this.isDoctor,
+      this.bio,
       this.profileImage,
       this.nmcId})
       : userInfoModel = UserInfoModel(
             fullName: fullName,
+            bio: bio,
             age: age,
             address: address,
             gender: gender,
@@ -38,7 +41,7 @@ class UserInfoLoaded extends UserInfoState {
 
   @override
   List<Object?> get props =>
-      [fullName, address, gender, age, isDoctor, profileImage, nmcId];
+      [fullName, address, gender, age,bio, isDoctor, profileImage, nmcId];
 }
 
 class SignupFormFilled extends UserInfoState {}

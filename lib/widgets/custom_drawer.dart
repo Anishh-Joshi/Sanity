@@ -4,6 +4,7 @@ import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:sanity/blocs/dass_bloc/dass41_bloc.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/blocs/theme/theme_bloc_bloc.dart';
+import 'package:sanity/screens/profile/profile.dart';
 import 'package:sanity/screens/settings/settings.dart';
 import 'package:sanity/screens/therapy/add_therapy.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
@@ -53,8 +54,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 onTap: () {
                                   widget.scaffoldKey.currentState
                                       ?.closeDrawer();
-                                  Navigator.of(context, rootNavigator: true)
-                                      .pushNamed("profile_page");
+                                  Navigator.pushNamed(
+                                      context, ProfilePage.routeName,
+                                      arguments: state.user);
                                 },
                                 child: CircleAvatarCustom(
                                     radius:

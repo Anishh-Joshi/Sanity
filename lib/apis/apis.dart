@@ -13,12 +13,17 @@ class APIs {
   get loginUrl => "http://$localhost/api/user/login/";
   get changePassword => "http://$localhost/api/user/changepassword/";
   get signInUrl => "http://$localhost/api/user/register/";
+  get sendVerification => "http://$localhost/api/user/send/verification/";
   get user => "http://$localhost/api/user/profile/";
   get setProfile => "http://$localhost/api/user/setprofile/";
   get sendDailyLog => "http://$localhost/api/assistant/set/dailylog/";
   get getDass => "http://$localhost/api/assistant/get/das/";
   String retrieveLog({int? id}) {
     return "http://$localhost/api/assistant/get/dailylog/?id=$id";
+  }
+
+  String setEmailVerified({int? id}) {
+    return "http://$localhost/api/user/verify/?id=$id";
   }
 
   String getAnswers({required int? id}) {
@@ -80,7 +85,9 @@ class APIs {
     return "http://$localhost/api/assistant/update/therapy/?id=$id";
   }
 
-  get fetchAllThreads => "http://$localhost/api/assistant/get/threads/";
+  get fetchAllThreads => "http://$localhost/api/assistant/get/threads/?id=x";
+  String getuserThread(int id) =>
+      "http://$localhost/api/assistant/get/threads/?id$id";
 
   get upVote => "http://$localhost/api/assistant/add/upvote/";
 
@@ -107,4 +114,9 @@ class APIs {
       "http://$localhost/api/assistant/add/comment/?id=$commentId";
   String removeReply({required int replyId}) =>
       "http://$localhost/api/assistant/add/reply/?id=$replyId";
+
+  get sendReport => "http://$localhost/api/assistant/report/";
+
+  String getNumbers(int id) =>
+      "http://$localhost/api/assistant/profile/numbers/?id=$id";
 }

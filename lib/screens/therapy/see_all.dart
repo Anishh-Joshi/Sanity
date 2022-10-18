@@ -19,6 +19,7 @@ class SeeAllTherapy extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: SafeArea(
           child: SingleChildScrollView(
+               physics:const BouncingScrollPhysics(),
             child: Column(
               children: [
                 AppBarInfo(height: height, onPressed: (){}, showDone: false, title: "All Therapies"),

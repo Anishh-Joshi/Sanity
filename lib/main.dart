@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/appointment/appointment_bloc.dart';
+import 'package:sanity/blocs/profile_bloc/profile_bloc.dart';
+import 'package:sanity/blocs/report_bloc/report_bloc.dart';
 import 'package:sanity/blocs/comment_bloc/comment_bloc.dart';
 import 'package:sanity/blocs/doctor_bloc/doctor_bloc.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
@@ -24,6 +26,7 @@ import 'package:sanity/repository/signup/signup_repo.dart';
 import 'package:sanity/repository/therapy_repository/therapy_repo.dart';
 import 'package:sanity/repository/threads_repository/threds_repo.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sanity/screens/home/home.dart';
 import 'blocs/dass_bloc/dass41_bloc.dart';
 import 'firebase_options.dart';
 
@@ -43,6 +46,9 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) =>
                 Dass41Bloc(repo: DasRepo())..add(const GetDas(check: false)),
+          ),
+          BlocProvider(
+            create: (context) => ReportBloc(),
           ),
           BlocProvider(create: (context) => SearchBloc()),
           BlocProvider(
@@ -73,6 +79,10 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => HomeBloc(loginBloc: context.read<LoginBloc>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                ProfileBloc(homeBloc: context.read<HomeBloc>()),
           ),
         ],
         child: BlocBuilder<ThemeBloc, ThemeBlocState>(

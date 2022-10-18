@@ -31,7 +31,6 @@ class _Dass41State extends State<Dass41> {
   int? hight;
 
   bool check() {
-    print("trigged");
     for (int i = 1; i <= hight!; i++) {
       if (!sheet.containsKey(i)) {
         ScaffoldMessenger.of(context)

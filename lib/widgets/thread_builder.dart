@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanity/blocs/comment_bloc/comment_bloc.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
@@ -13,7 +11,10 @@ import 'package:sanity/widgets/platform_aware.dart';
 
 class ThreadBuilder extends StatelessWidget {
   final bool allView;
-  const ThreadBuilder({Key? key, required this.allView}) : super(key: key);
+  final bool profileView;
+  const ThreadBuilder(
+      {Key? key, required this.profileView, required this.allView})
+      : super(key: key);
   Future<void> _confirmDelete(BuildContext context, int threadId) async {
     final didRequest = await const PlatformAADialog(
       title: "Confirm Delete",
@@ -48,26 +49,53 @@ class ThreadBuilder extends StatelessWidget {
               return BlocBuilder<HomeBloc, HomeState>(
                 builder: (context, state) {
                   if (state is HomeLoaded) {
-                    return InkWell(
-                      onLongPress: () {
-                        thread.ownerInfo.userId == state.user!.userId
-                            ? _confirmDelete(context, thread.threadId)
-                            : null;
-                      },
-                      onTap: () {
-                        context.read<CommentBloc>().add(
-                            FetchCommentsAndReplies(threadId: thread.threadId));
-                        Navigator.pushNamed(context, ThreadsDetails.routeName,
-                            arguments: {
-                              "thread": thread,
-                              "user": state.user!
-                            });
-                      },
-                      child: ThreadCard(
-                        thread: thread,
-                        userId: state.user!.userId!,
-                      ),
-                    );
+                    return !profileView
+                        ? InkWell(
+                            onLongPress: () {
+                              thread.ownerInfo.userId == state.user!.userId
+                                  ? _confirmDelete(context, thread.threadId)
+                                  : null;
+                            },
+                            onTap: () {
+                              context.read<CommentBloc>().add(
+                                  FetchCommentsAndReplies(
+                                      threadId: thread.threadId));
+                              Navigator.pushNamed(
+                                  context, ThreadsDetails.routeName,
+                                  arguments: {
+                                    "thread": thread,
+                                    "user": state.user!
+                                  });
+                            },
+                            child: ThreadCard(
+                              thread: thread,
+                              userId: state.user!.userId!,
+                            ),
+                          )
+                        : state.user!.userId == thread.ownerInfo.userId
+                            ? InkWell(
+                                onLongPress: () {
+                                  thread.ownerInfo.userId == state.user!.userId
+                                      ? _confirmDelete(context, thread.threadId)
+                                      : null;
+                                },
+                                onTap: () {
+                                  context.read<CommentBloc>().add(
+                                      FetchCommentsAndReplies(
+                                          threadId: thread.threadId));
+                                  Navigator.pushNamed(
+                                      context, ThreadsDetails.routeName,
+                                      arguments: {
+                                        "thread": thread,
+                                        "user": state.user!
+                                      });
+                                },
+                                child: ThreadCard(
+                                  thread: thread,
+                                  userId: state.user!.userId!,
+                                ),
+                              )
+                            : const SizedBox();
                   }
                   return const SizedBox();
                 },

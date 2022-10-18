@@ -52,13 +52,20 @@ class AuthRepository {
   }
 
   Future<Map> changePassword(
-      String email, password, confirmPassword,) async {
-
+    String email,
+    password,
+    confirmPassword,
+  ) async {
     final prefs = await SharedPreferences.getInstance();
     final client = http.Client();
     final String? token = prefs.getString('token');
-    final http.Response response = await client.post(Uri.parse(api.changePassword),
-        body: jsonEncode({"email": email, "password": password,"confirm_password":confirmPassword }),
+    final http.Response response = await client.post(
+        Uri.parse(api.changePassword),
+        body: jsonEncode({
+          "email": email,
+          "password": password,
+          "confirm_password": confirmPassword
+        }),
         headers: {
           "Content-type": 'application/json',
           "Accept": "application/json",
@@ -114,5 +121,18 @@ class AuthRepository {
     });
     Map signInResponse = json.decode(response.body);
     return signInResponse;
+  }
+
+  Future<Map> getNumbers({required int id}) async {
+    final client = http.Client();
+
+    final http.Response response =
+        await client.get(Uri.parse(api.getNumbers(id)), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      "Access-Control-Allow_origin": "*"
+    });
+    Map numberResponse = json.decode(response.body);
+    return numberResponse;
   }
 }

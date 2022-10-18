@@ -229,6 +229,26 @@ class _AccountState extends State<Account> {
                   SizedBox(
                     height: height * 0.04,
                   ),
+                  BlocBuilder<HomeBloc, HomeState>(
+                    builder: (context, state) {
+                      if (state is HomeLoaded) {
+                        return TextSettingWidget(
+                            onchanged: (val) {
+                              context
+                                  .read<UserInfoBloc>()
+                                  .add(UpdateUserInfo(bio: val));
+                            },
+                            text: "About You",
+                            state: state.user!.bio == null
+                                ? ""
+                                : state.user!.bio!);
+                      }
+                      return const SizedBox();
+                    },
+                  ),
+                  SizedBox(
+                    height: height * 0.04,
+                  ),
                 ],
               ),
             ),

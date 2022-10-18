@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
+import 'package:intl/intl.dart';
 import 'package:sanity/blocs/appointment/appointment_bloc.dart';
 import 'package:sanity/blocs/dass_bloc/dass41_bloc.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
@@ -114,7 +115,7 @@ class VerifiedAppointments extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final AppointmentModel appointModel =
                       AppointmentModel.fromJSON(state.appointmentList[index]);
-                  print("Failure point check");
+
                   return !isPendingScreen
                       ? appointModel.pending!
                           ? const SizedBox()
@@ -170,7 +171,6 @@ class _AppointmentCardState extends State<AppointmentCard> {
         : InkWell(
             onTap: () {
               if (widget.notificationView) {
-                print(widget.appointmentMOdel.patient.userId!);
                 context.read<Dass41Bloc>().add(GetDasResponse(
                     profileId: widget.appointmentMOdel.patient.userId!));
                 Navigator.pushNamed(context, MessagePage.routeName,
@@ -195,11 +195,22 @@ class _AppointmentCardState extends State<AppointmentCard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    CircleAvatarCustom(
-                        url: widget.notificationView
-                            ? widget.appointmentMOdel.doctor.profileImgUrl!
-                            : widget.appointmentMOdel.patient.profileImgUrl!,
-                        radius: widget.height * 0.05),
+                    BlocBuilder<HomeBloc, HomeState>(
+                      builder: (context, state) {
+                        if (state is HomeLoaded) {
+                          return CircleAvatarCustom(
+                              url: state.user!.isDoctor! &&
+                                      (widget.appointmentMOdel.doctor.userId ==
+                                          state.user!.userId)
+                                  ? widget
+                                      .appointmentMOdel.patient.profileImgUrl!
+                                  : widget
+                                      .appointmentMOdel.doctor.profileImgUrl!,
+                              radius: widget.height * 0.05);
+                        }
+                        return const SizedBox();
+                      },
+                    ),
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -237,7 +248,16 @@ class _AppointmentCardState extends State<AppointmentCard> {
                                 const SizedBox(
                                   width: 4,
                                 ),
-                                Text("15 September 2022, 4 pm",
+                                Text(
+                                    widget.notificationView
+                                        ? DateFormat.yMMMMd().format(
+                                            DateTime.parse(widget
+                                                .appointmentMOdel.atTime
+                                                .toString()))
+                                        : DateFormat.yMMMMd().format(
+                                            DateTime.parse(widget
+                                                .appointmentMOdel.createdAt
+                                                .toString())),
                                     style:
                                         Theme.of(context).textTheme.headline6),
                               ],

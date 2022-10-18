@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:sanity/blocs/comment_bloc/comment_bloc.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
-import 'package:sanity/blocs/threads_bloc/threads_bloc.dart';
 import 'package:sanity/model/comments_model.dart';
 import 'package:sanity/model/replies_model.dart';
 import 'package:sanity/model/user_info_model.dart';
@@ -33,7 +32,8 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
 
   int? highlight;
 
-  Future<void> _confirmDelete(BuildContext context, int commentId,int threadId) async {
+  Future<void> _confirmDelete(
+      BuildContext context, int commentId, int threadId) async {
     final didRequest = await const PlatformAADialog(
       title: "Confirm Delete",
       content: "Are you sure you want to delete this comment ?",
@@ -41,20 +41,26 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
       defaultActionText: 'Delete',
     ).show(context);
     if (didRequest) {
-      context.read<CommentBloc>().add(RemoveComment(commentId: commentId,threadId: threadId));
+      if (mounted) {
+        context
+            .read<CommentBloc>()
+            .add(RemoveComment(commentId: commentId, threadId: threadId));
+      }
     }
     setState(() {
       highlight = null;
     });
   }
 
-  Future<void> sendComment({required bool isDoctor, required int threadId, required int userId}) async {
+  Future<void> sendComment(
+      {required bool isDoctor,
+      required int threadId,
+      required int userId}) async {
     context.read<CommentBloc>().add(CommentOnThread(
           comment: _comment.text,
           userId: userId,
           threadId: threadId,
         ));
-
   }
 
   @override
@@ -73,6 +79,7 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
           child: Stack(
             children: [
               SingleChildScrollView(
+                   physics:const BouncingScrollPhysics(),
                 child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -121,8 +128,7 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
                               Expanded(
                                 child: Text(
                                   Converter.utf8convert(thread.title),
-                                  style:
-                                      Theme.of(context).textTheme.headline3,
+                                  style: Theme.of(context).textTheme.headline3,
                                 ),
                               ),
                             ],
@@ -148,8 +154,7 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 40.0),
                                 child: ListView.builder(
-                                  physics:
-                                      const NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: state.comments.length,
                                   itemBuilder: (context, index) {
@@ -161,7 +166,9 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
                                           comment.commentOwner!.userId ==
                                                   user.userId!
                                               ? _confirmDelete(
-                                                  context, comment.commentId,thread.threadId)
+                                                  context,
+                                                  comment.commentId,
+                                                  thread.threadId)
                                               : null;
                                         },
                                         child: CommentBox(
@@ -194,8 +201,7 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
                           builder: (context, state) {
                             if (state is HomeLoaded) {
                               return CircleAvatarCustom(
-                                  url: state.user!.profileImgUrl!,
-                                  radius: 20);
+                                  url: state.user!.profileImgUrl!, radius: 20);
                             }
                             return const SizedBox();
                           },
@@ -210,9 +216,8 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
                               return Expanded(
                                 child: CustomForm(
                                     maxLines: null,
-                                    controller: state.isCommentMode
-                                        ? _comment
-                                        : _reply,
+                                    controller:
+                                        state.isCommentMode ? _comment : _reply,
                                     borderColor: Colors.transparent,
                                     borderRadius: 10,
                                     hintText: state.isCommentMode
@@ -234,7 +239,7 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
                                   onPressed: () {
                                     if (state.isCommentMode) {
                                       sendComment(
-                                        isDoctor: user.isDoctor!,
+                                          isDoctor: user.isDoctor!,
                                           threadId: thread.threadId,
                                           userId: user.userId!);
 
@@ -274,8 +279,8 @@ class _ThreadsDetailsState extends State<ThreadsDetails> {
                                                                 true));
                                                   });
                                                 },
-                                                icon: const Icon(
-                                                    Fontisto.close))
+                                                icon:
+                                                    const Icon(Fontisto.close))
                                           ],
                                         ));
                             }
@@ -326,7 +331,8 @@ class _CommentBoxState extends State<CommentBox> {
   bool expand = false;
   int? highlight;
 
-  Future<void> _confirmDelete(BuildContext context, int replyId,int threadId) async {
+  Future<void> _confirmDelete(
+      BuildContext context, int replyId, int threadId) async {
     final didRequest = await const PlatformAADialog(
       title: "Confirm Delete",
       content: "Are you sure you want to delete this reply ?",
@@ -334,7 +340,9 @@ class _CommentBoxState extends State<CommentBox> {
       defaultActionText: 'Delete',
     ).show(context);
     if (didRequest) {
-      context.read<CommentBloc>().add(RemoveReply(replyId: replyId,threadId: threadId));
+      context
+          .read<CommentBloc>()
+          .add(RemoveReply(replyId: replyId, threadId: threadId));
     }
     setState(() {
       highlight = null;
@@ -419,7 +427,9 @@ class _CommentBoxState extends State<CommentBox> {
                                         reply.replyOwner!.userId ==
                                                 widget.userId
                                             ? _confirmDelete(
-                                                context, reply.replyId!,widget.thread.threadId)
+                                                context,
+                                                reply.replyId!,
+                                                widget.thread.threadId)
                                             : null;
                                       },
                                       child: ReplyCard(

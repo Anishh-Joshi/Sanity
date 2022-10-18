@@ -21,7 +21,7 @@ class SeeAllThreads extends StatelessWidget {
           child: Column(
             children: [
               AppBarInfo(height: height, onPressed: (){}, showDone: false, title: 'All Threads'),
-              const ThreadBuilder(allView: true,),
+              const ThreadBuilder(allView: true,profileView: false,),
             ],
           ),
         ),

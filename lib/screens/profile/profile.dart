@@ -1,199 +1,188 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
+import 'package:sanity/blocs/profile_bloc/profile_bloc.dart';
+import 'package:sanity/model/threads_model.dart';
+import 'package:sanity/model/user_info_model.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
-import 'package:sanity/widgets/custom_appbar.dart';
+import 'package:sanity/widgets/filead_header.dart';
+import 'package:sanity/widgets/thread_builder.dart';
 
-import '../../widgets/circular_progress.dart';
-
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   static const String routeName = 'profile_page';
   const ProfilePage({Key? key}) : super(key: key);
-  static Route route() {
+  static Route route(RouteSettings settings) {
     return MaterialPageRoute(
-        builder: (context) => const ProfilePage(),
-        settings: const RouteSettings(name: routeName));
+        builder: (context) => const ProfilePage(), settings: settings);
   }
 
   @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  bool isThreadActive = true;
+
+  @override
   Widget build(BuildContext context) {
+    final UserInfoModel user =
+        ModalRoute.of(context)!.settings.arguments as UserInfoModel;
+    context.read<ProfileBloc>().add(FetchProfile(profileId: user.userId!));
+    final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-            if (state is HomeLoaded) {
-              return MyCustomAppBar(
-                appBarTitle: state.user!.fullName!,
-                onPressed: () {},
-                iconData: Icons.settings,
-              );
-            }
-            return const Center(
-              child: CircularProgressIndicatorCustom(),
-            );
-          },
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Expanded(
-              flex: 5,
-              child: topHalf(context: context),
-            ),
-            Expanded(flex: 1, child: midHalf(context: context)),
-            Expanded(flex: 6, child: bottomHalf(context: context)),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: Colors.black,
-          child: const Icon(Icons.edit)),
-    );
-  }
-
-  Widget midHalf({required BuildContext context}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Flexible(
-          flex: 1,
-          child: GestureDetector(
-            onTap: () {
-            },
-            child: Text("Goals",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4!
-                    .copyWith(fontSize: 18)),
-          ),
-        ),
-        Flexible(
-            flex: 1,
-            child: GestureDetector(
-              onTap: () {
-            
-              },
-              child: Text(
-                "Timeline",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4!
-                    .copyWith(fontSize: 18),
-              ),
-            )),
-        Flexible(
-            flex: 1,
-            child: GestureDetector(
-              onTap: () {
-         
-              },
-              child: Text("Badges",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4!
-                      .copyWith(fontSize: 18)),
-            ))
-      ],
-    );
-  }
-
-  Container bottomHalf({required BuildContext context}) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-    );
-  }
-
-  Column topHalf({required BuildContext context}) {
-    return Column(
-      children: [
-        Row(children: [
-          BlocBuilder<HomeBloc, HomeState>(
+        body: SafeArea(
+      child: BlocListener<ProfileBloc, ProfileState>(
+        listener: (context, state) {},
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
-              if (state is HomeLoaded) {
-                return CircleAvatarCustom(
-                    url: state.user!.profileImgUrl!,
-                    radius: MediaQuery.of(context).size.height / 15);
+              if (state is ProfileFetched) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppBarInfo(
+                        height: height,
+                        onPressed: () {},
+                        showDone: false,
+                        title: "Profile"),
+                    Row(
+                      children: [
+                        CircleAvatarCustom(
+                          url: state.user.profileImgUrl!,
+                          radius: height * 0.08,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              state.user.fullName!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline3!
+                                  .copyWith(fontSize: 20),
+                            ),
+                            Text(
+                              "${state.user.age!} years old",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline4!
+                                  .copyWith(fontSize: 17),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    const Divider(
+                      color: Colors.transparent,
+                    ),
+                    Text(
+                      "Joined on ${DateFormat.yMMMMd().format(state.user.createdAt!)}",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5!
+                          .copyWith(fontSize: 16),
+                    ),
+                    Text(
+                      "Active on ${state.activeThreads} threads.",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5!
+                          .copyWith(fontSize: 16),
+                    ),
+                    Text(
+                      state.user.address!,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5!
+                          .copyWith(fontSize: 16),
+                    ),
+                    Text(
+                      "${state.entries} entries.",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5!
+                          .copyWith(fontSize: 16),
+                    ),
+                    Text(
+                      "${state.user.bio ?? ''}",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5!
+                          .copyWith(fontSize: 16),
+                    ),
+                    const Divider(color: Colors.transparent),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                          borderRadius: BorderRadius.circular(14)),
+                      height: height * 0.05,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(
+                              flex: 1,
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    isThreadActive = true;
+                                  });
+                                },
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        color: isThreadActive
+                                            ? Theme.of(context).primaryColor
+                                            : Theme.of(context).cardColor,
+                                        borderRadius:
+                                            BorderRadius.circular(14)),
+                                    child: Center(
+                                        child: Text(
+                                      "Threads",
+                                      style:
+                                          Theme.of(context).textTheme.headline4,
+                                    ))),
+                              )),
+                          Expanded(
+                              flex: 1,
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    isThreadActive = false;
+                                  });
+                                },
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        color: !isThreadActive
+                                            ? Theme.of(context).primaryColor
+                                            : Theme.of(context).cardColor,
+                                        borderRadius:
+                                            BorderRadius.circular(14)),
+                                    child: Center(
+                                        child: Text(
+                                      "Timeline view",
+                                      style:
+                                          Theme.of(context).textTheme.headline4,
+                                    ))),
+                              )),
+                        ],
+                      ),
+                    ),
+                   const  Divider(color: Colors.transparent,),
+                    isThreadActive
+                        ? const ThreadBuilder(allView: false, profileView: true)
+                        : Container()
+                  ],
+                );
               }
-              // yelai chai pacchi shimmer effect le replace handiney
-              return const Center(
-                child: CircularProgressIndicatorCustom(),
-              );
+              return const SizedBox();
             },
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: BlocBuilder<HomeBloc, HomeState>(
-              builder: (context, state) {
-                if (state is HomeLoaded) {
-                  return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(state.user!.fullName!,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline3!
-                                .copyWith(fontSize: 20)),
-                        Text(
-                          "${state.user!.age!.toString()} years old",
-                          style: Theme.of(context).textTheme.headline5,
-                        )
-                      ]);
-                }
-                return const Center(
-                  child: CircularProgressIndicatorCustom(),
-                );
-              },
-            ),
-          ),
-        ]),
-        Container(
-          margin: const EdgeInsets.only(top: 10),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Joined on 1st July",
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline3!
-                        .copyWith(color: const Color(0xff787878))),
-                Text("Active on 20 threads",
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4!
-                        .copyWith(color: const Color(0xff787878))),
-                BlocBuilder<HomeBloc, HomeState>(
-                  builder: (context, state) {
-                    if (state is HomeLoaded) {
-                      return Text(state.user!.address!,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline4!
-                              .copyWith(color: const Color(0xff787878)));
-                    }
-
-                    return const Center(
-                      child: CircularProgressIndicatorCustom(),
-                    );
-                  },
-                ),
-                Text("42 Entries",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5!
-                        .copyWith(color: const Color(0xff787878))),
-              ],
-            )
-          ]),
-        )
-      ],
-    );
+        ),
+      ),
+    ));
   }
 }

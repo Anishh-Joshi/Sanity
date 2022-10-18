@@ -45,6 +45,7 @@ class _WriteFieldState extends State<WriteField> {
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
+           physics:const BouncingScrollPhysics(),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16.0),

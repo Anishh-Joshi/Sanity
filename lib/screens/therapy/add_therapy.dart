@@ -60,6 +60,7 @@ class _AddTherapyState extends State<AddTherapy> {
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
+           physics:const BouncingScrollPhysics(),
         child: SafeArea(
           child: BlocListener<TherapyBloc, TherapyState>(
             listener: (context, state) async{

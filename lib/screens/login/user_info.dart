@@ -155,6 +155,7 @@ class _UserInfoState extends State<UserInfo> {
             child: Scaffold(
               body: SafeArea(
                 child: SingleChildScrollView(
+                     physics:const BouncingScrollPhysics(),
                   controller: _scrollController,
                   child: Column(
                     children: [
