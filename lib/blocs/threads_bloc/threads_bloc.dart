@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:sanity/repository/threads_repository/threds_repo.dart';
+
+import '../../repository/log_repository/pattern_repo.dart';
 part 'threads_event.dart';
 part 'threads_state.dart';
 
@@ -12,9 +14,7 @@ class ThreadsBloc extends Bloc<ThreadsEvent, ThreadsState> {
     on<FetchAllThreads>(_onFetchAllThreads);
     on<UpVote>(_onUpVote);
     on<RemoveUpVote>(_onRmoveUpvote);
-    on<DoctorsInvolved>(_onDoctorsInvolved);
     on<AddThread>(_onAddThread);
-    on<UpdateThread>(_onUpdateThread);
     on<DeleteThread>(_onDeleteThread);
   }
 
@@ -41,9 +41,7 @@ class ThreadsBloc extends Bloc<ThreadsEvent, ThreadsState> {
   ) async {
     try {
       await _threadRepo.upVote(threadId: event.threadId, userId: event.userId);
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 
   void _onRmoveUpvote(
@@ -53,15 +51,9 @@ class ThreadsBloc extends Bloc<ThreadsEvent, ThreadsState> {
     try {
       await _threadRepo.downVote(
           threadId: event.threadId, userId: event.userId);
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 
-  void _onDoctorsInvolved(
-    DoctorsInvolved event,
-    Emitter<ThreadsState> emit,
-  ) async {}
   void _onAddThread(
     AddThread event,
     Emitter<ThreadsState> emit,
@@ -75,14 +67,14 @@ class ThreadsBloc extends Bloc<ThreadsEvent, ThreadsState> {
           owners: response['user_info'],
           upVotes: response['up_votes'],
           comments: response['comments']));
+
+      final PatternRepo patternRepo = PatternRepo();
+      patternRepo.setPattern(event.content, event.userId);
     } catch (e) {
+      print('object');
     }
   }
 
-  void _onUpdateThread(
-    UpdateThread event,
-    Emitter<ThreadsState> emit,
-  ) async {}
   void _onDeleteThread(
     DeleteThread event,
     Emitter<ThreadsState> emit,

@@ -30,6 +30,7 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
+          print(state);
           if (state is LoginLoading) {
             const Center(child: CircularProgressIndicatorCustom());
           } else if (state is LoginUnAuthenticated) {

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/model/user_info_model.dart';
 import 'package:sanity/repository/auth_repo.dart';
@@ -29,7 +30,21 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       if ((_homeBloc.state as HomeLoaded).user!.userId == event.profileId) {
         final Map logs = await log.retrieveLog(event.profileId);
 
+        final DateFormat formatter = DateFormat('yyyy-MM-dd');
+        Map listed = {};
+
+        logs['candidates'].forEach((val) {
+          listed[
+              "${formatter.format(DateTime.parse(val['created_at'])).split("-")[1]}-${formatter.format(DateTime.parse(val['created_at'])).split("-")[2]}"] = {
+            "log": val['log'],
+            "score": val['depression_score']
+          };
+        });
+
+        print(listed['10-19']);
+
         emit(ProfileFetched(
+            timelineLog: listed,
             logs: logs['candidates'],
             threads: threadMap['threads'],
             owners: threadMap['user_info'],
@@ -40,6 +55,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             entries: numbers['entries']));
       } else {
         emit(ProfileFetched(
+          
             threads: threadMap['threads'],
             owners: threadMap['user_info'],
             upVotes: threadMap['up_votes'],

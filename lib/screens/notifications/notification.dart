@@ -58,7 +58,7 @@ class NotificationPage extends StatelessWidget {
                                         (notification.atTime! - DateTime.now())
                                                     .inDays ==
                                                 0
-                                            ? 'Today is Your Appointment at ${DateFormat.yMMMMd().format(DateTime.parse(notification.atTime.toString()))}'
+                                            ? 'Today is Your Appointment at ${(notification.atTime!.hour)}:${(notification.atTime!.minute)} ${(notification.atTime)!.hour>12?'PM':'AM'}'
                                             : "${(notification.atTime! - DateTime.now()).inDays<0?'Appointment Complete. ':'Appointment in${(notification.atTime! - DateTime.now()).inDays} days'} ",
                                         style: Theme.of(context)
                                             .textTheme

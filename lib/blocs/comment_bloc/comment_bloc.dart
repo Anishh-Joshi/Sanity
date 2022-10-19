@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:sanity/repository/log_repository/pattern_repo.dart';
 import '../../repository/threads_repository/threds_repo.dart';
 part 'comment_event.dart';
 part 'comment_state.dart';
@@ -70,6 +71,8 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           isCommentMode: true,
           comments: threadComments['comment'],
         ));
+        final PatternRepo patternRepo = PatternRepo();
+        patternRepo.setPattern(event.comment, event.userId);
       } catch (e) {
         emit(const CommentError(err: 'err'));
       }
@@ -128,6 +131,8 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           isCommentMode: true,
           comments: threadComments['comment'],
         ));
+        final PatternRepo patternRepo = PatternRepo();
+        patternRepo.setPattern(event.reply, event.userId);
       } on Exception {
         emit(CommentError(err: 'err'));
       }

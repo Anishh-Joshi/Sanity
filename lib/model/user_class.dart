@@ -5,17 +5,13 @@ class User extends Equatable {
   final String? email;
   final bool? isEmailVerified;
   final int? id;
-  final DateTime? createdAt;
-  const User({this.createdAt, this.email, this.isEmailVerified, this.id});
+  const User({this.email, this.isEmailVerified, this.id});
 
   @override
   List<Object?> get props => [email, isEmailVerified, id];
   factory User.fromJson(Map response) {
-    print(response);
     return User(
         id: response['id'],
-        createdAt: 
-            DateTime.parse(response['created_at']),
         email: response['email'],
         isEmailVerified: response['is_email_verified']);
   }

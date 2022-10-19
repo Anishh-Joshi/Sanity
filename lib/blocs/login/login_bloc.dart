@@ -144,6 +144,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final Map profileData = await repo.getProfileData();
     final bool isAppInfoSeen = await repo.hasAppInformation();
     final User userModel = User.fromJson(profileData);
+    print("Debug point 1");
     if (!isAppInfoSeen) {
       emit(InformationNotSeen());
     } else if (!tokenData) {

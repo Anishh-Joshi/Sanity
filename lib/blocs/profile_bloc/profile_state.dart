@@ -18,11 +18,13 @@ class ProfileFetched extends ProfileState {
   final List owners;
   final List comments;
   final List upVotes;
+  final Map? timelineLog;
 
 
   const ProfileFetched(
       {this.logs,
        required this.upVotes,
+       this.timelineLog,
       required this.comments,
       required this.threads,
       required this.owners,
@@ -31,7 +33,7 @@ class ProfileFetched extends ProfileState {
       required this.entries});
 
   @override
-  List<Object> get props => [threads,owners,upVotes,comments, logs!, user, activeThreads, entries];
+  List<Object> get props => [timelineLog!, threads,owners,upVotes,comments, logs!, user, activeThreads, entries];
 }
 
 class ProfileError extends ProfileState {}

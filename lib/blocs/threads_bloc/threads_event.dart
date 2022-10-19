@@ -29,8 +29,6 @@ class RemoveUpVote extends ThreadsEvent {
   List<Object> get props => [threadId, userId];
 }
 
-class DoctorsInvolved extends ThreadsEvent {}
-
 class AddThread extends ThreadsEvent {
   final String title;
   final String content;
@@ -43,7 +41,6 @@ class AddThread extends ThreadsEvent {
   List<Object> get props => [title, content];
 }
 
-class UpdateThread extends ThreadsEvent {}
 
 class DeleteThread extends ThreadsEvent {
   final int threadId;
