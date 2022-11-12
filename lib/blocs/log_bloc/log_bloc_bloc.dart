@@ -12,6 +12,7 @@ class LogBlocBloc extends Bloc<LogBlocEvent, LogBlocState> {
   LogBlocBloc({required this.repo}) : super(LogBlocLoading()) {
     on<LogSendButtonPressed>(_sendLog);
     on<RetrieveLog>(_retrieveLog);
+    on<RetrievePattern>(_retrievePattern);
   }
 
   void _sendLog(LogSendButtonPressed event, Emitter<LogBlocState> emit) async {
@@ -28,5 +29,28 @@ class LogBlocBloc extends Bloc<LogBlocEvent, LogBlocState> {
     emit(LogBlocLoading());
     final Map receivedMap = await repo.retrieveLog(event.id);
     emit(LogRetrieved(log: receivedMap['candidates']));
+  }
+
+  void _retrievePattern(
+      RetrievePattern event, Emitter<LogBlocState> emit) async {
+    emit(LogBlocLoading());
+    print(event.userId);
+    final Map receivedMap = await repo.getMeanPattern(event.userId);
+
+    print(receivedMap);
+
+    if (state is LogRetrieved) {
+      final state = this.state as LogRetrieved;
+      emit(LogRetrieved(
+          log: state.log,
+          avgPattern: receivedMap['avg_pattern'],
+          selfPattern: receivedMap['pattern']));
+    } else {
+      final Map receivedMapLogs = await repo.retrieveLog(event.userId);
+      emit(LogRetrieved(
+          log: receivedMapLogs['candidates'],
+          avgPattern: receivedMap['avg_pattern'],
+          selfPattern: receivedMap['pattern']));
+    }
   }
 }

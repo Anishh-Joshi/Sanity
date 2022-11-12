@@ -177,6 +177,7 @@ class _HomeState extends State<Home> {
           builder: (context, state) {
             if (state is HomeLoaded) {
               return CustomDrawer(
+                userId: state.user!.userId!,
                 isDoctor: state.user!.isDoctor!,
                 scaffoldKey: _scaffoldKey,
               );

@@ -10,6 +10,7 @@ import 'package:sanity/screens/login/login.dart';
 import 'package:sanity/screens/login/login_landing.dart';
 import 'package:sanity/screens/login/sign_up.dart';
 import 'package:sanity/screens/login/user_info.dart';
+import 'package:sanity/screens/medications/progress_report.dart';
 import 'package:sanity/screens/message/messagePage.dart';
 import 'package:sanity/screens/notifications/notification.dart';
 import 'package:sanity/screens/profile/profile.dart';
@@ -93,6 +94,8 @@ class AppRouter {
         return Doc.route(setting);
       case Dass41.routeName:
         return Dass41.route(setting);
+      case ProgressReport.routeName:
+        return ProgressReport.route(setting);
       default:
         _errorRoute();
     }

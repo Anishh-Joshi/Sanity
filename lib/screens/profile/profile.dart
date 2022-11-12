@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:sanity/blocs/home/home_bloc.dart';
 import 'package:sanity/blocs/profile_bloc/profile_bloc.dart';
-import 'package:sanity/model/threads_model.dart';
 import 'package:sanity/model/user_info_model.dart';
 import 'package:sanity/widgets/circle_avatar.dart';
-import 'package:sanity/widgets/filead_header.dart';
+import 'package:sanity/widgets/mapper.dart';
 import 'package:sanity/widgets/thread_builder.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -24,6 +22,9 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   bool isThreadActive = true;
   int? selectedMonth;
+  bool preview = false;
+  String previewString = "";
+  double score = 0.0;
 
   @override
   void initState() {
@@ -31,20 +32,18 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
   }
 
-  final Map mapper = {
-    1: {"month": "January", "days": 31},
-    2: {"month": "February", "days": 28},
-    3: {"month": "March", "days": 31},
-    4: {"month": "April", "days": 30},
-    5: {"month": "May", "days": 31},
-    6: {"month": "June", "days": 30},
-    7: {"month": "July", "days": 31},
-    8: {"month": "August", "days": 31},
-    9: {"month": "September", "days": 30},
-    10: {"month": "October", "days": 31},
-    11: {"month": "November", "days": 30},
-    12: {"month": "December", "days": 31},
-  };
+ 
+
+  Color determineColor(double value) {
+    if (value > 0 && value < 0.5) {
+      return const Color(0xff08E48F);
+    } else if (value > 0.5 && value < 0.85) {
+      return Colors.amber;
+    } else if (value > 0.85) {
+      return const Color(0xffFF9696);
+    }
+    return Theme.of(context).cardColor;
+  }
 
   int getSelectedMonth() {
     final DateTime now = DateTime.now();
@@ -54,7 +53,12 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   determineState(Map map, index) {
-    return map.containsKey('$selectedMonth-${index + 1}');
+    print("HERE");
+    print("selectted month$selectedMonth");
+    print(index);
+    print(map);
+    print("SEARCH KEY $selectedMonth-${index.toString().padLeft(2, '0')}");
+    return map.containsKey('$selectedMonth-${index.toString().padLeft(2, '0')}');
   }
 
   @override
@@ -66,11 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
         body: SafeArea(
       child: BlocListener<ProfileBloc, ProfileState>(
-        listener: (context, state) {
-          if (state is ProfileFetched) {
-            print(state.timelineLog!);
-          }
-        },
+        listener: (context, state) {},
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
@@ -81,11 +81,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AppBarInfo(
-                          height: height,
-                          onPressed: () {},
-                          showDone: false,
-                          title: "Profile"),
                       Row(
                         children: [
                           CircleAvatarCustom(
@@ -141,7 +136,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             .copyWith(fontSize: 16),
                       ),
                       Text(
-                        "${state.entries} entries.",
+                        state.entries > 1
+                            ? "${state.entries} Logs"
+                            : "${state.entries} Log",
                         style: Theme.of(context)
                             .textTheme
                             .headline5!
@@ -251,10 +248,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                               }
                                             });
                                           },
-                                          icon: Icon(Icons.arrow_back)),
+                                          icon: const Icon(Icons.arrow_back)),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Container(
+                                        child: SizedBox(
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width /
@@ -286,32 +283,118 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: SizedBox(
-                                    height: height * 0.32,
-                                    child: GridView.count(
-                                      crossAxisCount: 8,
-                                      children: List.generate(
-                                          mapper[selectedMonth]['days'],
-                                          (index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Container(
+                                    child: preview
+                                        ? Container(
                                             decoration: BoxDecoration(
-                                                color: determineState(
-                                                        state.timelineLog!,
-                                                        index)
-                                                    ? state.timelineLog![
-                                                                    '$selectedMonth-${index + 1}']
-                                                                ['score'] >
-                                                            0
-                                                        ? Theme.of(context).primaryColor
-                                                        : const Color.fromARGB(255, 204, 202, 202)
-                                                    : const Color.fromARGB(255, 204, 202, 202),
+                                                color: determineColor(score),
                                                 borderRadius:
-                                                    BorderRadius.circular(6)),
+                                                    BorderRadius.circular(14)),
+                                            width: double.infinity,
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    const Opacity(
+                                                        opacity: 0,
+                                                        child:
+                                                            Icon(Icons.home)),
+                                                    IconButton(
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            preview = false;
+                                                            previewString = "";
+                                                            score = 0.0;
+                                                          });
+                                                        },
+                                                        icon: const Icon(
+                                                            Icons.cancel))
+                                                  ],
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8,
+                                                          right: 8,
+                                                          bottom: 20.0),
+                                                  child: Text(
+                                                      previewString == ""
+                                                          ? "Log for this day is Empty."
+                                                          : previewString,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
+                                                ),
+                                              ],
+                                            ))
+                                        : GridView.count(
+                                            shrinkWrap: true,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            crossAxisCount: 7,
+                                            children: List.generate(
+                                                mapper[selectedMonth]['days']+1,
+                                                (index) {
+                                              return index==0?const Text(""): InkWell(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                onTap: () {
+
+                                                  setState(() {
+                                                    score = state.timelineLog![
+                                                            '$selectedMonth-${index.toString().padLeft(2, '0')}']
+                                                        ['score'];
+                                                    preview = true;
+                                                    previewString = determineState(
+                                                            state.timelineLog!,
+                                                            index)
+                                                        ? state.timelineLog![
+                                                                '$selectedMonth-${index.toString().padLeft(2, '0')}']
+                                                            ['log']
+                                                        : "";
+                                                  });
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(6.0),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: determineState(
+                                                                state
+                                                                    .timelineLog!,
+                                                                index)
+                                                            ? determineColor(
+                                                                state.timelineLog![
+                                                                        '$selectedMonth-${index.toString().padLeft(2, '0')}']
+                                                                    ['score'])
+                                                            : Theme.of(context)
+                                                                .cardColor,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10)),
+                                                    child: Center(
+                                                        child: Text(
+                                                            '${index.toString().padLeft(2, '0')}',
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .headline2!
+                                                                .copyWith(
+                                                                    fontSize:
+                                                                        15,
+                                                                    color: const Color
+                                                                            .fromARGB(
+                                                                        255,
+                                                                        99,
+                                                                        97,
+                                                                        97)))),
+                                                  ),
+                                                ),
+                                              );
+                                            }),
                                           ),
-                                        );
-                                      }),
-                                    ),
                                   ),
                                 ),
                               ],

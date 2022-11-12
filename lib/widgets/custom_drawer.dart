@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:sanity/blocs/dass_bloc/dass41_bloc.dart';
 import 'package:sanity/blocs/home/home_bloc.dart';
+import 'package:sanity/blocs/log_bloc/log_bloc_bloc.dart';
 import 'package:sanity/blocs/theme/theme_bloc_bloc.dart';
+import 'package:sanity/screens/medications/progress_report.dart';
 import 'package:sanity/screens/profile/profile.dart';
 import 'package:sanity/screens/settings/settings.dart';
 import 'package:sanity/screens/therapy/add_therapy.dart';
@@ -15,9 +17,10 @@ import '../screens/test/test_page.dart';
 
 class CustomDrawer extends StatefulWidget {
   final bool isDoctor;
+  final int userId;
   final GlobalKey<ScaffoldState> scaffoldKey;
   const CustomDrawer(
-      {required this.isDoctor, Key? key, required this.scaffoldKey})
+      {required this.userId, required this.isDoctor, Key? key, required this.scaffoldKey})
       : super(key: key);
 
   @override
@@ -81,7 +84,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   onTap: () {
                     if (widget.isDoctor) {
                       Navigator.pushNamed(context, AddTherapy.routeName);
-                    } else {}
+                    } else {
+                      context
+                      .read<LogBlocBloc>().add(RetrievePattern(userId: widget.userId));
+                      Navigator.pushNamed(context, ProgressReport.routeName);
+                    }
                   },
                   leading: Icon(
                     widget.isDoctor ? MaterialIcons.add : Entypo.line_graph,

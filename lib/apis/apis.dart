@@ -120,5 +120,8 @@ class APIs {
   String getNumbers(int id) =>
       "http://$localhost/api/assistant/profile/numbers/?id=$id";
 
-  get setPattern=>"http://$localhost/api/assistant/set/pattern/";
+  get setPattern => "http://$localhost/api/assistant/set/pattern/";
+
+  String getPattern(int id) =>
+      "http://$localhost/api/assistant/set/pattern/?id=$id";
 }

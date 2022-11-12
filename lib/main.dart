@@ -26,7 +26,6 @@ import 'package:sanity/repository/signup/signup_repo.dart';
 import 'package:sanity/repository/therapy_repository/therapy_repo.dart';
 import 'package:sanity/repository/threads_repository/threds_repo.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:sanity/screens/home/home.dart';
 import 'blocs/dass_bloc/dass41_bloc.dart';
 import 'firebase_options.dart';
 

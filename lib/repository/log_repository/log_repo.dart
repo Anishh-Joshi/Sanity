@@ -26,4 +26,20 @@ class LogRepository {
     final Map logResponse = json.decode(response.body);
     return logResponse;
   }
+
+
+  Future<Map> getMeanPattern(int id)async{
+     final client = http.Client();
+     print("itthe");
+    final http.Response response =
+        await client.get(Uri.parse(api.getPattern(id)), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      "Access-Control-Allow_origin": "*"
+    });
+    Map pattern = json.decode(response.body);
+       print("itthe3");
+    return pattern;
+  }
+
 }

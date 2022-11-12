@@ -40,6 +40,7 @@ dependencies:
   pdf: ^3.8.3
   open_file: ^3.1.0
   pdf_viewer_plugin: ^2.0.1
+  syncfusion_flutter_charts: ^20.3.56
 
 dev_dependencies:
   flutter_test:

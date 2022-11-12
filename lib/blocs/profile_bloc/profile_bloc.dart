@@ -41,8 +41,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           };
         });
 
-        print(listed['10-19']);
-
         emit(ProfileFetched(
             timelineLog: listed,
             logs: logs['candidates'],
@@ -53,6 +51,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             user: UserInfoModel.fromJson(numbers['candidates']),
             activeThreads: numbers['active'],
             entries: numbers['entries']));
+
+            
       } else {
         emit(ProfileFetched(
           

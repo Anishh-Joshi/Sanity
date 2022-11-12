@@ -9,8 +9,10 @@ abstract class LogBlocState extends Equatable {
 
 class LogRetrieved extends LogBlocState {
   final List log;
+  final double? selfPattern;
+  final double? avgPattern;
 
-  const LogRetrieved({required this.log});
+  const LogRetrieved({required this.log,this.avgPattern,this.selfPattern});
   @override
   List<Object> get props => [log];
 }
