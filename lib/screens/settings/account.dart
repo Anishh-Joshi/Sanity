@@ -33,6 +33,9 @@ class _AccountState extends State<Account> {
   Future<void> update(UserInfoModel userInfoData) async {
     final int response = await up.updateUserInfo(userInfoData,
         id: widget.userBase.id!, profileId: widget.user.userId!);
+
+    context.read<LoginBloc>().add(LoginCheck());
+
     if (response == 404) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Something went wrong!")));

@@ -1,5 +1,3 @@
-
-
 import 'package:dio/dio.dart';
 import 'package:sanity/apis/apis.dart';
 import 'package:sanity/model/user_info_model.dart';
@@ -24,23 +22,22 @@ class SignUpRepository extends BaseSignupRepository {
         'age': checkout.age,
         'full_name': checkout.fullName
       });
-      Response response = await Dio().post(
-          api.setProfile,
-          data: formData,
-          options: Options(headers: {}));
+      Response response = await Dio()
+          .post(api.setProfile, data: formData, options: Options(headers: {}));
       return response.statusCode!;
     } on DioError catch (e) {
       return e.response!.statusCode!;
     }
   }
 
-  Future<int> updateUserInfo(UserInfoModel checkout, {required int id,required int profileId}) async {
+  Future<int> updateUserInfo(UserInfoModel checkout,
+      {required int id, required int profileId}) async {
     try {
       FormData formData = FormData.fromMap({
         'gender': checkout.gender,
         'isDoctor': checkout.isDoctor,
         'nmcId': checkout.nmcId,
-        'bio':checkout.bio,
+        'bio': checkout.bio,
         "profileImage": checkout.profileImage == null
             ? null
             : await MultipartFile.fromFile(
@@ -50,10 +47,8 @@ class SignUpRepository extends BaseSignupRepository {
         'age': checkout.age,
         'full_name': checkout.fullName
       });
-      Response response = await Dio().put(
-          api.updateProfile(id:profileId),
-          data: formData,
-          options: Options(headers: {}));
+      Response response = await Dio().put(api.updateProfile(id: profileId),
+          data: formData, options: Options(headers: {}));
       return response.statusCode!;
     } on DioError catch (e) {
       return e.response!.statusCode!;

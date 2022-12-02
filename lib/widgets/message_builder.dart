@@ -106,8 +106,10 @@ class _MessageListState extends State<MessageList> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text(widget.message.messageText!,
-                                  style: Theme.of(context).textTheme.headline4),
+                              Flexible(
+                                child: Text(widget.message.messageText!,
+                                    style: Theme.of(context).textTheme.headline4),
+                              ),
                               Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: Container(
@@ -183,16 +185,18 @@ class _MessageListState extends State<MessageList> {
                                   : const SizedBox(
                                       width: 40,
                                     ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: Theme.of(context).cardColor,
-                                    borderRadius: BorderRadius.circular(23)),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    widget.message.messageText!,
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
+                              Flexible(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Theme.of(context).cardColor,
+                                      borderRadius: BorderRadius.circular(23)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      widget.message.messageText!,
+                                      style:
+                                          Theme.of(context).textTheme.headline4,
+                                    ),
                                   ),
                                 ),
                               ),

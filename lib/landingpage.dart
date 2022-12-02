@@ -61,6 +61,8 @@ class _LandingPageState extends State<LandingPage> {
                     .read<DoctorBloc>()
                     .add(CheckDocInfo(profileId: state.user.userId!))
                 : null;
+
+                print(state.user.isDoctor);
             Navigator.pushNamedAndRemoveUntil(
                 context, 'home_landing', (route) => false,
                 arguments: state.user);

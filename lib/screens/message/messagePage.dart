@@ -342,14 +342,32 @@ class _MessagePageState extends State<MessagePage> {
         ],
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: CircleAvatarCustom(
-            url: appointment.patient.profileImgUrl!,
-            radius: 15,
+          child: BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              if(state is HomeLoaded){
+                return CircleAvatarCustom(
+                url: !state.user!.isDoctor!
+                    ? appointment.doctor.profileImgUrl!
+                    : appointment.patient.profileImgUrl!,
+                radius: 15,
+              );
+              }
+              return SizedBox();
+            },
           ),
         ),
-        title: Text(
-          appointment.patient.fullName!,
-          style: Theme.of(context).textTheme.headline4,
+        title: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            if (state is HomeLoaded) {
+              return Text(
+                !state.user!.isDoctor!
+                    ? appointment.doctor.fullName!
+                    : appointment.patient.fullName!,
+                style: Theme.of(context).textTheme.headline4,
+              );
+            }
+            return SizedBox();
+          },
         ),
       ),
       body: SafeArea(
@@ -359,50 +377,45 @@ class _MessagePageState extends State<MessagePage> {
               child:
                   BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
                 if (state is HomeLoaded) {
-                  return Column(
-                    children: [
-                      StreamBuilder(
-                        stream: getMessages(
-                            appointment: appointment,
-                            currentUserId: state.user!.userId!),
-                        builder: ((context, AsyncSnapshot snapshot) {
-                          if (!snapshot.hasData) {
-                            return const CircularProgressIndicatorCustom();
-                          }
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.docs.length,
-                              itemBuilder: (context, index) {
-                                final MessageModel message =
-                                    MessageModel.fromJSON(
-                                        snapshot.data.docs[index]);
-                                final MessageModel nextMessage =
-                                    MessageModel.fromJSON(snapshot.data.docs[
-                                        index == snapshot.data.docs.length - 1
-                                            ? index
-                                            : index + 1]);
-                                return InkWell(
-                                  onLongPress: () {
-                                    message.sentBy == state.user!.userId!
-                                        ? _confirmDelete(
-                                            context: context,
-                                            messageId: message.messageId,
-                                            appointmentModel: appointment)
-                                        : null;
-                                  },
-                                  child: MessageList(
-                                    renderPhoto:
-                                        nextMessage.sentBy != message.sentBy,
-                                    appointment: appointment,
-                                    message: message,
-                                    currentUerId: state.user!.userId!,
-                                  ),
-                                );
-                                ;
-                              });
-                        }),
-                      )
-                    ],
+                  return StreamBuilder(
+                    stream: getMessages(
+                        appointment: appointment,
+                        currentUserId: state.user!.userId!),
+                    builder: ((context, AsyncSnapshot snapshot) {
+                      if (!snapshot.hasData) {
+                        return const CircularProgressIndicatorCustom();
+                      }
+                      return ListView.builder(
+                          shrinkWrap: false,
+                          itemCount: snapshot.data.docs.length,
+                          itemBuilder: (context, index) {
+                            final MessageModel message = MessageModel.fromJSON(
+                                snapshot.data.docs[index]);
+                            final MessageModel nextMessage =
+                                MessageModel.fromJSON(snapshot.data.docs[
+                                    index == snapshot.data.docs.length - 1
+                                        ? index
+                                        : index + 1]);
+                            return InkWell(
+                              onLongPress: () {
+                                message.sentBy == state.user!.userId!
+                                    ? _confirmDelete(
+                                        context: context,
+                                        messageId: message.messageId,
+                                        appointmentModel: appointment)
+                                    : null;
+                              },
+                              child: MessageList(
+                                renderPhoto:
+                                    nextMessage.sentBy != message.sentBy,
+                                appointment: appointment,
+                                message: message,
+                                currentUerId: state.user!.userId!,
+                              ),
+                            );
+                            ;
+                          });
+                    }),
                   );
                 }
                 return const SizedBox();

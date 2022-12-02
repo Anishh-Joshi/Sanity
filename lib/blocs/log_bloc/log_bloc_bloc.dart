@@ -36,7 +36,6 @@ class LogBlocBloc extends Bloc<LogBlocEvent, LogBlocState> {
     emit(LogBlocLoading());
     print(event.userId);
     final Map receivedMap = await repo.getMeanPattern(event.userId);
-
     print(receivedMap);
 
     if (state is LogRetrieved) {

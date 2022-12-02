@@ -56,16 +56,21 @@ class Dass41Bloc extends Bloc<Dass41Event, Dass41State> {
       sortedByKeyMap2.forEach((key, value) {
         answers.add(value);
       });
+      print("inside function");
 
       if (state is Dass41Loaded) {
+        print("inside if");
         final state = this.state as Dass41Loaded;
         emit(Dass41Initial());
+        print("inside function");
         final Map response = await repo.setAnswer(event.profileId, answers);
+        print("after request");
         emit(Dass41Loaded(
             questions: state.questions,
             termsAndConditions: state.termsAndConditions,
             category: response['answers']['category'].toString()));
       }
+      
     } catch (e) {
       emit(Dass41Error());
     }

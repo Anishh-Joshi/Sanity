@@ -29,13 +29,14 @@ class DasRepo {
   }
 
   Future<Map> setAnswer(int profileId, List sheet) async {
+    print("triggered");
+    print(sheet);
     final client = http.Client();
     final http.Response response = await client.post(Uri.parse(api.setAnswer),
         body: jsonEncode({
           "user": profileId,
           "response": sheet,
           //pachi yo hataune
-          "category":"hakuna matata"
         }),
         headers: {
           "Content-type": 'application/json',
@@ -43,6 +44,7 @@ class DasRepo {
           "Access-Control-Allow_origin": "*"
         });
     final answers = json.decode(response.body);
+    print(answers);
     return answers;
   
   }

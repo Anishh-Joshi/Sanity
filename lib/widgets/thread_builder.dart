@@ -33,6 +33,7 @@ class ThreadBuilder extends StatelessWidget {
       builder: (context, state) {
         if (state is ThreadsLoaded) {
           return ListView.builder(
+            reverse: true,
             itemCount: allView
                 ? state.threads.length
                 : state.threads.length > 10

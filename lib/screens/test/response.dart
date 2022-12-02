@@ -62,104 +62,110 @@ class _ResponsePageState extends State<ResponsePage> {
           return const SizedBox();
         },
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16),
-        child: SingleChildScrollView(
-             physics:const BouncingScrollPhysics(),
-          child: SafeArea(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppBarInfo(
-                  height: height,
-                  onPressed: () {},
-                  showDone: false,
-                  title: "Almost Done"),
-              SizedBox(
-                height: height * 0.79,
-                child: ListView.builder(
-                    itemCount: QuestionMap.options.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Divider(color: Colors.transparent),
-                          Row(
-                            children: [
-                              Text(
-                                QuestionMap.options[index]['cat']
-                                        .contains('Family')
-                                    ? "${index + 1}/ Enter your "
-                                    : "${index + 1}/ Select your ",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(fontSize: height * 0.025),
-                              ),
-                              Text(
-                                "${QuestionMap.options[index]['cat']}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline2!
-                                    .copyWith(fontSize: height * 0.025),
-                              ),
-                            ],
-                          ),
-                          ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:
-                                  QuestionMap.options[index]['options'].length,
-                              itemBuilder: (context, ind) {
-                                return QuestionMap.options[index]['cat']
-                                        .contains('Family')
-                                    ? Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 40, right: 80),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              color:
-                                                  Theme.of(context).cardColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(14)),
-                                          child: CustomForm(
-                                            keyboardType: TextInputType.number,
-                                            hintText: "Eg. 3",
-                                            borderColor: Colors.transparent,
-                                            borderRadius: 14,
-                                            onChanged: (val) {
-                                              setState(() {
-                                                selected[index + 1] = val;
-                                              });
-                                            },
+      body: BlocListener<Dass41Bloc, Dass41State>(
+        listener: (context, state) {
+          print(state);
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: SafeArea(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppBarInfo(
+                    height: height,
+                    onPressed: () {},
+                    showDone: false,
+                    title: "Almost Done"),
+                SizedBox(
+                  height: height * 0.79,
+                  child: ListView.builder(
+                      itemCount: QuestionMap.options.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Divider(color: Colors.transparent),
+                            Row(
+                              children: [
+                                Text(
+                                  QuestionMap.options[index]['cat']
+                                          .contains('Family')
+                                      ? "${index + 1}/ Enter your "
+                                      : "${index + 1}/ Select your ",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .copyWith(fontSize: height * 0.025),
+                                ),
+                                Text(
+                                  "${QuestionMap.options[index]['cat']}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline2!
+                                      .copyWith(fontSize: height * 0.025),
+                                ),
+                              ],
+                            ),
+                            ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: QuestionMap
+                                    .options[index]['options'].length,
+                                itemBuilder: (context, ind) {
+                                  return QuestionMap.options[index]['cat']
+                                          .contains('Family')
+                                      ? Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 40, right: 80),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color:
+                                                    Theme.of(context).cardColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(14)),
+                                            child: CustomForm(
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              hintText: "Eg. 3",
+                                              borderColor: Colors.transparent,
+                                              borderRadius: 14,
+                                              onChanged: (val) {
+                                                setState(() {
+                                                  selected[index + 1] = val;
+                                                });
+                                              },
+                                            ),
                                           ),
-                                        ),
-                                      )
-                                    : InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            selected[index + 1] = ind + 1;
-                                          });
-                                        },
-                                        child: Options(
-                                            onChanged: (bool? val) {
-                                              setState(() {
-                                                selected[index + 1] = ind + 1;
-                                              });
-                                            },
-                                            title: QuestionMap.options[index]
-                                                    ['options'][ind]
-                                                .toString(),
-                                            condition:
-                                                selected[index + 1] == ind + 1),
-                                      );
-                              })
-                        ],
-                      );
-                    }),
-              )
-            ],
-          )),
+                                        )
+                                      : InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              selected[index + 1] = ind + 1;
+                                            });
+                                          },
+                                          child: Options(
+                                              onChanged: (bool? val) {
+                                                setState(() {
+                                                  selected[index + 1] = ind + 1;
+                                                });
+                                              },
+                                              title: QuestionMap.options[index]
+                                                      ['options'][ind]
+                                                  .toString(),
+                                              condition: selected[index + 1] ==
+                                                  ind + 1),
+                                        );
+                                })
+                          ],
+                        );
+                      }),
+                )
+              ],
+            )),
+          ),
         ),
       ),
     );
