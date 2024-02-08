@@ -20,23 +20,25 @@ flutter pub get
 flutter run
 ```
 
-##    ✨ Features
+## ✨ Features
 
-Sentiment Analysis: Detect the sentiment of users based on their interactions within the app.
-Find Nearby Psychiatrist: Assist users in locating the nearest psychiatrist for immediate support.
-One-to-One Chat: Facilitate private conversations between users and mental health professionals.
-Integrated Depression Prediction Tests: Provide integrated tests to predict depression and offer appropriate support.
-Activity Logging: Keep a record of user activities and interactions for analysis and future reference.
+- Sentiment Analysis: Detect the sentiment of users based on their interactions within the app.
+- Find Nearby Psychiatrist: Assist users in locating the nearest psychiatrist for immediate support.
+- One-to-One Chat: Facilitate private conversations between users and mental health professionals.
+- Integrated Depression Prediction Tests: Provide integrated tests to predict depression and offer appropriate support.
+- Activity Logging: Keep a record of user activities and interactions for analysis and future reference.
+
 
 ## 🤝 Contributing
 
 Contributions are welcome! Please follow these guidelines when contributing to the project:
 
-Fork the repository and create your branch from main.
-If you've added code that should be tested, add tests.
-Ensure the test suite passes.
-Make sure your code lints.
-Issue that pull request!
+- Fork the repository and create your branch from main.
+- If you've added code that should be tested, add tests.
+- Ensure the test suite passes.
+- Make sure your code lints.
+- Issue that pull request!
+
 
 ## 🔒 Privacy Concerns
 
