@@ -1,16 +1,18 @@
-# sanity
+# Sanity
 
-A new Flutter project.
+Sanity is a Flutter project aimed at providing mental health assistance and support through mobile applications. It offers features such as sentiment analysis, finding nearby mental health professionals, one-to-one chat with experts, and integrated depression prediction tests.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project serves as a starting point for developing a mental health assistance application using Flutter.
 
-A few resources to get you started if this is your first Flutter project:
+### Prerequisites
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Before you start, ensure you have Flutter installed on your development environment. You can follow the official Flutter installation guide [here](https://flutter.dev/docs/get-started/install).
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Installation
+
+1. Clone the repository to your local machine:
+
+```bash
+git clone https://github.com/your-username/sanity.git](https://github.com/Anishh-Joshi/Sanity.git)https://github.com/Anishh-Joshi/Sanity.git
